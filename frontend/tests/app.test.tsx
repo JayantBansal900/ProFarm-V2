@@ -17,6 +17,8 @@ vi.mock('../src/services/api', () => ({
     login: vi.fn(),
     register: vi.fn(),
     logout: vi.fn(),
+    searchLocations: vi.fn().mockResolvedValue({ status: 'success', locations: [] }),
+    getWeatherForecast: vi.fn().mockResolvedValue({ status: 'success', data: null }),
   },
   ApiError: class ApiError extends Error {
     constructor(public message: string, public statusCode: number) {
@@ -103,7 +105,17 @@ describe('Frontend Routes & Authentication Protection', () => {
     render(<RouterProvider router={router} />);
 
     expect(
-      screen.getByRole('heading', { name: /Farm Tools & Analytics/i })
+      screen.getByRole('heading', { name: /Farm Tools & Decision Analytics/i })
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Open Weather Tool/i })).toBeInTheDocument();
+  });
+
+  it('renders WeatherPage on "/tools/weather"', () => {
+    const router = createMemoryRouter(routes, { initialEntries: ['/tools/weather'] });
+    render(<RouterProvider router={router} />);
+
+    expect(
+      screen.getByRole('heading', { name: /Live Weather & Rainfall/i })
     ).toBeInTheDocument();
   });
 

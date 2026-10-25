@@ -5,6 +5,7 @@ import {
   AuthResponse,
   LogoutResponse,
 } from '../types';
+import { LocationsSearchResponse, ForecastResponse } from '../types/weather';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
@@ -76,5 +77,23 @@ export const api = {
       method: 'POST',
     }),
   getMe: () => request<AuthResponse>('/api/auth/me'),
+  searchLocations: (query: string, signal?: AbortSignal) =>
+    request<LocationsSearchResponse>(`/api/weather/locations?query=${encodeURIComponent(query)}`, {
+      signal,
+    }),
+  getWeatherForecast: (
+    latitude: number,
+    longitude: number,
+    locationName?: string,
+    signal?: AbortSignal
+  ) => {
+    const params = new URLSearchParams({
+      latitude: latitude.toString(),
+      longitude: longitude.toString(),
+    });
+    if (locationName) params.append('locationName', locationName);
+    return request<ForecastResponse>(`/api/weather/forecast?${params.toString()}`, { signal });
+  },
 };
+
 

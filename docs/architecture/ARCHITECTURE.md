@@ -211,3 +211,23 @@ model Session {
 
 - **Backend Port:** `4000` (`http://localhost:4000`)
 - **Frontend Port:** `5173` (`http://localhost:5173`)
+
+---
+
+## 9. Weather & Meteorological Subsystem (Phase 3C)
+
+### 9.1 Open-Meteo Integration Proxy
+- **Endpoint Structure:**
+  - `GET /api/weather/locations?query=<string>`: Searches Indian locations filtered to `country_code=IN`.
+  - `GET /api/weather/forecast?latitude=<num>&longitude=<num>&locationName=<string>`: Returns 7-day weather, current observations, dedicated rainfall intelligence, and farmer weather guidance.
+- **Proxy Architecture:** Frontend never connects directly to external weather APIs. The Express backend handles external requests, timeouts (8s), error isolation, and schema normalization.
+- **In-Memory Caching:**
+  - Bounded `MemoryCache<T>` (500 capacity, LRU eviction).
+  - Geocoding results: 24-hour TTL.
+  - Forecast results: 15-minute TTL.
+  - Coordinates rounded to 2 decimal places (~1 km grid).
+- **Domain Normalization:**
+  - Full WMO code dictionary (0–99) translated to localized descriptors and weather icons.
+  - Dedicated rainfall intelligence separating probability (%) from accumulation (mm).
+  - Deterministic rule engine for heavy rain, heat stress, wind gust, and dry spell farmer advisories.
+  - Transparent Open-Meteo non-commercial attribution compliance.

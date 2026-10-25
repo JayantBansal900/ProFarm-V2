@@ -10,6 +10,7 @@ import {
   SoilDetailPage,
 } from '../pages/KnowledgePage';
 import { ToolsPage } from '../pages/ToolsPage';
+import { WeatherPage } from '../pages/tools/WeatherPage';
 import { LoginPage } from '../pages/LoginPage';
 import { SignupPage } from '../pages/SignupPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -37,6 +38,7 @@ export const routes: RouteObject[] = [
       { path: 'knowledge/soils/:slug', element: <SoilDetailPage /> },
 
       { path: 'tools', element: <ToolsPage /> },
+      { path: 'tools/weather', element: <WeatherPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'signup', element: <SignupPage /> },
       { path: '*', element: <NotFoundPage /> },
