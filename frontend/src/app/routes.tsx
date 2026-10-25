@@ -5,7 +5,9 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { KnowledgePage } from '../pages/KnowledgePage';
 import { ToolsPage } from '../pages/ToolsPage';
 import { LoginPage } from '../pages/LoginPage';
+import { SignupPage } from '../pages/SignupPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
+import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 
 export const routes: RouteObject[] = [
   {
@@ -13,10 +15,18 @@ export const routes: RouteObject[] = [
     element: <AppLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'dashboard', element: <DashboardPage /> },
+      {
+        path: 'dashboard',
+        element: (
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        ),
+      },
       { path: 'knowledge', element: <KnowledgePage /> },
       { path: 'tools', element: <ToolsPage /> },
       { path: 'login', element: <LoginPage /> },
+      { path: 'signup', element: <SignupPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

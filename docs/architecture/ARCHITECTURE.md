@@ -1,7 +1,7 @@
 # ProFarm V2: System Architecture Documentation
 
-**Document Version:** 1.0.0 (Phase 2 Foundation)  
-**Status:** Approved & Verified Foundation  
+**Document Version:** 1.1.0 (Phase 3A Secure Authentication)  
+**Status:** Approved & Implemented Foundation  
 
 ---
 
@@ -13,6 +13,7 @@ ProFarm V2 addresses the deep structural and security flaws identified in the Ph
 2. **Defensive by Default:** No sensitive credentials client-side; zero plaintext password storage; explicit CORS whitelist; payload size caps; rate limiting.
 3. **Type Safety & Schema Integrity:** End-to-end TypeScript with runtime validation via Zod schemas and compile-time database constraints via Prisma.
 4. **Environment Isolation:** Zero dependencies on external cloud services or hosted databases for baseline development; local self-contained SQLite database.
+5. **Secure Authentication & Session Management:** Server-side sessions with opaque random tokens, stored securely as SHA-256 hashes in SQLite, delivered via HttpOnly, SameSite=Lax cookies, and protected by Argon2id password hashing and origin-based CSRF defenses.
 
 ---
 
@@ -22,8 +23,8 @@ The project employs npm native workspaces:
 
 ```
 ProFarm-V2/
-├── backend/          # REST API & Database layer
-├── frontend/         # React SPA client
+├── backend/          # REST API, Auth & Database layer
+├── frontend/         # React SPA client & Auth Context
 └── docs/             # Technical specifications & reports
 ```
 
@@ -52,20 +53,22 @@ HTTP Client
     │
     ├──> Helmet       ── Security headers (nosniff, frameguard, etc.)
     ├──> CORS         ── Origin verification (env.FRONTEND_ORIGIN)
-    ├──> RateLimit    ── 200 req / 15 min window
+    ├──> CookieParser ── Extracts profarm_sid session cookie
+    ├──> CSRF         ── Origin header validation on state-changing requests (POST, PUT, DELETE)
+    ├──> RateLimit    ── 200 req / 15 min window (10 req / 15 min on /api/auth)
     ├──> JSON Parser  ── 100kb payload size limit
     │
     ▼
-[routes/]             ── Path dispatching & URL mapping
+[routes/]             ── Path dispatching & URL mapping (/api/health, /api/auth)
     │
     ▼
-[middleware/]         ── Request validation via Zod schemas (validate.ts)
+[middleware/]         ── Request validation (validateRequest) & Auth enforcement (requireAuth)
     │
     ▼
-[controllers/]        ── Request extraction & HTTP status response formatting
+[controllers/]        ── Request extraction & HTTP status response formatting (auth.controller)
     │
     ▼
-[services/]           ── Core business logic & database queries
+[services/]           ── Core business logic: auth.service (Argon2id, Session CRUD)
     │
     ▼
 [lib/prisma.ts]       ── Prisma client singleton
@@ -85,34 +88,56 @@ SQLite Engine (`dev.db`)
   ```
 - Any unhandled exception is intercepted by `errorHandler`:
   - **Zod Validation Errors:** Formatted into structured 400 Bad Request responses with field-level diagnostics.
-  - **CORS Violations:** Formatted into 403 Forbidden responses.
+  - **CORS / CSRF Violations:** Formatted into 403 Forbidden responses.
   - **Internal Errors:** Redacts local filesystem paths and hides stack traces in production.
 
 ---
 
-## 4. Frontend Architecture
+## 4. Authentication Architecture (Phase 3A)
 
-### 4.1 Component & Routing Topology
-- **Single-Page Application (SPA):** Powered by Vite, React 18, and React Router 6.
-- **Root Shell (`AppLayout`):** Contains consistent, accessible navigation (`Header`), dynamic page container (`<Outlet />`), and status footer (`Footer`).
-- **Route Manifest (`routes.tsx`):**
-  - `/` — `HomePage`: Platform introduction + real-time API and database health probe.
-  - `/dashboard` — `DashboardPage`: Placeholder for unified farm analytics.
-  - `/knowledge` — `KnowledgePage`: Placeholder for Soil Wiki & Crop Encyclopedia.
-  - `/tools` — `ToolsPage`: Placeholder for Rainfall, Mandi Prices, and Yield models.
-  - `/login` — `LoginPage`: Placeholder for farmer authentication.
-  - `*` — `NotFoundPage`: Client-side 404 handler with return-to-home navigation.
+### 4.1 Threat Model & Defenses
+- **Password Hashing:** Implemented with `argon2` (Argon2id profile: 64 MiB memory, 3 iterations, 1 parallelism). Mitigates GPU/ASIC rainbow table and offline dictionary attacks.
+- **Timing Attack Mitigation:** Authentication login path always computes Argon2 password verification against a pre-computed dummy hash when an email address is not found in the database.
+- **Session Tokens:** 32 cryptographically secure random bytes generated via `crypto.randomBytes(32).toString('hex')`.
+- **Database Token Storage:** Only the `SHA-256` hash of the raw session token is persisted in the database. If the database file is compromised, attackers cannot forge session cookies.
+- **Cookie Security:** Cookies are issued with `HttpOnly: true` (inaccessible to JavaScript, defending against XSS cookie theft), `SameSite: 'Lax'` (defending against cross-site request forgery), `Path: '/'`, and `Secure: true` in production.
+- **CSRF Defense-in-Depth:** State-changing requests (`POST`, `PUT`, `DELETE`, `PATCH`) must contain a valid `Origin` header matching `FRONTEND_ORIGIN`.
+- **Brute-Force Rate Limiting:** All `/api/auth/*` routes are governed by an isolated rate limiter (10 attempts per 15-minute window in production).
 
-### 4.2 Centralized API Client (`services/api.ts`)
-- Wraps native browser `fetch` with typed generics: `request<T>(endpoint, options)`.
-- Automatically injects base backend URL from `import.meta.env.VITE_API_BASE_URL`.
-- Transforms HTTP failure statuses into strongly-typed `ApiError` instances containing structured error payloads.
+### 4.2 Auth Endpoints
+| Method | Path | Auth Required | Description |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | No | Creates user with Argon2id hash, issues session cookie |
+| `POST` | `/api/auth/login` | No | Validates credentials, issues session cookie |
+| `GET` | `/api/auth/me` | Yes (`requireAuth`) | Returns current authenticated user profile |
+| `POST` | `/api/auth/logout` | No / Yes | Revokes session from SQLite and clears `profarm_sid` |
 
 ---
 
-## 5. Database Architecture (SQLite + Prisma)
+## 5. Frontend Architecture
 
-### 5.1 Models & Relational Constraints
+### 5.1 Component & Routing Topology
+- **Single-Page Application (SPA):** Powered by Vite, React 18, and React Router 6.
+- **Authentication Context (`AuthProvider` + `useAuth`):** Manages user session state, performs automatic session check (`api.getMe()`) on mount to restore sessions across page refreshes, and exposes `login`, `register`, and `logout`.
+- **Protected Routing (`ProtectedRoute`):** Guards authenticated routes (such as `/dashboard`). Redirects unauthenticated users to `/login` with `state: { from: location }` for automatic return upon login.
+- **Route Manifest (`routes.tsx`):**
+  - `/` — `HomePage`: Platform introduction + real-time API and database health probe.
+  - `/dashboard` — `DashboardPage`: **Protected** farmer management overview showing account info and farm status.
+  - `/knowledge` — `KnowledgePage`: Soil Wiki & Crop Encyclopedia.
+  - `/tools` — `ToolsPage`: Rainfall, Mandi Prices, and Yield models.
+  - `/login` — `LoginPage`: Interactive login form with client validation, error banners, and redirect handling.
+  - `/signup` — `SignupPage`: Interactive registration form with password confirmation and input validation.
+  - `*` — `NotFoundPage`: Client-side 404 handler with return-to-home navigation.
+
+### 5.2 Centralized API Client (`services/api.ts`)
+- Configured with `credentials: 'include'` on all HTTP requests to ensure session cookies travel across cross-origin requests to `http://localhost:4000`.
+- Typed methods: `api.register()`, `api.login()`, `api.logout()`, `api.getMe()`, `api.getHealth()`, `api.getDatabaseHealth()`.
+
+---
+
+## 6. Database Architecture (SQLite + Prisma)
+
+### 6.1 Schema Specification
 ```prisma
 datasource db {
   provider = "sqlite"
@@ -124,13 +149,14 @@ generator client {
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   name         String
-  email        String   @unique
+  email        String    @unique
   passwordHash String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   farms        Farm[]
+  sessions     Session[]
 
   @@map("users")
 }
@@ -149,29 +175,39 @@ model Farm {
 
   @@map("farms")
 }
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
 ```
 
-### 5.2 Key Design Choices:
-- **UUID Primary Keys:** Prevent predictable ID enumeration attacks.
-- **Relational Integrity:** Foreign key `userId` references `User(id)` with `onDelete: Cascade`, ensuring no orphaned farm records when a user is deleted.
-- **Security by Design:** Passwords will only be stored as hashes (`passwordHash`). Plaintext credentials from legacy `users.json` are permanently deprecated and excluded.
-
 ---
 
-## 6. Security Foundations
+## 7. Security Foundations Summary
 
-| Threat Category | Legacy Defect (Phase 1) | Modern Mitigation (Phase 2) |
+| Threat Category | Legacy Defect (Phase 1) | Modern Mitigation (Phase 3A) |
 | :--- | :--- | :--- |
-| **Credential Storage** | Plaintext in `data/users.json` | Schema strictly mandates `passwordHash`. Hashing will be implemented in Phase 3 using Argon2id. |
-| **Exposed Secrets** | API keys hardcoded in client JavaScript | Strict `.env` isolation. Client builds contain zero private API tokens. External calls will proxy through backend. |
+| **Credential Storage** | Plaintext in `data/users.json` | Argon2id password hashing (`$argon2id$...`). No plaintext passwords ever stored or logged. |
+| **Session Forgery** | No authentication system | 32-byte cryptographically secure random session tokens; only SHA-256 hashes stored in DB. |
+| **XSS Cookie Theft** | N/A | Session cookies configured with `HttpOnly: true`. Inaccessible to DOM scripts. |
+| **CSRF Attacks** | N/A | `SameSite: Lax` cookie policy + strict `Origin` header validation on all state-changing endpoints. |
+| **Brute-Force Attacks** | None | 10 requests / 15 minutes strict rate limiting on `/api/auth/*` routes. |
+| **Enumeration / Timing** | Immediate rejection leaks user presence | Constant-time Argon2 verification against dummy hash when email does not exist. |
+| **Exposed Secrets** | API keys hardcoded in client JavaScript | Strict `.env` isolation. Client builds contain zero private API tokens. |
 | **DOM Injection (XSS)** | Direct `innerHTML` injection of unescaped text | React JSX automatically escapes dynamic values. |
-| **Denial of Service** | Unbounded request parsing & polling | 100kb JSON body limits, `express-rate-limit` (200 requests / 15 minutes). |
-| **Cross-Origin Abuse** | No CORS configuration | Explicit origin whitelist matching `FRONTEND_ORIGIN` (`http://localhost:5173`). |
-| **HTTP Headers** | Default Express fingerprinting | `helmet()` adds `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, and removes `X-Powered-By`. |
 
 ---
 
-## 7. Port Allocation Strategy
+## 8. Port Allocation
 
-- **Backend Port:** `4000` (Assigned because port 3001 was already occupied by an existing system service on this development machine).
-- **Frontend Port:** `5173` (Standard Vite development server port).
+- **Backend Port:** `4000` (`http://localhost:4000`)
+- **Frontend Port:** `5173` (`http://localhost:5173`)

@@ -1,8 +1,16 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/useAuth';
 
 export const Header: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
 
   const navItems = [
     { label: 'Home', path: '/' },
@@ -37,13 +45,36 @@ export const Header: React.FC = () => {
           ))}
         </nav>
 
-        <div>
-          <Link
-            to="/login"
-            className="text-sm px-3 py-1.5 rounded-md bg-slate-900 text-white hover:bg-slate-800 transition"
-          >
-            Sign In
-          </Link>
+        <div className="flex items-center space-x-3">
+          {user ? (
+            <div className="flex items-center space-x-3">
+              <span className="text-xs text-slate-600 hidden sm:inline-block">
+                Signed in as <strong className="text-slate-800">{user.name}</strong>
+              </span>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="text-xs px-3 py-1.5 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100 transition"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Link
+                to="/login"
+                className="text-sm px-3 py-1.5 rounded-md text-slate-700 hover:text-slate-900 transition"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="text-sm px-3 py-1.5 rounded-md bg-green-700 text-white hover:bg-green-800 transition"
+              >
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>

@@ -1,7 +1,9 @@
 import express, { Express } from 'express';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { corsMiddleware } from './middleware/cors';
 import { apiRateLimiter } from './middleware/rateLimit';
+import { csrfProtection } from './middleware/csrf';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler';
 import { apiRouter } from './routes';
 
@@ -13,6 +15,12 @@ export function createApp(): Express {
 
   // Explicit CORS handling
   app.use(corsMiddleware);
+
+  // Cookie parsing (required for session token)
+  app.use(cookieParser());
+
+  // CSRF protection via Origin header validation
+  app.use(csrfProtection);
 
   // Rate limiting for API surface
   app.use('/api', apiRateLimiter);

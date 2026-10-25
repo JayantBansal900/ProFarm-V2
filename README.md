@@ -8,10 +8,11 @@ Initially tailored to Indian agriculture (state/district contexts and APMC Mandi
 
 ## Technology Stack
 
-- **Frontend:** React 18, Vite 5, TypeScript 5, Tailwind CSS 3, React Router 6
+- **Frontend:** React 18, Vite 5, TypeScript 5, Tailwind CSS 3, React Router 6, React Context
 - **Backend:** Node.js, Express 4, TypeScript 5 (REST architecture)
 - **Database & ORM:** SQLite, Prisma ORM 5
-- **Security:** Helmet, strict CORS origin controls, Zod request validation, API rate limiting, safe error handling
+- **Authentication:** Argon2id password hashing, server-side session management (opaque 32-byte tokens with SHA-256 database hashing), secure `HttpOnly` and `SameSite: Lax` cookies
+- **Security:** Helmet, strict CORS origin controls, Origin-based CSRF protection, Zod request validation, API rate limiting, constant-time timing-attack mitigation
 - **Testing:** Vitest, Supertest, React Testing Library, ESLint 9 (Flat Config), TypeScript strict type checking
 
 ---
@@ -26,7 +27,7 @@ Initially tailored to Indian agriculture (state/district contexts and APMC Mandi
 
 ## Installation & Setup
 
-### 1. Clone & Navigate to Workspace
+### 1. Navigate to Workspace
 ```bash
 cd "E:\All Project\ProFarm-V2"
 ```
@@ -56,7 +57,7 @@ npm install
 Generate Prisma Client and apply migrations to create the local SQLite database (`dev.db`):
 ```bash
 cd backend
-npx prisma migrate dev --name init
+npx prisma migrate dev
 cd ..
 ```
 
@@ -89,18 +90,29 @@ npm run dev
 Run all quality checks across the entire monorepo:
 
 ```bash
-# Run ESLint across frontend and backend
+# Run ESLint across frontend and backend (0 errors, 0 warnings)
 npm run lint
 
 # Run TypeScript strict type-checking across frontend and backend
 npm run typecheck
 
-# Run automated unit and integration tests (Vitest + Supertest)
+# Run automated unit and integration tests (35 passing tests across 8 test suites)
 npm run test
 
 # Compile production builds
 npm run build
 ```
+
+---
+
+## Authentication Surface (Phase 3A)
+
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Register new farmer account (Argon2id password hashing) | No |
+| `POST` | `/api/auth/login` | Login with email and password (issues `profarm_sid` HttpOnly cookie) | No |
+| `GET` | `/api/auth/me` | Fetch authenticated farmer profile | Yes (`requireAuth`) |
+| `POST` | `/api/auth/logout` | Revoke session in SQLite and clear session cookie | Yes / No |
 
 ---
 
@@ -110,19 +122,19 @@ npm run build
 ProFarm-V2/
 ├── backend/
 │   ├── prisma/
-│   │   ├── migrations/            # Version-controlled database migrations
-│   │   └── schema.prisma          # Database models (User, Farm)
+│   │   ├── migrations/            # Version-controlled database migrations (User, Farm, Session)
+│   │   └── schema.prisma          # Database models (User, Farm, Session)
 │   ├── src/
 │   │   ├── config/                # Zod environment validation (env.ts)
-│   │   ├── controllers/           # HTTP controllers (health.controller.ts)
+│   │   ├── controllers/           # HTTP controllers (auth.controller, health.controller)
 │   │   ├── lib/                   # Database client singletons (prisma.ts)
-│   │   ├── middleware/            # Security: CORS, Helmet, RateLimiter, ErrorHandler
-│   │   ├── routes/                # Express route declarations
-│   │   ├── services/              # Business logic (database.service.ts)
-│   │   ├── validators/            # Zod validation schemas
+│   │   ├── middleware/            # Security: CSRF, requireAuth, CORS, Helmet, RateLimiter, ErrorHandler
+│   │   ├── routes/                # Express route declarations (auth.routes, health.routes)
+│   │   ├── services/              # Business logic (auth.service, database.service)
+│   │   ├── validators/            # Zod validation schemas (auth.validator, health.validator)
 │   │   ├── app.ts                 # Express application configuration
 │   │   └── server.ts              # HTTP server startup & graceful shutdown
-│   ├── tests/                     # Automated Vitest/Supertest test suites
+│   ├── tests/                     # Automated Vitest/Supertest test suites (21 passing tests)
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vitest.config.ts
@@ -130,12 +142,13 @@ ProFarm-V2/
 │   ├── public/                    # Static assets & favicons
 │   ├── src/
 │   │   ├── app/                   # Root App component and React Router setup
-│   │   ├── components/            # Layout (Header, Footer) & common components
-│   │   ├── pages/                 # Minimal route pages (Home, Dashboard, Knowledge, Tools, Login, NotFound)
-│   │   ├── services/              # Centralized API client (api.ts)
+│   │   ├── components/            # Layout (Header, Footer) & Auth (ProtectedRoute)
+│   │   ├── context/               # AuthContext & useAuth session management
+│   │   ├── pages/                 # Route pages (Home, Dashboard, Knowledge, Tools, Login, Signup, NotFound)
+│   │   ├── services/              # Centralized API client (api.ts with credentials: 'include')
 │   │   ├── styles/                # Tailwind CSS globals
-│   │   └── types/                 # TypeScript interfaces
-│   ├── tests/                     # Component & routing tests
+│   │   └── types/                 # TypeScript interfaces (AuthUser, AuthResponse, etc.)
+│   ├── tests/                     # Component & routing tests (14 passing tests)
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vite.config.ts

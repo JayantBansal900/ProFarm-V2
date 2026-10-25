@@ -1,4 +1,10 @@
-import { ApiHealthResponse, DatabaseHealthResponse, ApiErrorResponse } from '../types';
+import {
+  ApiHealthResponse,
+  DatabaseHealthResponse,
+  ApiErrorResponse,
+  AuthResponse,
+  LogoutResponse,
+} from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
@@ -18,6 +24,7 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   try {
     const response = await fetch(url, {
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...options?.headers,
@@ -54,4 +61,20 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 export const api = {
   getHealth: () => request<ApiHealthResponse>('/api/health'),
   getDatabaseHealth: () => request<DatabaseHealthResponse>('/api/health/database'),
+  register: (body: { name: string; email: string; password: string }) =>
+    request<AuthResponse>('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+  login: (body: { email: string; password: string }) =>
+    request<AuthResponse>('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+  logout: () =>
+    request<LogoutResponse>('/api/auth/logout', {
+      method: 'POST',
+    }),
+  getMe: () => request<AuthResponse>('/api/auth/me'),
 };
+
