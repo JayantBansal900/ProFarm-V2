@@ -76,7 +76,25 @@ describe('Frontend Routes & Authentication Protection', () => {
     render(<RouterProvider router={router} />);
 
     expect(
-      screen.getByRole('heading', { name: /Agricultural Knowledge Base/i })
+      screen.getByRole('heading', { name: /Crop & Soil Knowledge Explorer/i })
+    ).toBeInTheDocument();
+  });
+
+  it('renders CropCatalogPage on "/knowledge/crops"', () => {
+    const router = createMemoryRouter(routes, { initialEntries: ['/knowledge/crops'] });
+    render(<RouterProvider router={router} />);
+
+    expect(
+      screen.getByRole('heading', { name: /Indian Crop Knowledge Catalog/i })
+    ).toBeInTheDocument();
+  });
+
+  it('renders SoilCatalogPage on "/knowledge/soils"', () => {
+    const router = createMemoryRouter(routes, { initialEntries: ['/knowledge/soils'] });
+    render(<RouterProvider router={router} />);
+
+    expect(
+      screen.getByRole('heading', { name: /Soil Health & Classification Catalog/i })
     ).toBeInTheDocument();
   });
 
