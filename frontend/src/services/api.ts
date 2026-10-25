@@ -49,6 +49,9 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
     return (await response.json()) as T;
   } catch (error) {
+    if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('aborted'))) {
+      throw error;
+    }
     if (error instanceof ApiError) {
       throw error;
     }

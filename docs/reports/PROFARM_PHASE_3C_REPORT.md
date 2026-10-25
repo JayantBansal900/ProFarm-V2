@@ -22,7 +22,7 @@ Phase 3C delivers a production-grade, highly resilient meteorological intelligen
 - **Dedicated Rainfall Intelligence:** Prominent rainfall indicators highlighting today's expected rain, tomorrow's expected rain, 7-day cumulative rain (mm), maximum daily rain probability (%), and explicit heavy rain alert days (≥ 15 mm). It enforces a clear, unambiguous domain distinction between rainfall likelihood (probability %) and volumetric accumulation (mm).
 - **Rule-Based Farmer Weather Guidance:** Transparent, deterministic advisory engine analyzing heavy rainfall risk, daytime heat stress, high wind gust hazards (≥ 35 km/h), prolonged dry spells, or favorable field operation windows.
 - **In-Memory Caching & Upstream Resilience:** Bounded in-memory LRU/TTL cache (24 hours for geocoding results, 15 minutes for weather forecasts) with upstream timeout controls (8s), graceful degradation, and user-facing retry mechanisms.
-- **Testing & Verification:** 75 automated tests passing across the monorepo (34 backend, 41 frontend), 0 ESLint warnings, 0 TypeScript errors, and successful live API smoke tests against Indian agricultural regions.
+- **Testing & Verification:** 84 automated tests passing across the monorepo (34 backend, 50 frontend), 0 ESLint warnings, 0 TypeScript errors, and successful live API smoke tests against Indian agricultural regions.
 
 ---
 
@@ -311,11 +311,46 @@ A second identical request was executed within 5 seconds.
 - [x] Farmer weather guidance generates rule-based alerts for heavy rain, heat stress, wind gusts, and dry spells.
 - [x] In-memory caching respects 24h geocoding TTL, 15m forecast TTL, and 500 entry capacity limit.
 - [x] Open-Meteo attribution is visibly presented on the UI.
-- [x] All 75 automated tests pass across backend and frontend.
+- [x] All 84 automated tests pass across backend and frontend (34 backend, 50 frontend).
 - [x] Typecheck and ESLint pass with 0 errors across the monorepo.
 - [x] Production build passes (`tsc` + `vite build`).
 - [x] Live API smoke tests confirmed functioning on port 4000.
 - [x] Existing Phase 3A authentication and Phase 3B knowledge modules remain fully functional.
+
+---
+
+## 10. Post-Completion Bug Fix: Location Persistence Under React StrictMode
+
+### 10.1 Bug Description
+During manual browser verification, selecting a location (e.g., Vijayawada) and refreshing the `/tools/weather` page resulted in an error state or the selected location failing to restore its weather forecast correctly.
+
+### 10.2 Root Cause Analysis
+1. **React StrictMode Double-Mount Lifecycle:** In development mode (`main.tsx`), React StrictMode mounts, unmounts, and remounts components to detect unintended side-effects.
+2. **AbortController Swallowing in API Client:** The original `WeatherPage` component managed an `AbortController` ref across effect runs. During the StrictMode unmount cleanup, the first controller was aborted. In `frontend/src/services/api.ts`, the generic `request()` function caught all errors (including `AbortError`) and rewrapped them into an `ApiError` with status code 0.
+3. **Mismatched Error Catching:** Because the error was converted into an `ApiError`, the component's `err.name === 'AbortError'` check failed, treating the normal StrictMode cleanup abort as a critical network failure and rendering an error card instead of fetching data for the restored location.
+
+### 10.3 Solution & Architecture Hardening
+1. **Closure-based `isCancelled` Lifecycle Pattern:** Replaced shared `useRef`-based cancellation with a scoped `let isCancelled = false` pattern in the forecast `useEffect`. When StrictMode cleans up the effect, `isCancelled` is marked `true`, ignoring stale promise completions without throwing false error states.
+2. **Native `AbortError` Preservation in API Client:** Updated `frontend/src/services/api.ts` to rethrow native DOM `AbortError` instances prior to wrapping in `ApiError`, ensuring downstream consumers can reliably differentiate user/lifecycle aborts from network failures.
+3. **Resilient LocalStorage Restoration & Validation:** Added `isValidSavedLocation` and `getStoredLocation` helpers with schema validation (checking latitude `[-90, 90]`, longitude `[-180, 180]`, string name, and non-NaN values) and automatic cleanup of corrupt data.
+4. **Trigger-Driven Retry Mechanism:** Added a `refreshTrigger` state counter for clean reload requests instead of invoking async callbacks directly from event listeners.
+
+### 10.4 Regression Testing & Verification
+Added `frontend/tests/weatherPersistence.test.tsx` containing 9 comprehensive regression tests under `<React.StrictMode>`:
+1. `isValidSavedLocation` correctly validates structure and boundary conditions.
+2. Saves selected location to localStorage upon search or preset selection.
+3. Restores valid saved location upon mount/remount in StrictMode.
+4. Automatically fetches forecast for restored location without user intervention.
+5. Correctly replaces saved location (e.g. Vijayawada → Jaipur) and reloads forecast.
+6. Safely handles and purges malformed non-JSON data from localStorage.
+7. Safely handles and purges invalid object schemas from localStorage.
+8. Handles empty localStorage cleanly without error alerts.
+9. StrictMode initial render and effect execution never clears a valid saved location.
+
+**Final Test Metrics:**
+- Backend: 34 passed (6 test files)
+- Frontend: 50 passed (7 test files)
+- Total: 84 automated tests passing (100% pass rate)
 
 **Current Branch:** `feat/phase-3c-weather`  
 **Ready for Review & User Verification.** Work on Phase 3D (Mandi Price Tracker & Market Trends) will begin only after user confirmation.

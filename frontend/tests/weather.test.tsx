@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -287,15 +288,17 @@ describe('WeatherPage Component', () => {
       JSON.stringify(mockLocations[0])
     );
 
-    vi.mocked(api.getWeatherForecast).mockResolvedValueOnce({
+    vi.mocked(api.getWeatherForecast).mockResolvedValue({
       status: 'success',
       forecast: mockForecast,
     });
 
     render(
-      <BrowserRouter>
-        <WeatherPage />
-      </BrowserRouter>
+      <React.StrictMode>
+        <BrowserRouter>
+          <WeatherPage />
+        </BrowserRouter>
+      </React.StrictMode>
     );
 
     await waitFor(() => {

@@ -1,9 +1,51 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api, ApiError } from '../../services/api';
 import { LocationResult, NormalizedForecastResponse } from '../../types/weather';
 
-const STORAGE_KEY = 'profarm_weather_selected_location';
+export const STORAGE_KEY = 'profarm_weather_selected_location';
+
+export function isValidSavedLocation(data: unknown): data is LocationResult {
+  if (!data || typeof data !== 'object') return false;
+  const item = data as Record<string, unknown>;
+  return (
+    typeof item.name === 'string' &&
+    item.name.trim().length > 0 &&
+    typeof item.latitude === 'number' &&
+    !isNaN(item.latitude) &&
+    item.latitude >= -90 &&
+    item.latitude <= 90 &&
+    typeof item.longitude === 'number' &&
+    !isNaN(item.longitude) &&
+    item.longitude >= -180 &&
+    item.longitude <= 180
+  );
+}
+
+export function getStoredLocation(): LocationResult | null {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return null;
+    const parsed = JSON.parse(saved);
+    if (isValidSavedLocation(parsed)) {
+      return parsed;
+    }
+    // Clean up malformed data
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // Ignore
+    }
+  } catch {
+    // Clean up unparseable JSON
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // Ignore
+    }
+  }
+  return null;
+}
 
 export const WeatherPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,26 +54,15 @@ export const WeatherPage: React.FC = () => {
   const [searchError, setSearchError] = useState<string | null>(null);
 
   const [selectedLocation, setSelectedLocation] = useState<LocationResult | null>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && typeof parsed.latitude === 'number' && typeof parsed.longitude === 'number') {
-          return parsed;
-        }
-      }
-    } catch {
-      // Ignore localStorage errors
-    }
-    return null;
+    return getStoredLocation();
   });
 
   const [forecast, setForecast] = useState<NormalizedForecastResponse | null>(null);
-  const [isLoadingForecast, setIsLoadingForecast] = useState(false);
+  const [isLoadingForecast, setIsLoadingForecast] = useState<boolean>(() => {
+    return getStoredLocation() !== null;
+  });
   const [forecastError, setForecastError] = useState<string | null>(null);
-
-  const searchAbortRef = useRef<AbortController | null>(null);
-  const forecastAbortRef = useRef<AbortController | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // ---------------------------------------------------------------------------
   // Debounced Location Search
@@ -44,80 +75,106 @@ export const WeatherPage: React.FC = () => {
       return;
     }
 
-    const timer = setTimeout(async () => {
-      if (searchAbortRef.current) {
-        searchAbortRef.current.abort();
-      }
-      const controller = new AbortController();
-      searchAbortRef.current = controller;
+    let isCancelled = false;
+    const controller = new AbortController();
 
+    const timer = setTimeout(async () => {
       setIsSearching(true);
       setSearchError(null);
 
       try {
         const response = await api.searchLocations(searchQuery, controller.signal);
-        setSearchResults(response.locations || []);
+        if (!isCancelled) {
+          setSearchResults(response.locations || []);
+        }
       } catch (err: unknown) {
-        if (err instanceof Error && err.name === 'AbortError') return;
+        if (isCancelled) return;
+        if (err instanceof Error && (err.name === 'AbortError' || err.message.includes('aborted'))) return;
         if (err instanceof ApiError) {
+          if (err.message.includes('aborted')) return;
           setSearchError(err.message);
         } else {
           setSearchError('Failed to search locations. Please check your connection.');
         }
         setSearchResults([]);
       } finally {
-        setIsSearching(false);
+        if (!isCancelled) {
+          setIsSearching(false);
+        }
       }
     }, 350);
 
-    return () => clearTimeout(timer);
+    return () => {
+      isCancelled = true;
+      clearTimeout(timer);
+      controller.abort();
+    };
   }, [searchQuery]);
 
   // ---------------------------------------------------------------------------
-  // Fetch Forecast on Location Selection
+  // Fetch Forecast on Location Selection or Mount
   // ---------------------------------------------------------------------------
-  const fetchForecastForLocation = async (loc: LocationResult) => {
-    if (forecastAbortRef.current) {
-      forecastAbortRef.current.abort();
-    }
-    const controller = new AbortController();
-    forecastAbortRef.current = controller;
-
-    setIsLoadingForecast(true);
-    setForecastError(null);
-
-    const displayName = loc.district
-      ? `${loc.name}, ${loc.district}`
-      : loc.state
-      ? `${loc.name}, ${loc.state}`
-      : loc.name;
-
-    try {
-      const response = await api.getWeatherForecast(
-        loc.latitude,
-        loc.longitude,
-        displayName,
-        controller.signal
-      );
-      setForecast(response.forecast);
-    } catch (err: unknown) {
-      if (err instanceof Error && err.name === 'AbortError') return;
-      if (err instanceof ApiError) {
-        setForecastError(err.message);
-      } else {
-        setForecastError('Failed to fetch weather forecast. Please try again.');
-      }
-      setForecast(null);
-    } finally {
-      setIsLoadingForecast(false);
-    }
-  };
-
   useEffect(() => {
-    if (selectedLocation) {
-      fetchForecastForLocation(selectedLocation);
+    if (!selectedLocation) {
+      setForecast(null);
+      setForecastError(null);
+      setIsLoadingForecast(false);
+      return;
     }
-  }, [selectedLocation]);
+
+    let isCancelled = false;
+    const controller = new AbortController();
+
+    const loadForecast = async () => {
+      setIsLoadingForecast(true);
+      setForecastError(null);
+
+      const displayName = selectedLocation.district
+        ? `${selectedLocation.name}, ${selectedLocation.district}`
+        : selectedLocation.state
+        ? `${selectedLocation.name}, ${selectedLocation.state}`
+        : selectedLocation.name;
+
+      try {
+        const response = await api.getWeatherForecast(
+          selectedLocation.latitude,
+          selectedLocation.longitude,
+          displayName,
+          controller.signal
+        );
+
+        if (!isCancelled) {
+          setForecast(response.forecast);
+          setForecastError(null);
+        }
+      } catch (err: unknown) {
+        if (isCancelled) return;
+        if (err instanceof Error && (err.name === 'AbortError' || err.message.includes('aborted'))) {
+          return;
+        }
+        if (err instanceof ApiError) {
+          if (err.message.includes('aborted') || err.message.includes('AbortError')) {
+            return;
+          }
+          setForecastError(err.message);
+        } else {
+          setForecastError('Failed to fetch weather forecast. Please try again.');
+        }
+        setForecast(null);
+      } finally {
+        if (!isCancelled) {
+          setIsLoadingForecast(false);
+        }
+      }
+    };
+
+    loadForecast();
+
+    return () => {
+      isCancelled = true;
+      controller.abort();
+    };
+  }, [selectedLocation, refreshTrigger]);
 
   const handleSelectLocation = (loc: LocationResult) => {
     setSelectedLocation(loc);
@@ -134,11 +191,16 @@ export const WeatherPage: React.FC = () => {
     setSelectedLocation(null);
     setForecast(null);
     setForecastError(null);
+    setIsLoadingForecast(false);
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {
       // Ignore localStorage errors
     }
+  };
+
+  const handleRetryForecast = () => {
+    setRefreshTrigger((prev) => prev + 1);
   };
 
   return (
@@ -264,7 +326,7 @@ export const WeatherPage: React.FC = () => {
           {selectedLocation && (
             <button
               type="button"
-              onClick={() => fetchForecastForLocation(selectedLocation)}
+              onClick={handleRetryForecast}
               className="px-4 py-2 bg-red-700 text-white rounded-md text-xs font-semibold hover:bg-red-800 transition"
             >
               Retry Forecast Request
