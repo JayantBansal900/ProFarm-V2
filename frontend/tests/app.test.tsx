@@ -19,6 +19,13 @@ vi.mock('../src/services/api', () => ({
     logout: vi.fn(),
     searchLocations: vi.fn().mockResolvedValue({ status: 'success', locations: [] }),
     getWeatherForecast: vi.fn().mockResolvedValue({ status: 'success', data: null }),
+    getMandiPrices: vi.fn().mockResolvedValue({
+      status: 'success',
+      records: [],
+      pagination: { totalRecords: 0, totalPages: 1, page: 1, limit: 20 },
+    }),
+    getMandiFilters: vi.fn().mockResolvedValue({ status: 'success', commodities: [], states: [] }),
+    getMandiTrends: vi.fn().mockResolvedValue({ status: 'success', available: false }),
   },
   ApiError: class ApiError extends Error {
     constructor(public message: string, public statusCode: number) {
@@ -108,6 +115,7 @@ describe('Frontend Routes & Authentication Protection', () => {
       screen.getByRole('heading', { name: /Farm Tools & Decision Analytics/i })
     ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Open Weather Tool/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Open Mandi Tracker/i })).toBeInTheDocument();
   });
 
   it('renders WeatherPage on "/tools/weather"', () => {
@@ -116,6 +124,15 @@ describe('Frontend Routes & Authentication Protection', () => {
 
     expect(
       screen.getByRole('heading', { name: /Live Weather & Rainfall/i })
+    ).toBeInTheDocument();
+  });
+
+  it('renders MandiPage on "/tools/mandi"', () => {
+    const router = createMemoryRouter(routes, { initialEntries: ['/tools/mandi'] });
+    render(<RouterProvider router={router} />);
+
+    expect(
+      screen.getByRole('heading', { name: /Mandi Price Tracker & Market Trends/i })
     ).toBeInTheDocument();
   });
 

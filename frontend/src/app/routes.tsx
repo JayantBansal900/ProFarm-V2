@@ -11,6 +11,7 @@ import {
 } from '../pages/KnowledgePage';
 import { ToolsPage } from '../pages/ToolsPage';
 import { WeatherPage } from '../pages/tools/WeatherPage';
+import { MandiPage } from '../pages/tools/MandiPage';
 import { LoginPage } from '../pages/LoginPage';
 import { SignupPage } from '../pages/SignupPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -39,6 +40,7 @@ export const routes: RouteObject[] = [
 
       { path: 'tools', element: <ToolsPage /> },
       { path: 'tools/weather', element: <WeatherPage /> },
+      { path: 'tools/mandi', element: <MandiPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'signup', element: <SignupPage /> },
       { path: '*', element: <NotFoundPage /> },

@@ -231,3 +231,26 @@ model Session {
   - Dedicated rainfall intelligence separating probability (%) from accumulation (mm).
   - Deterministic rule engine for heavy rain, heat stress, wind gust, and dry spell farmer advisories.
   - Transparent Open-Meteo non-commercial attribution compliance.
+
+---
+
+## 10. Mandi Price & Market Intelligence Subsystem (Phase 3D)
+
+### 10.1 data.gov.in / AGMARKNET Integration Proxy
+- **Endpoint Structure:**
+  - `GET /api/mandi/prices`: Queries authenticated daily APMC market prices filtered by commodity, state, district, and market, with bounded pagination (`limit`, `page`) and sorting (`modal_price_desc`, `modal_price_asc`, `arrival_date_desc`).
+  - `GET /api/mandi/filters`: Returns curated list of 44+ Indian agricultural commodities and agricultural states with corresponding APMC districts.
+  - `GET /api/mandi/trends`: Reports capability status transparently, explaining that the daily AGMARKNET snapshot feed publishes single-day observations without multi-week historical archives.
+- **Proxy Architecture & Secret Protection:**
+  - Official Government of India resource ID: `9ef84268-d588-465a-a308-a864a43d0070`.
+  - Backend holds `DATA_GOV_IN_API_KEY`; key is never exposed to browser or client JavaScript builds.
+  - 9-second bounded request timeout with graceful error recovery (502 for upstream failures, 504 for timeouts, 429 for rate limits).
+- **In-Memory Caching:**
+  - Mandi price queries: 15-minute TTL (`15 * 60 * 1000`).
+  - Filter metadata: 24-hour TTL (`24 * 60 * 60 * 1000`).
+  - Bounded capacity with LRU eviction.
+- **Data Normalization & Integrity:**
+  - Formats wholesale prices as `₹ / quintal` (100 kg).
+  - Clear semantic separation between minimum, maximum, and modal price ("most commonly reported trading price").
+  - Preserves original arrival date string (`DD/MM/YYYY`) from APMC mandis without timezone shifts.
+  - Honest disclosure policy: zero artificial or synthetic historical trend interpolation.

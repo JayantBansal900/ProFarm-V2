@@ -129,12 +129,12 @@ ProFarm-V2/
 │   │   ├── controllers/           # HTTP controllers (auth.controller, health.controller)
 │   │   ├── lib/                   # Database client, MemoryCache, WMO weather codes
 │   │   ├── middleware/            # Security: CSRF, requireAuth, CORS, Helmet, RateLimiter, ErrorHandler
-│   │   ├── routes/                # Express route declarations (auth, health, weather)
-│   │   ├── services/              # Business logic (auth, database, weather)
-│   │   ├── validators/            # Zod validation schemas (auth, health, weather)
+│   │   ├── routes/                # Express route declarations (auth, health, weather, mandi)
+│   │   ├── services/              # Business logic (auth, database, weather, mandi)
+│   │   ├── validators/            # Zod validation schemas (auth, health, weather, mandi)
 │   │   ├── app.ts                 # Express application configuration
 │   │   └── server.ts              # HTTP server startup & graceful shutdown
-│   ├── tests/                     # Automated Vitest/Supertest test suites (34 passing tests)
+│   ├── tests/                     # Automated Vitest/Supertest test suites (50 passing tests)
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vitest.config.ts
@@ -144,11 +144,11 @@ ProFarm-V2/
 │   │   ├── app/                   # Root App component and React Router setup
 │   │   ├── components/            # Layout (Header, Footer) & Auth (ProtectedRoute)
 │   │   ├── context/               # AuthContext & useAuth session management
-│   │   ├── pages/                 # Route pages (Home, Dashboard, Knowledge, Tools, WeatherPage, Login, Signup)
+│   │   ├── pages/                 # Route pages (Home, Dashboard, Knowledge, Tools, WeatherPage, MandiPage, Login, Signup)
 │   │   ├── services/              # Centralized API client (api.ts with credentials: 'include')
 │   │   ├── styles/                # Tailwind CSS globals
-│   │   └── types/                 # TypeScript interfaces (Auth, Knowledge, Weather)
-│   ├── tests/                     # Component & routing tests (41 passing tests)
+│   │   └── types/                 # TypeScript interfaces (Auth, Knowledge, Weather, Mandi)
+│   ├── tests/                     # Component & routing tests (64 passing tests)
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vite.config.ts
@@ -168,6 +168,7 @@ ProFarm-V2/
 - **Phase 3A:** Secure Authentication & Session Management (Argon2id, SQLite Sessions, CSRF, Protected Dashboard).
 - **Phase 3B:** Crop & Soil Knowledge Explorer (12 Indian crops, 6 soil classifications, seasons, cross-linking).
 - **Phase 3C:** Live Weather & Rainfall Intelligence (Open-Meteo proxy, Indian location search, 7-day forecast, rainfall sum vs prob, rule-based farmer guidance, in-memory caching).
+- **Phase 3D:** Real-Time Mandi Price Tracker & Trends (data.gov.in / AGMARKNET proxy, wholesale modal rates, like-for-like comparison, cascading state/district filters, bounded in-memory caching).
 
 ---
 

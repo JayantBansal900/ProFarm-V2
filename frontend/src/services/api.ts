@@ -6,6 +6,12 @@ import {
   LogoutResponse,
 } from '../types';
 import { LocationsSearchResponse, ForecastResponse } from '../types/weather';
+import {
+  MandiPriceQueryParams,
+  MandiPriceResponse,
+  MandiFilterOptions,
+  MandiTrendsResponse,
+} from '../types/mandi';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
@@ -97,6 +103,24 @@ export const api = {
     if (locationName) params.append('locationName', locationName);
     return request<ForecastResponse>(`/api/weather/forecast?${params.toString()}`, { signal });
   },
+  getMandiPrices: (params?: MandiPriceQueryParams, signal?: AbortSignal) => {
+    const query = new URLSearchParams();
+    if (params?.commodity) query.append('commodity', params.commodity);
+    if (params?.state) query.append('state', params.state);
+    if (params?.district) query.append('district', params.district);
+    if (params?.market) query.append('market', params.market);
+    if (params?.page) query.append('page', params.page.toString());
+    if (params?.limit) query.append('limit', params.limit.toString());
+    if (params?.sort) query.append('sort', params.sort);
+    const qStr = query.toString();
+    return request<MandiPriceResponse>(`/api/mandi/prices${qStr ? `?${qStr}` : ''}`, { signal });
+  },
+  getMandiFilters: (state?: string, signal?: AbortSignal) => {
+    const qStr = state ? `?state=${encodeURIComponent(state)}` : '';
+    return request<MandiFilterOptions>(`/api/mandi/filters${qStr}`, { signal });
+  },
+  getMandiTrends: (signal?: AbortSignal) =>
+    request<MandiTrendsResponse>('/api/mandi/trends', { signal }),
 };
 
 
