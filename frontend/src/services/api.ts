@@ -12,6 +12,12 @@ import {
   MandiFilterOptions,
   MandiTrendsResponse,
 } from '../types/mandi';
+import {
+  AdvisorRequestInput,
+  AdvisorRecommendationsResponse,
+  AdvisorCropsResponse,
+  AdvisorSoilsResponse,
+} from '../types/advisor';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
@@ -121,6 +127,16 @@ export const api = {
   },
   getMandiTrends: (signal?: AbortSignal) =>
     request<MandiTrendsResponse>('/api/mandi/trends', { signal }),
+  getAdvisorRecommendations: (body: AdvisorRequestInput, signal?: AbortSignal) =>
+    request<AdvisorRecommendationsResponse>('/api/advisor/recommendations', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      signal,
+    }),
+  getAdvisorCrops: (signal?: AbortSignal) =>
+    request<AdvisorCropsResponse>('/api/advisor/crops', { signal }),
+  getAdvisorSoils: (signal?: AbortSignal) =>
+    request<AdvisorSoilsResponse>('/api/advisor/soils', { signal }),
 };
 
 

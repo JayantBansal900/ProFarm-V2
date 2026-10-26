@@ -14,7 +14,7 @@ export const ToolsPage: React.FC = () => {
             </p>
           </div>
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 self-start sm:self-auto">
-            2 Live Tools Available
+            3 Live Tools Available
           </span>
         </div>
       </div>
@@ -91,20 +91,55 @@ export const ToolsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Coming Soon: Crop Yield Estimator */}
+        {/* Featured Live Tool: Sustainable Farming Advisor */}
+        <div className="border-2 border-emerald-500 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
+          <div className="absolute top-4 right-4">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white animate-pulse">
+              LIVE
+            </span>
+          </div>
+
+          <div>
+            <div className="w-12 h-12 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 text-2xl mb-4">
+              🌱
+            </div>
+            <h2 className="text-lg font-bold text-slate-900">Sustainable Farming Advisor</h2>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              Synthesizes crop agronomy, soil dynamics, and live agrometeorological forecasts into explainable, 
+              resource-saving guidance. Evaluates crop-soil compatibility and delivers weather-triggered actionable alerts.
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              <span className="px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-700 font-medium">ICAR Standard</span>
+              <span className="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 font-medium">Soil Compatibility</span>
+              <span className="px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-700 font-medium">Weather Triggered</span>
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-slate-100">
+            <Link
+              to="/tools/advisor"
+              className="w-full inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors"
+            >
+              Open Advisor &rarr;
+            </Link>
+          </div>
+        </div>
+
+        {/* Coming Soon: Farm Economic Planner */}
         <div className="border border-slate-200 bg-slate-50/60 rounded-xl p-6 flex flex-col justify-between opacity-85">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-2xl">
-                🌾
+                📊
               </div>
               <span className="px-2 py-0.5 rounded text-xs font-medium bg-slate-200 text-slate-700">
-                Phase 3E
+                Phase 3F
               </span>
             </div>
-            <h2 className="text-lg font-bold text-slate-700">Crop Yield & Input Estimator</h2>
+            <h2 className="text-lg font-bold text-slate-700">Farm Economic Planner & Cost Calculator</h2>
             <p className="mt-2 text-sm text-slate-500 leading-relaxed">
-              Calculates seed, fertilizer, and irrigation requirements based on acreage, agro-climatic zone, and soil nutrient levels.
+              Calculates comprehensive cost of cultivation, operational expenditure breakdown, and potential net revenue across varied input regimes.
             </p>
           </div>
           <div className="mt-6 pt-4 border-t border-slate-200">

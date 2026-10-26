@@ -12,6 +12,7 @@ import {
 import { ToolsPage } from '../pages/ToolsPage';
 import { WeatherPage } from '../pages/tools/WeatherPage';
 import { MandiPage } from '../pages/tools/MandiPage';
+import { AdvisorPage } from '../pages/tools/AdvisorPage';
 import { LoginPage } from '../pages/LoginPage';
 import { SignupPage } from '../pages/SignupPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -41,6 +42,7 @@ export const routes: RouteObject[] = [
       { path: 'tools', element: <ToolsPage /> },
       { path: 'tools/weather', element: <WeatherPage /> },
       { path: 'tools/mandi', element: <MandiPage /> },
+      { path: 'tools/advisor', element: <AdvisorPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'signup', element: <SignupPage /> },
       { path: '*', element: <NotFoundPage /> },
