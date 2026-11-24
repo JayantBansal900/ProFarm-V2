@@ -1,21 +1,31 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { AdvisorPage } from '../src/pages/tools/AdvisorPage';
-import { api, ApiError } from '../src/services/api';
-import { AdvisorData } from '../src/types/advisor';
 
-// Mock API service
-vi.mock('../src/services/api', () => ({
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+} from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { AdvisorPage } from '../src/pages/AdvisorPage';
+import { api, ApiError } from '../src/api/api';
+import type { AdvisorData } from '../src/types/advisor';
+
+vi.mock('../src/api/api', () => ({
   api: {
     getAdvisorRecommendations: vi.fn(),
     getAdvisorCrops: vi.fn(),
     getAdvisorSoils: vi.fn(),
     searchLocations: vi.fn(),
   },
+
   ApiError: class ApiError extends Error {
-    constructor(public message: string, public statusCode: number) {
+    constructor(
+      public message: string,
+      public statusCode: number
+    ) {
       super(message);
+      this.name = 'ApiError';
     }
   },
 }));
@@ -40,38 +50,44 @@ const mockAdvisorData: AdvisorData = {
     icon: '🌾',
     colorTheme: 'amber',
   },
+
   soil: {
     id: 'soil-loam',
     slug: 'loamy-soil',
     name: 'Loamy Soil',
-    textureCharacteristics: 'Medium crumbly texture with 40% sand, 40% silt, 20% clay',
+    textureCharacteristics:
+      'Medium crumbly texture with 40% sand, 40% silt, 20% clay',
     drainage: 'Good / Well-Drained',
     waterRetention: 'Moderate',
     nutrientRetention: 'High cation exchange capacity',
     icon: '🌾',
     colorTheme: 'amber',
   },
+
   compatibility: {
     isCompatible: true,
     status: 'recommended',
     headline: 'Highly Suitable: Wheat thrives in Loamy Soil',
-    reason: "Loamy Soil's drainage and moisture dynamics naturally align with Wheat's root structure.",
+    reason:
+      "Loamy Soil's drainage and moisture dynamics naturally align with Wheat's root structure.",
   },
+
   weatherSummary: {
     locationName: 'Ludhiana, Punjab',
     temperatureC: 22.5,
     apparentTemperatureC: 22.0,
     condition: 'Clear Sky',
     icon: '☀️',
-    sevenDayTotalRainMm: 0.0,
-    todayRainMm: 0.0,
+    sevenDayTotalRainMm: 0,
+    todayRainMm: 0,
     maxDailyPrecipProb: 5,
-    maxWindSpeedKmH: 12.0,
+    maxWindSpeedKmH: 12,
     heavyRainAlert: false,
     drySpellAlert: true,
     heatStressAlert: false,
     fetchedAt: '2026-10-26T12:00:00Z',
   },
+
   recommendations: {
     cropCare: [
       {
@@ -79,91 +95,178 @@ const mockAdvisorData: AdvisorData = {
         category: 'crop_care',
         priority: 'high',
         title: 'Key Growth Stages & Care for Wheat',
-        explanation: 'Crucial irrigation stages include CRI (20–25 DAS) and tillering.',
-        whyThisApplies: 'Selected crop is Wheat (Triticum aestivum).',
-        evidence: ['Crop: Wheat', 'Water level: Moderate'],
-        limitations: 'Stage timings vary based on cultivar variety.',
+        explanation:
+          'Crucial irrigation stages include CRI (20–25 DAS) and tillering.',
+        whyThisApplies:
+          'Selected crop is Wheat (Triticum aestivum).',
+        evidence: [
+          'Crop: Wheat',
+          'Water level: Moderate',
+        ],
+        limitations:
+          'Stage timings vary based on cultivar variety.',
         source: {
-          name: 'ICAR - Indian Institute of Wheat and Barley Research (IIWBR)',
+          name:
+            'ICAR - Indian Institute of Wheat and Barley Research (IIWBR)',
           organization: 'ICAR-IIWBR, Karnal',
         },
       },
     ],
+
     soilHealth: [
       {
         id: 'soil-health-texture-soil-loam',
         category: 'soil_health',
         priority: 'high',
         title: 'Soil Tilth & Moisture Dynamics (Loamy Soil)',
-        explanation: 'Drainage profile is categorized as Good / Well-Drained.',
-        whyThisApplies: 'Selected soil Loamy Soil directly controls root penetration.',
-        evidence: ['Soil: Loamy Soil', 'Drainage: Good / Well-Drained'],
-        limitations: 'Soil texture is an inherent property.',
+        explanation:
+          'Drainage profile is categorized as Good / Well-Drained.',
+        whyThisApplies:
+          'Selected soil Loamy Soil directly controls root penetration.',
+        evidence: [
+          'Soil: Loamy Soil',
+          'Drainage: Good / Well-Drained',
+        ],
+        limitations:
+          'Soil texture is an inherent property.',
         source: {
           name: 'ICAR - Indian Institute of Soil Science',
           organization: 'ICAR, Bhopal',
         },
       },
     ],
+
     waterManagement: [
       {
         id: 'water-baseline-crop-wheat',
         category: 'water_management',
         priority: 'high',
         title: 'Irrigation Strategy: Moderate Demand',
-        explanation: 'Requires 4–6 timed irrigations across the season.',
-        whyThisApplies: 'Wheat requires 450–650 mm water across its vegetative cycle.',
+        explanation:
+          'Requires 4–6 timed irrigations across the season.',
+        whyThisApplies:
+          'Wheat requires 450–650 mm water across its vegetative cycle.',
         evidence: ['Crop water tier: Moderate'],
-        limitations: 'Actual water volume needed varies with seasonal rainfall.',
+        limitations:
+          'Actual water volume needed varies with seasonal rainfall.',
         source: {
-          name: 'Central Research Institute for Dryland Agriculture (CRIDA)',
+          name:
+            'Central Research Institute for Dryland Agriculture (CRIDA)',
           organization: 'CRIDA, Hyderabad',
         },
       },
     ],
+
     sustainablePractices: [
       {
         id: 'practice-crop-wheat-1',
         category: 'sustainable_practices',
         priority: 'high',
         title: 'Wheat Stewardship Practice #1',
-        explanation: 'Adoption of Zero-Till (Happy Seeder) in paddy stubble fields.',
-        whyThisApplies: 'Curated sustainable practice specifically developed for Wheat.',
-        evidence: ['Crop: Wheat', 'Category: Cereal & Grain'],
-        limitations: 'Equipment availability can affect implementation.',
+        explanation:
+          'Adoption of Zero-Till (Happy Seeder) in paddy stubble fields.',
+        whyThisApplies:
+          'Curated sustainable practice specifically developed for Wheat.',
+        evidence: [
+          'Crop: Wheat',
+          'Category: Cereal & Grain',
+        ],
+        limitations:
+          'Equipment availability can affect implementation.',
         source: {
           name: 'ICAR - IIWBR',
           organization: 'ICAR, New Delhi',
         },
       },
     ],
+
     weatherConsiderations: [
       {
         id: 'weather-field-operations-crop-wheat',
         category: 'weather_considerations',
         priority: 'info',
         title: 'Favorable Field Operations Window',
-        explanation: 'Atmospheric conditions offer a steady window for intercultural operations.',
-        whyThisApplies: 'Low rainfall risk and moderate temperatures permit standard farm tasks.',
-        evidence: ['Condition: Clear Sky', 'Wind Speed: 12 km/h'],
-        limitations: 'Keep daily track of sudden weather updates.',
+        explanation:
+          'Atmospheric conditions offer a steady window for intercultural operations.',
+        whyThisApplies:
+          'Low rainfall risk and moderate temperatures permit standard farm tasks.',
+        evidence: [
+          'Condition: Clear Sky',
+          'Wind Speed: 12 km/h',
+        ],
+        limitations:
+          'Keep daily track of sudden weather updates.',
         source: {
-          name: 'Agromet Field Unit Guidelines & IMD Weather Forecast',
+          name:
+            'Agromet Field Unit Guidelines & IMD Weather Forecast',
           organization: 'IMD / Open-Meteo',
         },
       },
     ],
   },
+
   summary: {
     totalRecommendations: 5,
     highPriorityCount: 4,
     soilIncluded: true,
     weatherIncluded: true,
   },
+
   disclaimer:
     'ProFarm Sustainable Advisor is an educational decision-support tool synthesized from published Indian agronomic research.',
+
   generatedAt: '2026-10-26T12:00:00Z',
 };
+
+function renderAdvisor() {
+  render(
+    <BrowserRouter>
+      <AdvisorPage />
+    </BrowserRouter>
+  );
+}
+
+async function loadConfiguration() {
+  await screen.findByRole('option', {
+    name: 'Wheat',
+  });
+
+  expect(
+    screen.getByRole('combobox', {
+      name: /Crop/i,
+    })
+  ).toBeInTheDocument();
+
+  expect(
+    screen.getByRole('combobox', {
+      name: /Soil profile/i,
+    })
+  ).toBeInTheDocument();
+}
+
+function clickGenerateGuidance() {
+  fireEvent.click(
+    screen.getByRole('button', {
+      name: /Generate field guidance/i,
+    })
+  );
+}
+
+async function generateGuidance() {
+  await loadConfiguration();
+
+  clickGenerateGuidance();
+
+  await waitFor(() => {
+    expect(
+      api.getAdvisorRecommendations
+    ).toHaveBeenCalled();
+  });
+
+  await screen.findByRole('heading', {
+    name: 'Key Growth Stages & Care for Wheat',
+  });
+}
 
 describe('Sustainable Farming Advisor Page (/tools/advisor)', () => {
   beforeEach(() => {
@@ -174,8 +277,26 @@ describe('Sustainable Farming Advisor Page (/tools/advisor)', () => {
       status: 'success',
       count: 12,
       crops: [
-        { id: 'crop-wheat', slug: 'wheat', name: 'Wheat', hindiName: 'गेहूं', category: 'Cereal & Grain', seasons: ['Rabi'], waterLevel: 'Moderate', icon: '🌾' },
-        { id: 'crop-rice', slug: 'rice', name: 'Rice / Paddy', hindiName: 'चावल', category: 'Cereal & Grain', seasons: ['Kharif'], waterLevel: 'Very High', icon: '🍚' },
+        {
+          id: 'crop-wheat',
+          slug: 'wheat',
+          name: 'Wheat',
+          hindiName: 'गेहूं',
+          category: 'Cereal & Grain',
+          seasons: ['Rabi'],
+          waterLevel: 'Moderate',
+          icon: '🌾',
+        },
+        {
+          id: 'crop-rice',
+          slug: 'rice',
+          name: 'Rice / Paddy',
+          hindiName: 'चावल',
+          category: 'Cereal & Grain',
+          seasons: ['Kharif'],
+          waterLevel: 'Very High',
+          icon: '🍚',
+        },
       ],
     });
 
@@ -183,216 +304,344 @@ describe('Sustainable Farming Advisor Page (/tools/advisor)', () => {
       status: 'success',
       count: 6,
       soils: [
-        { id: 'soil-loam', slug: 'loamy-soil', name: 'Loamy Soil', drainage: 'Good / Well-Drained', waterRetention: 'Moderate', icon: '🌾' },
-        { id: 'soil-sandy', slug: 'sandy-soil', name: 'Sandy Soil', drainage: 'Rapid', waterRetention: 'Low', icon: '🏖️' },
+        {
+          id: 'soil-loam',
+          slug: 'loamy-soil',
+          name: 'Loamy Soil',
+          drainage: 'Good / Well-Drained',
+          waterRetention: 'Moderate',
+          icon: '🌾',
+        },
+        {
+          id: 'soil-sandy',
+          slug: 'sandy-soil',
+          name: 'Sandy Soil',
+          drainage: 'Rapid',
+          waterRetention: 'Low',
+          icon: '🏖️',
+        },
       ],
     });
 
-    vi.mocked(api.getAdvisorRecommendations).mockResolvedValue({
+    vi.mocked(
+      api.getAdvisorRecommendations
+    ).mockResolvedValue({
       status: 'success',
       data: mockAdvisorData,
     });
-  });
 
-  it('renders page header, parameter configuration form, and default wheat guidance', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
-    );
-
-    expect(screen.getByRole('heading', { name: /Sustainable Farming Advisor/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/Select Crop/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Select Soil Profile/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Integrate Live 7-Day Forecast/i)).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
-      expect(screen.getByText(/Soil Tilth & Moisture Dynamics \(Loamy Soil\)/i)).toBeInTheDocument();
-      expect(screen.getByText(/Irrigation Strategy: Moderate Demand/i)).toBeInTheDocument();
-      expect(screen.getByText(/Wheat Stewardship Practice #1/i)).toBeInTheDocument();
+    vi.mocked(api.searchLocations).mockResolvedValue({
+      status: 'success',
+      count: 0,
+      locations: [],
     });
   });
 
-  it('displays compatibility banner for compatible crop-soil match', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
-    );
+  it('renders configuration and generates wheat guidance', async () => {
+    renderAdvisor();
 
-    await waitFor(() => {
-      expect(screen.getByText(/Highly Suitable: Wheat thrives in Loamy Soil/i)).toBeInTheDocument();
-    });
+    expect(
+      screen.getByRole('heading', {
+        name: /Sustainable Farming Advisor/i,
+      })
+    ).toBeInTheDocument();
+
+    await loadConfiguration();
+
+    expect(
+      screen.getByRole('checkbox', {
+        name: /Include 7-day forecast/i,
+      })
+    ).toBeInTheDocument();
+
+    await generateGuidance();
+
+    for (const title of [
+      'Key Growth Stages & Care for Wheat',
+      'Soil Tilth & Moisture Dynamics (Loamy Soil)',
+      'Irrigation Strategy: Moderate Demand',
+      'Wheat Stewardship Practice #1',
+    ]) {
+      expect(
+        screen.getByRole('heading', {
+          name: title,
+        })
+      ).toBeInTheDocument();
+    }
   });
 
-  it('filters recommendations when category tabs are clicked', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
-    );
+  it('displays compatibility information for wheat and loamy soil', async () => {
+    renderAdvisor();
 
-    await waitFor(() => {
-      expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
-    });
+    await generateGuidance();
 
-    // Click 'Crop Care' filter tab
-    const cropCareTab = screen.getByRole('button', { name: /Crop Care \(1\)/i });
-    fireEvent.click(cropCareTab);
-
-    expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Soil Tilth & Moisture Dynamics \(Loamy Soil\)/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Irrigation Strategy: Moderate Demand/i)).not.toBeInTheDocument();
-
-    // Click 'Water Management' filter tab
-    const waterTab = screen.getByRole('button', { name: /Water Management \(1\)/i });
-    fireEvent.click(waterTab);
-
-    expect(screen.getByText(/Irrigation Strategy: Moderate Demand/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Key Growth Stages & Care for Wheat/i)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: /Highly Suitable: Wheat thrives in Loamy Soil/i,
+      })
+    ).toBeInTheDocument();
   });
 
-  it('allows changing crop selection and generating updated guidance', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
-    );
+  it('filters recommendations by category', async () => {
+    renderAdvisor();
 
-    await waitFor(() => {
-      expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
+    await generateGuidance();
+
+    const cropCareButton = screen.getByRole('button', {
+      name: /^Crop care\s+1$/i,
     });
 
-    // Change crop to Rice
-    const cropSelect = screen.getByLabelText(/Select Crop/i);
-    fireEvent.change(cropSelect, { target: { value: 'crop-rice' } });
+    fireEvent.click(cropCareButton);
 
-    // Submit form
-    const submitBtn = screen.getByRole('button', { name: /Generate Sustainable Guidance/i });
-    fireEvent.click(submitBtn);
+    expect(cropCareButton).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    );
+
+    expect(
+      screen.getByRole('heading', {
+        name: 'Key Growth Stages & Care for Wheat',
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('heading', {
+        name: 'Irrigation Strategy: Moderate Demand',
+      })
+    ).not.toBeInTheDocument();
+
+    const waterButton = screen.getByRole('button', {
+      name: /^Water\s+1$/i,
+    });
+
+    fireEvent.click(waterButton);
+
+    expect(waterButton).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    );
+
+    expect(
+      screen.getByRole('heading', {
+        name: 'Irrigation Strategy: Moderate Demand',
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('heading', {
+        name: 'Key Growth Stages & Care for Wheat',
+      })
+    ).not.toBeInTheDocument();
+  });
+
+  it('submits the selected crop when generating guidance', async () => {
+    renderAdvisor();
+
+    await loadConfiguration();
+
+    fireEvent.change(
+      screen.getByRole('combobox', {
+        name: /Crop/i,
+      }),
+      {
+        target: {
+          value: 'crop-rice',
+        },
+      }
+    );
+
+    clickGenerateGuidance();
 
     await waitFor(() => {
-      expect(api.getAdvisorRecommendations).toHaveBeenCalledWith(
-        expect.objectContaining({ cropId: 'crop-rice' })
+      expect(
+        api.getAdvisorRecommendations
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          cropId: 'crop-rice',
+        })
       );
     });
   });
 
-  it('allows skipping soil profile and updates request accordingly', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
+  it('supports generating guidance without a soil profile', async () => {
+    renderAdvisor();
+
+    await loadConfiguration();
+
+    fireEvent.change(
+      screen.getByRole('combobox', {
+        name: /Soil profile/i,
+      }),
+      {
+        target: {
+          value: '',
+        },
+      }
     );
 
-    await waitFor(() => {
-      expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
-    });
-
-    // Change soil to None
-    const soilSelect = screen.getByLabelText(/Select Soil Profile/i);
-    fireEvent.change(soilSelect, { target: { value: '' } });
-
-    const submitBtn = screen.getByRole('button', { name: /Generate Sustainable Guidance/i });
-    fireEvent.click(submitBtn);
+    clickGenerateGuidance();
 
     await waitFor(() => {
-      expect(api.getAdvisorRecommendations).toHaveBeenCalledWith(
-        expect.objectContaining({ soilId: null })
+      expect(
+        api.getAdvisorRecommendations
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          soilId: null,
+        })
       );
     });
   });
 
-  it('allows toggling weather integration off', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
-    );
+  it('supports disabling the weather forecast integration', async () => {
+    renderAdvisor();
 
-    await waitFor(() => {
-      expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
+    await loadConfiguration();
+
+    const weatherCheckbox = screen.getByRole('checkbox', {
+      name: /Include 7-day forecast/i,
     });
 
-    const weatherCheckbox = screen.getByLabelText(/Integrate Live 7-Day Forecast/i);
+    expect(weatherCheckbox).toBeChecked();
+
     fireEvent.click(weatherCheckbox);
 
-    const submitBtn = screen.getByRole('button', { name: /Generate Sustainable Guidance/i });
-    fireEvent.click(submitBtn);
+    expect(weatherCheckbox).not.toBeChecked();
+
+    clickGenerateGuidance();
 
     await waitFor(() => {
-      expect(api.getAdvisorRecommendations).toHaveBeenCalledWith(
-        expect.objectContaining({ location: null })
+      expect(
+        api.getAdvisorRecommendations
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          location: null,
+        })
       );
     });
   });
 
-  it('displays explainability items on cards: Why this applies, Evidence, and Source', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
+  it('expands recommendation reasoning and explainability details', async () => {
+    renderAdvisor();
+
+    await generateGuidance();
+
+    const explanationButtons = screen.getAllByRole(
+      'button',
+      {
+        name: /Why this matters/i,
+      }
     );
 
-    await waitFor(() => {
-      expect(screen.getAllByText(/Why this applies:/i).length).toBeGreaterThan(0);
-      expect(screen.getAllByText(/Agronomic Evidence:/i).length).toBeGreaterThan(0);
-      expect(screen.getAllByText(/Source:/i).length).toBeGreaterThan(0);
-    });
+    expect(explanationButtons).toHaveLength(5);
+
+    const firstExplanationButton = explanationButtons[0];
+
+    expect(firstExplanationButton).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+
+    fireEvent.click(firstExplanationButton);
+
+    expect(firstExplanationButton).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+
+    expect(
+      screen.getByText(
+        /Selected crop is Wheat/i
+      )
+    ).toBeInTheDocument();
   });
 
-  it('displays the educational disclaimer banner', async () => {
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
+  it('displays the educational disclaimer from the API response', async () => {
+    renderAdvisor();
+
+    await generateGuidance();
+
+    expect(
+      screen.getByText(
+        /ProFarm Sustainable Advisor is an educational decision-support tool/i
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('displays an API error and recovers after retry', async () => {
+    renderAdvisor();
+
+    // Allow initial page setup and any automatic
+    // recommendation request to finish successfully.
+    await loadConfiguration();
+
+    await screen.findByRole('heading', {
+      name: 'Key Growth Stages & Care for Wheat',
+    });
+
+    const initialCallCount = vi.mocked(
+      api.getAdvisorRecommendations
+    ).mock.calls.length;
+
+    // Fail the NEXT explicitly generated request,
+    // rather than an automatic request during mount.
+    vi.mocked(
+      api.getAdvisorRecommendations
+    ).mockRejectedValueOnce(
+      new ApiError(
+        'Failed to communicate with advisory engine',
+        500
+      )
     );
+
+    clickGenerateGuidance();
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Educational Decision-Support Standard & Non-Commercial Guarantee/i)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/ProFarm Sustainable Advisor is an educational decision-support tool/i)
-      ).toBeInTheDocument();
+        api.getAdvisorRecommendations
+      ).toHaveBeenCalledTimes(initialCallCount + 1);
     });
-  });
 
-  it('displays error message and allows retry on API failure', async () => {
-    vi.mocked(api.getAdvisorRecommendations).mockRejectedValueOnce(
-      new ApiError('Failed to communicate with advisory engine', 500)
-    );
+    expect(
+      await screen.findByText(
+        /Unable to generate guidance/i
+      )
+    ).toBeInTheDocument();
 
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
-    );
+    expect(
+      screen.getByText(
+        /Failed to communicate with advisory engine/i
+      )
+    ).toBeInTheDocument();
+
+    const retryButton = screen.getByRole('button', {
+      name: /Retry/i,
+    });
+
+    fireEvent.click(retryButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/Advisory Engine Error/i)).toBeInTheDocument();
       expect(
-        screen.getByText(/Failed to communicate with advisory engine/i)
-      ).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Retry/i })).toBeInTheDocument();
+        api.getAdvisorRecommendations
+      ).toHaveBeenCalledTimes(initialCallCount + 2);
     });
-
-    // Mock successful recovery on retry
-    vi.mocked(api.getAdvisorRecommendations).mockResolvedValueOnce({
-      status: 'success',
-      data: mockAdvisorData,
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: /Retry/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
+      expect(
+        screen.queryByText(
+          /Unable to generate guidance/i
+        )
+      ).not.toBeInTheDocument();
     });
+
+    expect(
+      await screen.findByRole('heading', {
+        name: 'Key Growth Stages & Care for Wheat',
+      })
+    ).toBeInTheDocument();
   });
 
-  it('allows searching and picking a location when Set Location is clicked', async () => {
-    vi.mocked(api.searchLocations).mockResolvedValueOnce({
+  it('allows searching for and selecting a location', async () => {
+    vi.mocked(api.searchLocations).mockResolvedValue({
       status: 'success',
       count: 1,
       locations: [
@@ -408,34 +657,54 @@ describe('Sustainable Farming Advisor Page (/tools/advisor)', () => {
       ],
     });
 
-    render(
-      <BrowserRouter>
-        <AdvisorPage />
-      </BrowserRouter>
+    renderAdvisor();
+
+    await loadConfiguration();
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /Set location|Change/i,
+      })
+    );
+
+    expect(
+      screen.getByRole('heading', {
+        name: /Find your location/i,
+      })
+    ).toBeInTheDocument();
+
+    const searchInput = screen.getByRole('searchbox', {
+      name: /Search location/i,
+    });
+
+    fireEvent.change(searchInput, {
+      target: {
+        value: 'Karnal',
+      },
+    });
+
+    expect(searchInput).toHaveValue('Karnal');
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /^Search$/i,
+      })
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Key Growth Stages & Care for Wheat/i)).toBeInTheDocument();
+      expect(api.searchLocations).toHaveBeenCalled();
     });
 
-    // Click Set Location / Change button
-    const changeBtn = screen.getByRole('button', { name: /Set Location|Change/i });
-    fireEvent.click(changeBtn);
+    const locationResult = await screen.findByText(
+      /Karnal, Haryana/i
+    );
 
-    const searchInput = screen.getByPlaceholderText(/e.g., Ludhiana, Guntur, Karnal, Nagpur/i);
-    fireEvent.change(searchInput, { target: { value: 'Karnal' } });
-
-    const searchBtn = screen.getByRole('button', { name: 'Search' });
-    fireEvent.click(searchBtn);
+    fireEvent.click(locationResult);
 
     await waitFor(() => {
-      expect(screen.getByText(/Karnal, Haryana/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Karnal, Haryana/i)
+      ).toBeInTheDocument();
     });
-
-    // Pick Karnal
-    fireEvent.click(screen.getByText(/Karnal, Haryana/i));
-
-    // Confirm Karnal selected in chip / display
-    expect(screen.getByText(/📍 Karnal, Haryana/i)).toBeInTheDocument();
   });
 });

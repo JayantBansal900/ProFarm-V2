@@ -1,152 +1,336 @@
+import { tr, useLocale } from '../i18n';
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const ToolsPage: React.FC = () => {
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="border border-slate-200 bg-white rounded-xl p-6 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">Farm Tools & Decision Analytics</h1>
-            <p className="mt-1 text-sm text-slate-600">
-              Interactive agronomic tools, real-time weather alerts, and data-driven farming calculators.
-            </p>
-          </div>
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 self-start sm:self-auto">
-            3 Live Tools Available
-          </span>
-        </div>
+const IMAGES = {
+  hero: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85',
+  weather: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=85',
+  mandi: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1100&q=85',
+  advisor: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1100&q=85',
+  planner: 'https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=1100&q=85',
+};
+
+const ArrowIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M5 12h14m-6-6 6 6-6 6" />
+  </svg>
+);
+
+const CloudIcon = () => (
+  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M7 17H5a3 3 0 0 1-.2-6A7 7 0 0 1 18 9a4 4 0 0 1 1 8h-2" />
+    <path d="m9 16-2 4m7-4-2 4m7-4-2 4" />
+  </svg>
+);
+
+const MarketIcon = () => (
+  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 10h18M5 10v10h14V10M3 10l2-6h14l2 6M9 20v-6h6v6" />
+  </svg>
+);
+
+const LeafIcon = () => (
+  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M20 4C10 4 4 9 4 16a4 4 0 0 0 4 4c7 0 12-6 12-16Z" />
+    <path d="M4 20c3-5 7-8 12-11" />
+  </svg>
+);
+
+const ChartIcon = () => (
+  <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M4 20V4m0 16h16M8 16v-5m5 5V7m5 9v-8" />
+  </svg>
+);
+
+type ToolCardProps = {
+  number: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  to: string;
+  action: string;
+  icon: React.ReactNode;
+  features: string[];
+};
+
+const ToolCard: React.FC<ToolCardProps> = ({
+  number,
+  title,
+  description,
+  image,
+  imageAlt,
+  to,
+  action,
+  icon,
+  features,
+}) => (
+  <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#DCE6D8] bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#B6CDB6] hover:shadow-[0_16px_45px_rgba(24,65,39,0.10)]">
+    <div className="relative h-[225px] overflow-hidden bg-[#DCE8D7] sm:h-[245px]">
+      <img
+        src={image}
+        alt={imageAlt}
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0E3320]/50 via-transparent to-transparent" />
+
+      <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-[#173F2B]/85 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm">{tr("Available")}</span>
+
+      <span className="absolute bottom-5 right-5 text-3xl font-semibold text-white/85">
+        {number}
+      </span>
+    </div>
+
+    <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EDF5E9] text-[#2C6542]">
+        {icon}
       </div>
 
-      {/* Tools Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Featured Live Tool: Weather & Rainfall Forecasting */}
-        <div className="border-2 border-emerald-500 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
-          <div className="absolute top-4 right-4">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white animate-pulse">
-              LIVE
-            </span>
-          </div>
+      <h3 className="mt-4 font-serif text-[24px] font-semibold leading-tight text-[#193D2A]">
+        {tr(title)}
+      </h3>
 
-          <div>
-            <div className="w-12 h-12 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 text-2xl mb-4">
-              🌦️
-            </div>
-            <h2 className="text-lg font-bold text-slate-900">Live Weather & Rainfall Intelligence</h2>
-            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-              Real-time meteorological monitoring powered by Open-Meteo. Features hyper-local Indian village/city search, 
-              7-day rainfall forecasting (sum vs probability), heavy rain alerts, and rule-based farmer agronomic advisories.
-            </p>
+      <p className="mt-3 text-sm leading-6 text-[#48614E]">
+        {tr(description)}
+      </p>
 
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              <span className="px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-700 font-medium">Open-Meteo API</span>
-              <span className="px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-700 font-medium">Rainfall Sum vs Prob</span>
-              <span className="px-2 py-0.5 rounded text-xs bg-amber-50 text-amber-700 font-medium">Farmer Alerts</span>
-            </div>
-          </div>
+      <div className="mt-5 flex flex-wrap gap-2">
+        {features.map((feature) => (
+          <span
+            key={feature}
+            className="rounded-full border border-[#DBE7D7] bg-[#F4F8F1] px-3 py-1.5 text-[11px] font-semibold text-[#3C6347]"
+          >
+            {feature}
+          </span>
+        ))}
+      </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100">
+      <div className="mt-auto pt-6">
+        <Link
+          to={to}
+          className="inline-flex w-full items-center justify-between rounded-xl bg-[#285D3D] px-5 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#19482E] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#285D3D]"
+        >
+          {tr(action)}
+          <ArrowIcon />
+        </Link>
+      </div>
+    </div>
+  </article>
+);
+
+export const ToolsPage: React.FC = () => {
+  useLocale();
+  return (
+    <div className="mx-auto max-w-[1440px] space-y-7 pb-16 text-[#203F2C]">
+      {/* Page heading */}
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <nav
+            aria-label={tr("Breadcrumb")}
+            className="mb-3 flex items-center gap-2 text-xs font-medium text-[#5A705F]"
+          >
+            <Link to="/" className="hover:text-[#286442]">{tr("Home")}</Link>
+            <span>/</span>
+            <span className="font-semibold text-[#286442]">{tr("Farm Tools")}</span>
+          </nav>
+
+          <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#173D29] sm:text-4xl">{tr("Farm Tools & Intelligence")}</h1>
+
+          <p className="mt-2 text-sm font-medium text-[#47614E]">{tr("Essential insights for smarter farming decisions.")}</p>
+        </div>
+
+        <span className="inline-flex items-center gap-2 rounded-full border border-[#D4E4CF] bg-[#EFF6EB] px-4 py-2 text-xs font-bold text-[#346B45]">
+          <span className="h-2 w-2 rounded-full bg-[#6AA36D]" />{tr("3 tools available")}</span>
+      </header>
+
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden rounded-2xl bg-[#173F29]">
+        <img
+          src={IMAGES.hero}
+          alt={tr("Green agricultural fields")}
+          loading="eager"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0E3522]/95 via-[#16452D]/85 to-[#16452D]/25" />
+
+        <div className="relative grid min-h-[325px] gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:p-11">
+          <div className="max-w-xl text-white">
+            <p className="text-[11px] font-bold uppercase tracking-[0.17em] text-[#D2E9CF]">{tr("ProFarm · Smart Agriculture")}</p>
+
+            <h2 className="mt-5 font-serif text-4xl font-semibold leading-[1.15] sm:text-5xl">{tr("Better tools.")}<br />{tr("Better decisions.")}</h2>
+
+            <p className="mt-5 max-w-md text-sm leading-6 text-[#E3EFE0]">{tr("Weather, market prices and crop guidance — all in one place.")}</p>
+
             <Link
               to="/tools/weather"
-              className="w-full inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors"
-            >
-              Open Weather Tool &rarr;
+              className="mt-7 inline-flex items-center gap-3 rounded-xl bg-white px-5 py-3.5 text-sm font-bold text-[#204B31] transition hover:bg-[#EDF5E9]"
+            >{tr("Explore Weather")}<ArrowIcon />
             </Link>
           </div>
-        </div>
 
-        {/* Featured Live Tool: Mandi Price Tracker */}
-        <div className="border-2 border-emerald-500 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
-          <div className="absolute top-4 right-4">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white animate-pulse">
-              LIVE
-            </span>
-          </div>
+          <div className="hidden justify-end lg:flex">
+            <div className="w-full max-w-[305px] rounded-2xl border border-white/25 bg-[#123B27]/70 p-6 text-white backdrop-blur-md">
+              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#D1E8CE]">{tr("Your farming toolkit")}</p>
 
-          <div>
-            <div className="w-12 h-12 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 text-2xl mb-4">
-              ⚖️
-            </div>
-            <h2 className="text-lg font-bold text-slate-900">Mandi Price Tracker & Trends</h2>
-            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-              Live daily agricultural wholesale market prices across Indian APMCs powered by data.gov.in / AGMARKNET.
-              Explore modal rates, compare mandis like-for-like, and filter by state, district, and commodity.
-            </p>
+              <div className="mt-6 space-y-5">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
+                    <CloudIcon />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">{tr("Weather")}</p>
+                    <p className="mt-0.5 text-xs text-[#D5E7D2]">{tr("7-day forecast")}</p>
+                  </div>
+                </div>
 
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              <span className="px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-700 font-medium">data.gov.in AGMARKNET</span>
-              <span className="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 font-medium">Wholesale Modal Rates</span>
-              <span className="px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-700 font-medium">Market Comparison</span>
-            </div>
-          </div>
+                <div className="border-t border-white/15" />
 
-          <div className="mt-6 pt-4 border-t border-slate-100">
-            <Link
-              to="/tools/mandi"
-              className="w-full inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors"
-            >
-              Open Mandi Tracker &rarr;
-            </Link>
-          </div>
-        </div>
+                <div className="flex items-center gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
+                    <MarketIcon />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">{tr("Mandi Prices")}</p>
+                    <p className="mt-0.5 text-xs text-[#D5E7D2]">{tr("Wholesale market data")}</p>
+                  </div>
+                </div>
 
-        {/* Featured Live Tool: Sustainable Farming Advisor */}
-        <div className="border-2 border-emerald-500 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative flex flex-col justify-between">
-          <div className="absolute top-4 right-4">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white animate-pulse">
-              LIVE
-            </span>
-          </div>
+                <div className="border-t border-white/15" />
 
-          <div>
-            <div className="w-12 h-12 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 text-2xl mb-4">
-              🌱
-            </div>
-            <h2 className="text-lg font-bold text-slate-900">Sustainable Farming Advisor</h2>
-            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-              Synthesizes crop agronomy, soil dynamics, and live agrometeorological forecasts into explainable, 
-              resource-saving guidance. Evaluates crop-soil compatibility and delivers weather-triggered actionable alerts.
-            </p>
-
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              <span className="px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-700 font-medium">ICAR Standard</span>
-              <span className="px-2 py-0.5 rounded text-xs bg-emerald-50 text-emerald-700 font-medium">Soil Compatibility</span>
-              <span className="px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-700 font-medium">Weather Triggered</span>
-            </div>
-          </div>
-
-          <div className="mt-6 pt-4 border-t border-slate-100">
-            <Link
-              to="/tools/advisor"
-              className="w-full inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors"
-            >
-              Open Advisor &rarr;
-            </Link>
-          </div>
-        </div>
-
-        {/* Coming Soon: Farm Economic Planner */}
-        <div className="border border-slate-200 bg-slate-50/60 rounded-xl p-6 flex flex-col justify-between opacity-85">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-2xl">
-                📊
+                <div className="flex items-center gap-4">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
+                    <LeafIcon />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">{tr("Farm Advisor")}</p>
+                    <p className="mt-0.5 text-xs text-[#D5E7D2]">{tr("Crop and soil guidance")}</p>
+                  </div>
+                </div>
               </div>
-              <span className="px-2 py-0.5 rounded text-xs font-medium bg-slate-200 text-slate-700">
-                Phase 3F
-              </span>
             </div>
-            <h2 className="text-lg font-bold text-slate-700">Farm Economic Planner & Cost Calculator</h2>
-            <p className="mt-2 text-sm text-slate-500 leading-relaxed">
-              Calculates comprehensive cost of cultivation, operational expenditure breakdown, and potential net revenue across varied input regimes.
-            </p>
-          </div>
-          <div className="mt-6 pt-4 border-t border-slate-200">
-            <span className="text-xs text-slate-400 font-medium italic">Available in upcoming release</span>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Tools */}
+      <section>
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#4F8058]">{tr("Explore the platform")}</p>
+
+            <h2 className="mt-2 font-serif text-[27px] font-semibold text-[#193E2A] sm:text-[30px]">{tr("Tools for Every Decision")}</h2>
+          </div>
+
+          <p className="text-xs font-semibold text-[#58715D]">{tr("Choose a tool to get started")}</p>
+        </div>
+
+        <div className="grid gap-5 lg:grid-cols-3">
+          <ToolCard
+            number="01"
+            title={tr("Weather & Rainfall")}
+            description={tr("Check local conditions, rainfall forecasts and weather-based farming guidance.")}
+            image={IMAGES.weather}
+            imageAlt="Rural landscape beneath a cloudy sky"
+            to="/tools/weather"
+            action={tr("Open Weather")}
+            icon={<CloudIcon />}
+            features={['7-day forecast', 'Rainfall', 'Farm guidance']}
+          />
+
+          <ToolCard
+            number="02"
+            title={tr("Mandi Price Tracker")}
+            description={tr("Explore reported wholesale crop prices and compare rates across Indian markets.")}
+            image={IMAGES.mandi}
+            imageAlt="Agricultural fields ready for harvest"
+            to="/tools/mandi"
+            action={tr("Explore Mandi Prices")}
+            icon={<MarketIcon />}
+            features={['Commodity prices', 'Market comparison', 'Filters']}
+          />
+
+          <ToolCard
+            number="03"
+            title={tr("Sustainable Farm Advisor")}
+            description={tr("Get practical crop, soil and weather-based recommendations for your field.")}
+            image={IMAGES.advisor}
+            imageAlt="Natural green landscape"
+            to="/tools/advisor"
+            action={tr("Open Farm Advisor")}
+            icon={<LeafIcon />}
+            features={['Crop care', 'Soil health', 'Water planning']}
+          />
+        </div>
+      </section>
+
+      {/* Coming soon */}
+      <section className="overflow-hidden rounded-2xl border border-[#DCE6D8] bg-[#F4F8F1]">
+        <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="relative min-h-[250px] overflow-hidden bg-[#D9E6D5] lg:min-h-[305px]">
+            <img
+              src={IMAGES.planner}
+              alt={tr("Green cultivated farmland")}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#153E29]/30 to-transparent" />
+
+            <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-[#173F2B]/85 px-3 py-2 text-[11px] font-bold text-white backdrop-blur-sm">{tr("In development")}</span>
+          </div>
+
+          <div className="flex flex-col justify-center p-6 sm:p-9 lg:p-11">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E2EEDD] text-[#2B6542]">
+              <ChartIcon />
+            </div>
+
+            <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#56805D]">{tr("Upcoming tool")}</p>
+
+            <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight text-[#193E2A]">{tr("Farm Economic Planner")}</h2>
+
+            <p className="mt-4 max-w-md text-sm leading-6 text-[#4A6350]">{tr("Plan cultivation costs, estimate expenses and assess potential farm returns.")}</p>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              {['Cost planning', 'Expense breakdown', 'Revenue estimates'].map(
+                (feature) => (
+                  <span
+                    key={feature}
+                    className="rounded-full border border-[#D5E4D0] bg-white px-3 py-1.5 text-[11px] font-semibold text-[#456A4D]"
+                  >
+                    {feature}
+                  </span>
+                )
+              )}
+            </div>
+
+            <p className="mt-7 inline-flex items-center gap-2 text-xs font-bold text-[#58725C]">
+              <span className="h-2 w-2 rounded-full bg-[#8CAA83]" />{tr("Coming in a future release")}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Minimal footer */}
+      <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[#DCE6D8] pt-5">
+        <p className="text-xs font-medium text-[#607362]">{tr("Built for informed, sustainable farming.")}</p>
+
+        <Link
+          to="/knowledge"
+          className="inline-flex items-center gap-2 text-xs font-bold text-[#286442] hover:text-[#173E29]"
+        >{tr("Explore Knowledge Hub")}<ArrowIcon size={16} />
+        </Link>
+      </footer>
     </div>
   );
 };

@@ -1,24 +1,31 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AuthUser } from '../types';
-import { api } from '../services/api';
+import { api } from '../api/api';
 import { AuthContext } from './authContextDef';
+import { bindLanguageUser, preferenceRevision } from '../i18n';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const authGeneration = useRef(0);
 
   const refreshUser = useCallback(async () => {
+    const generation = authGeneration.current;
+    const languageRevision = preferenceRevision();
     try {
       const response = await api.getMe();
+      if (generation !== authGeneration.current) return;
       if (response && response.user) {
         setUser(response.user);
+        await bindLanguageUser(response.user.id, languageRevision);
       } else {
         setUser(null);
       }
     } catch {
+      if (generation !== authGeneration.current) return;
       setUser(null);
     } finally {
-      setLoading(false);
+      if (generation === authGeneration.current) setLoading(false);
     }
   }, []);
 
@@ -27,20 +34,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [refreshUser]);
 
   const login = async (credentials: { email: string; password: string }) => {
-    const response = await api.login(credentials);
-    setUser(response.user);
+    const generation = ++authGeneration.current;
+    const languageRevision = preferenceRevision();
+    try {
+      const response = await api.login(credentials);
+      if (generation !== authGeneration.current) return;
+      await bindLanguageUser(response.user.id, languageRevision);
+      setUser(response.user);
+    } finally {
+      if (generation === authGeneration.current) setLoading(false);
+    }
   };
 
   const register = async (details: { name: string; email: string; password: string }) => {
-    const response = await api.register(details);
-    setUser(response.user);
+    const generation = ++authGeneration.current;
+    const languageRevision = preferenceRevision();
+    try {
+      const response = await api.register(details);
+      if (generation !== authGeneration.current) return;
+      await bindLanguageUser(response.user.id, languageRevision);
+      setUser(response.user);
+    } finally {
+      if (generation === authGeneration.current) setLoading(false);
+    }
   };
 
   const logout = async () => {
+    const generation = ++authGeneration.current;
     try {
       await api.logout();
     } finally {
-      setUser(null);
+      if (generation === authGeneration.current) {
+        await bindLanguageUser(null);
+        setUser(null);
+        setLoading(false);
+      }
     }
   };
 

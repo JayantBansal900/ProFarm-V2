@@ -1,23 +1,47 @@
+
 import React from 'react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+} from 'vitest';
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  cleanup,
+} from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+
 import {
   WeatherPage,
   STORAGE_KEY,
   isValidSavedLocation,
-} from '../src/pages/tools/WeatherPage';
-import { api } from '../src/services/api';
-import { LocationResult, NormalizedForecastResponse } from '../src/types/weather';
+} from '../src/pages/WeatherPage';
 
-vi.mock('../src/services/api', () => ({
+import { api } from '../src/api/api';
+
+import type {
+  LocationResult,
+  NormalizedForecastResponse,
+} from '../src/types/weather';
+
+vi.mock('../src/api/api', () => ({
   api: {
     searchLocations: vi.fn(),
     getWeatherForecast: vi.fn(),
   },
   ApiError: class ApiError extends Error {
-    constructor(public message: string, public statusCode: number) {
+    constructor(
+      message: string,
+      public statusCode: number
+    ) {
       super(message);
+      this.name = 'ApiError';
     }
   },
 }));
@@ -53,7 +77,7 @@ const mockForecastVijayawada: NormalizedForecastResponse = {
     temperatureC: 31.4,
     apparentTemperatureC: 36.2,
     relativeHumidity: 78,
-    precipitationMm: 0.0,
+    precipitationMm: 0,
     weatherCode: 2,
     condition: 'Partly Cloudy',
     icon: '⛅',
@@ -77,7 +101,7 @@ const mockForecastVijayawada: NormalizedForecastResponse = {
   ],
   rainfallSummary: {
     todayExpectedMm: 1.2,
-    tomorrowExpectedMm: 14.0,
+    tomorrowExpectedMm: 14,
     sevenDayTotalMm: 38.4,
     maxDailyProbabilityPercent: 55,
     heavyRainDays: [],
@@ -88,7 +112,8 @@ const mockForecastVijayawada: NormalizedForecastResponse = {
       type: 'favorable',
       severity: 'info',
       title: 'Favorable Farming Conditions',
-      message: 'Optimal conditions for routine agricultural activities.',
+      message:
+        'Optimal conditions for routine agricultural activities.',
     },
   ],
   attribution: {
@@ -110,15 +135,15 @@ const mockForecastJaipur: NormalizedForecastResponse = {
     locationName: 'Jaipur, Rajasthan',
   },
   current: {
-    temperatureC: 28.0,
+    temperatureC: 28,
     apparentTemperatureC: 27.5,
     relativeHumidity: 35,
-    precipitationMm: 0.0,
+    precipitationMm: 0,
     weatherCode: 0,
     condition: 'Clear Sky',
     icon: '☀️',
     cloudCover: 10,
-    windSpeedKmH: 12.0,
+    windSpeedKmH: 12,
     isDay: true,
     timestamp: '2026-10-26T10:00:00Z',
   },
@@ -128,17 +153,17 @@ const mockForecastJaipur: NormalizedForecastResponse = {
       weatherCode: 0,
       condition: 'Clear Sky',
       icon: '☀️',
-      tempMaxC: 31.0,
-      tempMinC: 18.0,
-      precipitationSumMm: 0.0,
+      tempMaxC: 31,
+      tempMinC: 18,
+      precipitationSumMm: 0,
       precipitationProbabilityMax: 5,
-      windSpeedMaxKmH: 12.0,
+      windSpeedMaxKmH: 12,
     },
   ],
   rainfallSummary: {
-    todayExpectedMm: 0.0,
-    tomorrowExpectedMm: 0.0,
-    sevenDayTotalMm: 0.0,
+    todayExpectedMm: 0,
+    tomorrowExpectedMm: 0,
+    sevenDayTotalMm: 0,
     maxDailyProbabilityPercent: 5,
     heavyRainDays: [],
   },
@@ -148,7 +173,8 @@ const mockForecastJaipur: NormalizedForecastResponse = {
       type: 'dry',
       severity: 'info',
       title: 'Dry Spell Window',
-      message: 'No rainfall forecast. Ideal window for harvesting or grain drying.',
+      message:
+        'No rainfall forecast. Ideal window for harvesting or grain drying.',
     },
   ],
   attribution: {
@@ -162,105 +188,175 @@ const mockForecastJaipur: NormalizedForecastResponse = {
   },
 };
 
+const mockedGetWeatherForecast = vi.mocked(
+  api.getWeatherForecast
+);
+
+const mockedSearchLocations = vi.mocked(
+  api.searchLocations
+);
+
+function renderWeatherPage() {
+  return render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <WeatherPage />
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+}
+
+function mockVijayawadaForecast() {
+  mockedGetWeatherForecast.mockResolvedValue({
+    status: 'success',
+    forecast: mockForecastVijayawada,
+  });
+}
+
+function saveLocation(location: LocationResult) {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(location)
+  );
+}
+
+function getSavedLocation(): LocationResult | null {
+  const stored = localStorage.getItem(STORAGE_KEY);
+
+  if (!stored) {
+    return null;
+  }
+
+  return JSON.parse(stored) as LocationResult;
+}
+
 describe('Weather Location Persistence & Lifecycle Regressions', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
+
+    mockedSearchLocations.mockResolvedValue({
+      status: 'success',
+      locations: [],
+      count: 0,
+    });
+
+    mockVijayawadaForecast();
   });
 
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
     localStorage.clear();
   });
 
-  // 1. Validation helper tests
+  // TEST 1: Saved location validation
+
   it('validates saved location structure properly', () => {
     expect(isValidSavedLocation(null)).toBe(false);
     expect(isValidSavedLocation(undefined)).toBe(false);
     expect(isValidSavedLocation('string')).toBe(false);
     expect(isValidSavedLocation(12345)).toBe(false);
     expect(isValidSavedLocation({})).toBe(false);
-    expect(isValidSavedLocation({ name: 'City' })).toBe(false);
-    expect(isValidSavedLocation({ name: 'City', latitude: 'bad', longitude: 80 })).toBe(false);
-    expect(isValidSavedLocation({ name: 'City', latitude: NaN, longitude: 80 })).toBe(false);
-    expect(isValidSavedLocation({ name: 'City', latitude: 120, longitude: 80 })).toBe(false); // out of lat bounds
-    expect(isValidSavedLocation({ name: 'City', latitude: 16.5, longitude: 200 })).toBe(false); // out of lon bounds
+
+    expect(
+      isValidSavedLocation({ name: 'City' })
+    ).toBe(false);
+
+    expect(
+      isValidSavedLocation({
+        name: 'City',
+        latitude: 'bad',
+        longitude: 80,
+      })
+    ).toBe(false);
+
+    expect(
+      isValidSavedLocation({
+        name: 'City',
+        latitude: NaN,
+        longitude: 80,
+      })
+    ).toBe(false);
+
+    expect(
+      isValidSavedLocation({
+        name: 'City',
+        latitude: 120,
+        longitude: 80,
+      })
+    ).toBe(false);
+
+    expect(
+      isValidSavedLocation({
+        name: 'City',
+        latitude: 16.5,
+        longitude: 200,
+      })
+    ).toBe(false);
+
     expect(isValidSavedLocation(mockVijayawada)).toBe(true);
+    expect(isValidSavedLocation(mockJaipur)).toBe(true);
   });
 
-  // 2. Saving a selected location
-  it('saves selected location to localStorage when a preset or search result is clicked', async () => {
-    vi.mocked(api.getWeatherForecast).mockResolvedValue({
-      status: 'success',
-      forecast: mockForecastVijayawada,
-    });
+  // TEST 2: Save selected location
 
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
-    );
+  it('saves selected location to localStorage when a preset is clicked', async () => {
+    renderWeatherPage();
 
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
 
-    const presetBtn = screen.getByRole('button', { name: /Vijayawada/i });
-    fireEvent.click(presetBtn);
+    const presetButton = screen.getByRole('button', {
+      name: /Vijayawada/i,
+    });
+
+    fireEvent.click(presetButton);
 
     await waitFor(() => {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      expect(stored).not.toBeNull();
-      const parsed = JSON.parse(stored!);
-      expect(parsed.name).toBe('Vijayawada');
-      expect(parsed.latitude).toBeCloseTo(16.50745, 3);
-      expect(parsed.longitude).toBeCloseTo(80.6466, 3);
+      const saved = getSavedLocation();
+
+      expect(saved).not.toBeNull();
+      expect(saved?.name).toBe('Vijayawada');
+      expect(saved?.latitude).toBeCloseTo(16.50745, 3);
+      expect(saved?.longitude).toBeCloseTo(80.6466, 3);
+    });
+
+    await waitFor(() => {
+      expect(mockedGetWeatherForecast).toHaveBeenCalled();
     });
   });
 
-  // 3. Restoring a valid saved location after component remount
+  // TEST 3: Restore saved location
+
   it('restores a valid saved location on initial mount/remount in StrictMode', async () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockVijayawada));
+    saveLocation(mockVijayawada);
 
-    vi.mocked(api.getWeatherForecast).mockResolvedValue({
-      status: 'success',
-      forecast: mockForecastVijayawada,
-    });
+    renderWeatherPage();
 
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
-    );
+    expect(
+      screen.getByText(/Active location:/i)
+    ).toBeInTheDocument();
 
-    // Active location badge renders immediately
+    expect(
+      screen.getByText('Vijayawada, Andhra Pradesh')
+    ).toBeInTheDocument();
+
+    expect(getSavedLocation()?.name).toBe('Vijayawada');
+
     await waitFor(() => {
-      expect(screen.getByText(/Active location:/i)).toBeInTheDocument();
-      expect(screen.getByText(/Vijayawada/i)).toBeInTheDocument();
+      expect(mockedGetWeatherForecast).toHaveBeenCalled();
     });
   });
 
-  // 4. Automatically fetching weather for the restored location
+  // TEST 4: Automatically fetch restored weather
+
   it('automatically fetches weather forecast for the restored location without user intervention', async () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockVijayawada));
+    saveLocation(mockVijayawada);
 
-    vi.mocked(api.getWeatherForecast).mockResolvedValue({
-      status: 'success',
-      forecast: mockForecastVijayawada,
-    });
-
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
-    );
+    renderWeatherPage();
 
     await waitFor(() => {
-      expect(api.getWeatherForecast).toHaveBeenCalledWith(
+      expect(mockedGetWeatherForecast).toHaveBeenCalledWith(
         mockVijayawada.latitude,
         mockVijayawada.longitude,
         'Vijayawada, Andhra Pradesh',
@@ -268,148 +364,192 @@ describe('Weather Location Persistence & Lifecycle Regressions', () => {
       );
     });
 
-    // Renders loaded weather data
     await waitFor(() => {
-      expect(screen.getByText(/31\.4/i)).toBeInTheDocument();
-      expect(screen.getByText('Feels Like')).toBeInTheDocument();
-      expect(screen.getByText('Favorable Farming Conditions')).toBeInTheDocument();
+      expect(
+        screen.getByText(/31\.4/)
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(/Feels Like/i)
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText('Favorable Farming Conditions')
+      ).toBeInTheDocument();
     });
   });
 
-  // 5. Replacing a previously saved location
+  // TEST 5: Change selected location
+
   it('replaces a previously saved location with a new selection and updates forecast', async () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockVijayawada));
+    saveLocation(mockVijayawada);
 
-    vi.mocked(api.getWeatherForecast).mockImplementation(async (lat) => {
-      if (Math.abs(lat - mockJaipur.latitude) < 0.1) {
-        return { status: 'success', forecast: mockForecastJaipur };
+    mockedGetWeatherForecast.mockImplementation(
+      async (latitude) => {
+        if (
+          Math.abs(latitude - mockJaipur.latitude) < 0.1
+        ) {
+          return {
+            status: 'success',
+            forecast: mockForecastJaipur,
+          };
+        }
+
+        return {
+          status: 'success',
+          forecast: mockForecastVijayawada,
+        };
       }
-      return { status: 'success', forecast: mockForecastVijayawada };
-    });
-
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
     );
 
-    // Initial restored state is Vijayawada
+    renderWeatherPage();
+
     await waitFor(() => {
-      expect(screen.getByText(/31\.4/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/31\.4/)
+      ).toBeInTheDocument();
     });
 
-    // Clear / change location
-    const changeBtn = screen.getByRole('button', { name: /Change/i });
-    fireEvent.click(changeBtn);
+    expect(getSavedLocation()?.name).toBe('Vijayawada');
 
-    // After clearing, storage is empty and empty state is displayed
+    const changeButton = screen.getByRole('button', {
+      name: /Change/i,
+    });
+
+    fireEvent.click(changeButton);
+
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
-    expect(screen.getByText('No Location Selected')).toBeInTheDocument();
 
-    // Now select Jaipur preset
-    const jaipurBtn = screen.getByRole('button', { name: /Jaipur/i });
-    fireEvent.click(jaipurBtn);
+    expect(
+      screen.getByText('No Location Selected')
+    ).toBeInTheDocument();
 
-    // Storage is updated to Jaipur
-    await waitFor(() => {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      expect(stored).not.toBeNull();
-      const parsed = JSON.parse(stored!);
-      expect(parsed.name).toBe('Jaipur');
+    const jaipurButton = screen.getByRole('button', {
+      name: /Jaipur/i,
     });
 
-    // Weather forecast reloaded for Jaipur
+    fireEvent.click(jaipurButton);
+
     await waitFor(() => {
-      expect(screen.getByText(/28/i)).toBeInTheDocument();
-      expect(screen.getByText('Dry Spell Window')).toBeInTheDocument();
+      expect(getSavedLocation()?.name).toBe('Jaipur');
     });
+
+    await waitFor(() => {
+      expect(mockedGetWeatherForecast).toHaveBeenCalledWith(
+        mockJaipur.latitude,
+        mockJaipur.longitude,
+        'Jaipur, Rajasthan',
+        expect.any(AbortSignal)
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Dry Spell Window')
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getAllByText('Clear Sky').length
+      ).toBeGreaterThan(0);
+    });
+
+    expect(getSavedLocation()?.name).toBe('Jaipur');
   });
 
-  // 6. Handling malformed saved data
-  it('safely ignores and purges corrupt non-JSON localStorage data on mount', async () => {
-    localStorage.setItem(STORAGE_KEY, '{malformed_json: broken');
+  // TEST 6: Malformed JSON
 
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
+  it('safely ignores and purges corrupt non-JSON localStorage data on mount', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      '{malformed_json: broken'
     );
 
-    // No forecast fetch is made
-    expect(api.getWeatherForecast).not.toHaveBeenCalled();
+    renderWeatherPage();
 
-    // Shows empty prompt
-    expect(screen.getByText('No Location Selected')).toBeInTheDocument();
+    expect(
+      mockedGetWeatherForecast
+    ).not.toHaveBeenCalled();
 
-    // Corrupt entry is purged
-    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
-  });
+    expect(
+      screen.getByText('No Location Selected')
+    ).toBeInTheDocument();
 
-  it('safely ignores and purges invalid object schemas in localStorage on mount', async () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ invalid: true, latitude: 'not-number' }));
-
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
-    );
-
-    expect(api.getWeatherForecast).not.toHaveBeenCalled();
-    expect(screen.getByText('No Location Selected')).toBeInTheDocument();
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 
-  // 7. Handling missing saved data
+  // TEST 7: Invalid saved location schema
+
+  it('safely ignores and purges invalid object schemas in localStorage on mount', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        invalid: true,
+        latitude: 'not-number',
+      })
+    );
+
+    renderWeatherPage();
+
+    expect(
+      mockedGetWeatherForecast
+    ).not.toHaveBeenCalled();
+
+    expect(
+      screen.getByText('No Location Selected')
+    ).toBeInTheDocument();
+
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+  });
+
+  // TEST 8: Empty localStorage
+
   it('handles empty localStorage cleanly without error on initial render', () => {
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
-    );
+    renderWeatherPage();
 
-    expect(api.getWeatherForecast).not.toHaveBeenCalled();
-    expect(screen.getByText('No Location Selected')).toBeInTheDocument();
+    expect(
+      mockedGetWeatherForecast
+    ).not.toHaveBeenCalled();
+
+    expect(
+      screen.getByText('No Location Selected')
+    ).toBeInTheDocument();
+
     expect(screen.queryByRole('alert')).toBeNull();
+
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 
-  // 8. Ensuring an initial render does not erase the saved location
+  // TEST 9: StrictMode does not erase valid storage
+
   it('ensures an initial render and StrictMode remount never erases the valid saved location', async () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockVijayawada));
+    saveLocation(mockVijayawada);
 
-    vi.mocked(api.getWeatherForecast).mockResolvedValue({
-      status: 'success',
-      forecast: mockForecastVijayawada,
-    });
+    renderWeatherPage();
 
-    render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <WeatherPage />
-        </BrowserRouter>
-      </React.StrictMode>
-    );
+    const storedImmediately = getSavedLocation();
 
-    // Immediately after rendering, localStorage must STILL be intact
-    const stored = localStorage.getItem(STORAGE_KEY);
-    expect(stored).not.toBeNull();
-    const parsed = JSON.parse(stored!);
-    expect(parsed.name).toBe('Vijayawada');
+    expect(storedImmediately).not.toBeNull();
+    expect(storedImmediately?.name).toBe('Vijayawada');
 
     await waitFor(() => {
-      expect(screen.getByText(/31\.4/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/31\.4/)
+      ).toBeInTheDocument();
     });
 
-    // After full data resolution, localStorage remains intact
-    const finalStored = localStorage.getItem(STORAGE_KEY);
-    expect(finalStored).not.toBeNull();
-    expect(JSON.parse(finalStored!).name).toBe('Vijayawada');
+    const storedAfterFetch = getSavedLocation();
+
+    expect(storedAfterFetch).not.toBeNull();
+    expect(storedAfterFetch?.name).toBe('Vijayawada');
+
+    expect(storedAfterFetch?.latitude).toBeCloseTo(
+      mockVijayawada.latitude,
+      3
+    );
+
+    expect(storedAfterFetch?.longitude).toBeCloseTo(
+      mockVijayawada.longitude,
+      3
+    );
   });
 });
