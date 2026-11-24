@@ -6,9 +6,12 @@ import {
   verifyPassword,
   createSession,
   revokeSession,
+  findIdentityMatches,
+  AuthenticationUnavailableError,
 } from '../services/auth.service';
 import { RegisterInput, LoginInput } from '../validators/auth.validator';
 import { COOKIE_NAME } from '../middleware/requireAuth';
+import { Prisma } from '@prisma/client';
 
 // ---------------------------------------------------------------------------
 // Cookie options
@@ -21,7 +24,6 @@ function cookieOptions() {
     httpOnly: true,
     sameSite: 'lax' as const,
     path: '/',
-    maxAge: SEVEN_DAYS_MS,
     secure: env.NODE_ENV === 'production',
   };
 }
@@ -35,20 +37,23 @@ export async function register(req: Request, res: Response, next: NextFunction):
     const { name, email, password } = req.body as RegisterInput;
 
     // Check email uniqueness
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
+    const existing = await findIdentityMatches(email, prisma);
+    if (existing.length > 0) {
       res.status(409).json({ status: 'error', message: 'An account with that email already exists' });
       return;
     }
 
     const passwordHash = await hashPassword(password);
-    const user = await prisma.user.create({
-      data: { name, email, passwordHash },
-      select: { id: true, name: true, email: true, createdAt: true },
-    });
+    const { user, rawToken } = await prisma.$transaction(async (transaction) => {
+      const user = await transaction.user.create({
+        data: { name, email, passwordHash },
+        select: { id: true, name: true, email: true, createdAt: true },
+      });
 
-    const rawToken = await createSession(user.id, prisma);
-    res.cookie(COOKIE_NAME, rawToken, cookieOptions());
+      const rawToken = await createSession(user.id, transaction);
+      return { user, rawToken };
+    });
+    res.cookie(COOKIE_NAME, rawToken, { ...cookieOptions(), maxAge: SEVEN_DAYS_MS });
 
     res.status(201).json({
       status: 'success',
@@ -56,7 +61,11 @@ export async function register(req: Request, res: Response, next: NextFunction):
       user,
     });
   } catch (error) {
-    next(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      res.status(409).json({ status: 'error', message: 'An account with that email already exists' });
+      return;
+    }
+    next(new AuthenticationUnavailableError());
   }
 }
 
@@ -68,7 +77,8 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
   try {
     const { email, password } = req.body as LoginInput;
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const matches = await findIdentityMatches(email, prisma);
+    const user = matches.length === 1 ? matches[0] : null;
 
     // Constant-time failure path: always run verifyPassword even when user not found
     const dummyHash =
@@ -81,15 +91,15 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
     }
 
     const rawToken = await createSession(user.id, prisma);
-    res.cookie(COOKIE_NAME, rawToken, cookieOptions());
+    res.cookie(COOKIE_NAME, rawToken, { ...cookieOptions(), maxAge: SEVEN_DAYS_MS });
 
     res.status(200).json({
       status: 'success',
       message: 'Logged in successfully',
       user: { id: user.id, name: user.name, email: user.email },
     });
-  } catch (error) {
-    next(error);
+  } catch {
+    next(new AuthenticationUnavailableError());
   }
 }
 
@@ -107,14 +117,15 @@ export async function me(req: Request, res: Response): Promise<void> {
 // ---------------------------------------------------------------------------
 
 export async function logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+  // Clear this browser's cookie even when the server cannot revoke a copied token.
+  res.clearCookie(COOKIE_NAME, cookieOptions());
   try {
-    const rawToken: string | undefined = req.cookies?.[COOKIE_NAME];
-    if (rawToken) {
+    const rawToken: unknown = req.cookies?.[COOKIE_NAME];
+    if (typeof rawToken === 'string' && rawToken) {
       await revokeSession(rawToken, prisma);
     }
-    res.clearCookie(COOKIE_NAME, { path: '/' });
     res.status(200).json({ status: 'success', message: 'Logged out successfully' });
-  } catch (error) {
-    next(error);
+  } catch {
+    next(new AuthenticationUnavailableError());
   }
 }

@@ -15,7 +15,7 @@ export class MemoryCache<T> {
     const entry = this.store.get(key);
     if (!entry) return undefined;
 
-    if (Date.now() > entry.expiresAt) {
+    if (Date.now() >= entry.expiresAt) {
       this.store.delete(key);
       return undefined;
     }
@@ -27,7 +27,7 @@ export class MemoryCache<T> {
   }
 
   set(key: string, value: T, ttlMs: number): void {
-    if (this.store.size >= this.maxItems) {
+    if (!this.store.has(key) && this.store.size >= this.maxItems) {
       // Evict oldest entry (first key in insertion order)
       const oldestKey = this.store.keys().next().value;
       if (oldestKey) {
@@ -35,6 +35,7 @@ export class MemoryCache<T> {
       }
     }
 
+    this.store.delete(key);
     this.store.set(key, {
       value,
       expiresAt: Date.now() + ttlMs,

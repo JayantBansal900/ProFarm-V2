@@ -1,11 +1,18 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { z } from 'zod';
+import { assertSafeTestDatabase } from '../../testing/database-safety.cjs';
 
 // Load local backend .env if present
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-// Also load workspace root .env if present (supports root-level key configuration in monorepo)
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+const testing = process.env.NODE_ENV === 'test' || Boolean(process.env.VITEST);
+if (testing) {
+  // Never fall back to the normal application database during tests.
+  assertSafeTestDatabase(process.env, true);
+} else {
+  dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+  // Also load workspace root .env if present (supports root-level key configuration in monorepo)
+  dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+}
 
 const envSchema = z.object({
   PORT: z.coerce.number().default(4000),

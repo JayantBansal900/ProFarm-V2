@@ -1,4 +1,5 @@
 import { MemoryCache } from '../lib/memoryCache';
+import { upstreamForecastSchema, upstreamGeocodingSchema } from '../validators/weatherUpstream.validator';
 import { getWmoInfo, generateFarmerGuidance, WeatherGuidanceItem } from '../lib/weatherCodes';
 
 export interface LocationResult {
@@ -143,12 +144,15 @@ export async function searchLocations(query: string): Promise<LocationResult[]> 
       }>;
     };
 
-    if (!data.results || !Array.isArray(data.results)) {
+    if (!upstreamGeocodingSchema.safeParse(data).success) {
+      throw new Error('Malformed upstream geocoding response format');
+    }
+    if (!data.results) {
       geocodingCache.set(cacheKey, [], GEOCODING_TTL_MS);
       return [];
     }
 
-    const normalized: LocationResult[] = data.results.map((item) => ({
+    const normalized: LocationResult[] = data.results.filter((item) => item.country === 'India').map((item) => ({
       id: item.id,
       name: item.name,
       latitude: item.latitude,
@@ -261,9 +265,11 @@ export async function getForecast(
       longitude?: number;
     };
 
-    if (!raw.current || !raw.daily) {
+    if (!raw.current || !raw.daily || !upstreamForecastSchema.safeParse(raw).success) {
       throw new Error('Malformed upstream weather response format');
     }
+    // Reject partial/missing values before normalization; never invent zero rain
+    // or temperatures for unavailable provider observations.
 
     // Normalize Current
     const currentWmo = getWmoInfo(raw.current.weather_code);

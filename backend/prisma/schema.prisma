@@ -21,18 +21,94 @@ model User {
 }
 
 model Farm {
-  id        String   @id @default(uuid())
-  userId    String
-  name      String
-  state     String
-  district  String
-  pincode   String?
-  soilType  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String         @id @default(uuid())
+  userId      String
+  name        String
+  state       String?
+  district    String?
+  village     String?
+  pincode     String?
+  area        Float?
+  areaUnit    String?        @default("acres")
+  soilType    String?
+  notes       String?
+  isArchived  Boolean        @default(false)
+  archivedAt  DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cropCycles  CropCycle[]
+  activities  FarmActivity[]
+  tasks       FarmTask[]
 
+  @@index([userId])
+  @@index([userId, isArchived])
   @@map("farms")
+}
+
+model CropCycle {
+  id                  String         @id @default(uuid())
+  farmId              String
+  cropId              String
+  cropName            String
+  variety             String?
+  sowingDate          String
+  expectedHarvestDate String?
+  actualHarvestDate   String?
+  status              String         @default("active") // planned, active, completed, cancelled
+  cultivatedArea      Float?
+  areaUnit            String?        @default("acres")
+  notes               String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  farm                Farm           @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  activities          FarmActivity[]
+  tasks               FarmTask[]
+
+  @@index([farmId])
+  @@index([farmId, status])
+  @@map("crop_cycles")
+}
+
+model FarmActivity {
+  id           String     @id @default(uuid())
+  farmId       String
+  cropCycleId  String?
+  category     String     // sowing, irrigation, fertilizer, weeding, pest_disease, soil_preparation, harvesting, general
+  activityDate String     // YYYY-MM-DD
+  title        String
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  farm         Farm       @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropCycle    CropCycle? @relation(fields: [cropCycleId], references: [id], onDelete: SetNull)
+
+  @@index([farmId])
+  @@index([farmId, category])
+  @@index([cropCycleId])
+  @@map("farm_activities")
+}
+
+model FarmTask {
+  id          String     @id @default(uuid())
+  farmId      String
+  cropCycleId String?
+  category    String     // sowing, irrigation, fertilizer, weeding, pest_disease, soil_preparation, harvesting, general
+  title       String
+  description String?
+  dueDate     String     // YYYY-MM-DD
+  status      String     @default("pending") // pending, completed
+  completedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  farm        Farm       @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropCycle   CropCycle? @relation(fields: [cropCycleId], references: [id], onDelete: SetNull)
+
+  @@index([farmId])
+  @@index([farmId, status])
+  @@index([dueDate])
+  @@index([cropCycleId])
+  @@map("farm_tasks")
 }
 
 model Session {

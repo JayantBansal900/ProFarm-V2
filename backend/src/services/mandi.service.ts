@@ -1,6 +1,7 @@
 import { env } from '../config/env';
 import { MemoryCache } from '../lib/memoryCache';
 import { AppError } from '../middleware/errorHandler';
+import { z } from 'zod';
 
 export interface MandiRecord {
   id: string;
@@ -177,7 +178,7 @@ function slugify(text: string): string {
 function parsePrice(val: unknown): number | null {
   if (val === undefined || val === null || val === '') return null;
   const num = typeof val === 'number' ? val : parseFloat(String(val).replace(/,/g, '').trim());
-  if (isNaN(num) || num <= 0) return null;
+  if (!Number.isFinite(num) || num <= 0) return null;
   return Math.round(num * 100) / 100;
 }
 
@@ -257,6 +258,7 @@ export async function fetchUpstreamMandiData(params: {
   state?: string;
   district?: string;
   market?: string;
+  sort?: 'modal_price_desc' | 'modal_price_asc' | 'arrival_date_desc';
 }): Promise<RawApiResponse> {
   const apiKey = env.DATA_GOV_IN_API_KEY ? env.DATA_GOV_IN_API_KEY.trim() : '';
   if (!apiKey) {
@@ -272,6 +274,10 @@ export async function fetchUpstreamMandiData(params: {
     `limit=${params.limit}`,
     `offset=${params.offset}`,
   ];
+  if (params.sort) {
+    const field = params.sort === 'arrival_date_desc' ? 'arrival_date' : 'modal_price';
+    queryParts.push(`sort[${field}]=${params.sort === 'modal_price_asc' ? 'asc' : 'desc'}`);
+  }
 
   if (params.commodity) {
     queryParts.push(`filters[commodity]=${encodeURIComponent(params.commodity)}`);
@@ -314,6 +320,9 @@ export async function fetchUpstreamMandiData(params: {
     }
 
     const data = (await response.json()) as RawApiResponse;
+    if (!z.object({ records: z.array(z.record(z.string(), z.unknown())) }).safeParse(data).success) {
+      throw createApiError('Government Mandi data service returned an invalid response', 502);
+    }
     return data;
   } catch (error: unknown) {
     if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('aborted'))) {
@@ -376,6 +385,7 @@ export async function getMandiPrices(query: {
     state,
     district,
     market,
+    sort,
   });
 
   const rawRecords = rawData.records || [];
@@ -395,7 +405,7 @@ export async function getMandiPrices(query: {
     const commodityStr = (r.commodity ?? r.Commodity ?? '').trim() || (normalizedCommodity || 'Unknown Commodity');
     const varietyStr = (r.variety ?? r.Variety ?? '').trim() || 'Other';
     const gradeStr = (r.grade ?? r.Grade ?? '').trim() || 'FAQ';
-    const arrivalDateStr = (r.arrival_date ?? r.Arrival_Date ?? '').trim() || new Date().toISOString().split('T')[0];
+    const arrivalDateStr = (r.arrival_date ?? r.Arrival_Date ?? '').trim() || 'Not reported';
 
     const rawMin = r.min_price ?? r.Min_x0020_Price;
     const rawMax = r.max_price ?? r.Max_x0020_Price;

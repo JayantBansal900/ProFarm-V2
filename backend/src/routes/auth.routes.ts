@@ -6,22 +6,24 @@ import { registerSchema, loginSchema } from '../validators/auth.validator';
 import { register, login, me, logout } from '../controllers/auth.controller';
 import { requireAuth } from '../middleware/requireAuth';
 
-const authRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: env.NODE_ENV === 'test' ? 10000 : 10, // strict in production
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { status: 'error', message: 'Too many authentication attempts, please try again later.' },
-});
+export function createAuthRouter(options: { credentialLimit?: number } = {}) {
+  const authRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: options.credentialLimit ?? (env.NODE_ENV === 'test' ? 10000 : 10),
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { status: 'error', message: 'Too many authentication attempts, please try again later.' },
+  });
 
-const router = Router();
+  const router = Router();
 
-// Apply strict rate limiting to all auth routes
-router.use(authRateLimiter);
+  // Session checks/logout retain the general API limiter, not the credential quota.
+  router.post('/register', authRateLimiter, validateRequest(registerSchema), register);
+  router.post('/login', authRateLimiter, validateRequest(loginSchema), login);
+  router.get('/me', requireAuth, me);
+  router.post('/logout', logout);
 
-router.post('/register', validateRequest(registerSchema), register);
-router.post('/login', validateRequest(loginSchema), login);
-router.get('/me', requireAuth, me);
-router.post('/logout', logout);
+  return router;
+}
 
-export const authRoutes = router;
+export const authRoutes = createAuthRouter();
