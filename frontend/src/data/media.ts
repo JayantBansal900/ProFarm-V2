@@ -19,6 +19,21 @@ function lookup(kind: 'crops' | 'soils' | 'scenes', slug: string): MediaImage | 
 }
 
 export const cropImage = (slug: string) => lookup('crops', slug);
+
+/**
+ * Where to centre a photo when a card crops it. Most pictures work centred; a few tall ones
+ * keep their subject near the bottom, so a centred crop would show mostly sky.
+ */
+const FOCUS: Record<string, string> = {
+  'crops/rice': '50% 100%',
+  'crops/chickpea': '50% 62%',
+  'crops/groundnut': '50% 78%',
+};
+
+export function photoFocus(src: string): string | undefined {
+  const match = /\/images\/(crops\/[a-z-]+)\.webp$/.exec(src);
+  return match ? FOCUS[match[1]] : undefined;
+}
 export const soilImage = (slug: string) => lookup('soils', slug);
 
 /** Wide photos of Indian farm scenes used as page banners. */

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { CROPS_DATA } from '../data/crops';
 import { SOILS_DATA } from '../data/soils';
 import type { GrowingSeason, CropCategory } from '../types/agriculture';
-import { cropImage } from '../data/media';
+import { cropImage, photoFocus } from '../data/media';
 
 const inputClass =
   'w-full min-w-0 rounded-xl border border-[#DAE6DC] bg-[#F5F9F5] px-4 py-3 text-[13px] font-medium text-[#274547] outline-none transition focus:border-[#739F87] focus:ring-2 focus:ring-[#739F87]/20';
@@ -29,6 +29,7 @@ const CropImage: React.FC<CropImageProps> = ({
       {image && !failed ? (
         <img
           src={image}
+          style={{ objectPosition: photoFocus(image) }}
           alt={tr("{{v0}} crop", { v0: name })}
           loading="lazy"
           onError={() => setFailed(true)}

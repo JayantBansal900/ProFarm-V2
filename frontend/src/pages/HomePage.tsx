@@ -5,7 +5,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CROPS_DATA } from '../data/crops';
 import { SOILS_DATA } from '../data/soils';
-import { cropImage, soilImage, sceneImage } from '../data/media';
+import { cropImage, soilImage, sceneImage, photoFocus } from '../data/media';
 import { sowingSeason, seasonMonths } from '../data/seasons';
 
 
@@ -131,7 +131,7 @@ export const HomePage: React.FC = () => {
                   <Link to={`/knowledge/crops/${crop.slug}`} className="group block overflow-hidden rounded-3xl bg-profarm-mist">
                     <div className="aspect-[4/3] overflow-hidden">
                       {photo ? (
-                        <img src={photo.src} alt={tr('{{v0}} crop', { v0: tr(crop.name) })} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                        <img src={photo.src} style={{ objectPosition: photoFocus(photo.src) }} alt={tr('{{v0}} crop', { v0: tr(crop.name) })} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                       ) : (
                         <span aria-hidden="true" className="flex h-full items-center justify-center text-5xl">{crop.icon}</span>
                       )}

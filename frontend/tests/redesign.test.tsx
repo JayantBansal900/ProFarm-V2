@@ -5,7 +5,8 @@ import { HomePage } from '../src/pages/HomePage';
 import { CreditsPage } from '../src/pages/CreditsPage';
 import { CROPS_DATA } from '../src/data/crops';
 import { SOILS_DATA } from '../src/data/soils';
-import { cropImage, soilImage, allImageCredits } from '../src/data/media';
+import { cropImage, soilImage, allImageCredits, photoFocus } from '../src/data/media';
+import { CropCatalogPage } from '../src/pages/CropCatalogPage';
 import { sowingSeason } from '../src/data/seasons';
 import { selectLanguage, currentLanguage } from '../src/i18n';
 import { LogoMark, Wordmark } from '../src/components/Logo';
@@ -81,5 +82,20 @@ describe('landing hero and logo', () => {
   it('reads ProFarm as a single word', () => {
     const { container } = render(<Wordmark />);
     expect(container).toHaveTextContent(/^ProFarm$/);
+  });
+});
+
+describe('photo focal points', () => {
+  it('keeps the paddy rather than the sky in view for the tall rice photo', () => {
+    expect(photoFocus(cropImage('rice')!.src)).toBe('50% 100%');
+    expect(photoFocus(cropImage('wheat')!.src)).toBeUndefined();
+    expect(photoFocus('/images/scenes/sunrise-paddy.webp')).toBeUndefined();
+    expect(photoFocus('https://example.com/crops/rice.webp')).toBeUndefined();
+  });
+
+  it('is applied to the crop cards', () => {
+    render(<MemoryRouter><CropCatalogPage /></MemoryRouter>);
+    expect(screen.getByRole('img', { name: 'Rice crop' })).toHaveStyle({ objectPosition: '50% 100%' });
+    expect(screen.getByRole('img', { name: 'Wheat crop' }).style.objectPosition).toBe('');
   });
 });

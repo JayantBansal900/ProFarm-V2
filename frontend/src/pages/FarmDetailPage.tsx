@@ -1,5 +1,5 @@
 import { tr, useLocale, locale, formatAreaUnit } from '../i18n';
-import { cropImage, sceneImage } from '../data/media';
+import { cropImage, photoFocus, sceneImage } from '../data/media';
 import { CROPS_DATA } from '../data/crops';
 
 import React, {
@@ -1079,6 +1079,7 @@ export const FarmDetailPage: React.FC = () => {
       <section className="relative isolate overflow-hidden rounded-2xl bg-[#13393E]">
         <img
           src={heroPhoto}
+          style={{ objectPosition: photoFocus(heroPhoto) }}
           alt={tr("Illustrative green agricultural landscape")}
           className="absolute inset-0 h-full w-full object-cover"
         />

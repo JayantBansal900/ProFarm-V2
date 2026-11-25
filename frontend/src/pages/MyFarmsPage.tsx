@@ -1,5 +1,5 @@
 import { tr, useLocale, formatAreaUnit, formatNumber } from '../i18n';
-import { cropImage, sceneImage, soilImage } from '../data/media';
+import { cropImage, photoFocus, sceneImage, soilImage } from '../data/media';
 import { SOILS_DATA } from '../data/soils';
 import React, {
   useCallback,
@@ -629,6 +629,7 @@ export const MyFarmsPage: React.FC = () => {
               <div className="relative min-h-[240px] bg-[#D5E9DC]">
                 <img
                   src={IMAGES.fields[0]}
+                  style={{ objectPosition: photoFocus(IMAGES.fields[0]) }}
                   alt={tr("Cultivated agricultural fields")}
                   className="absolute inset-0 h-full w-full object-cover"
                   loading="lazy"
@@ -683,6 +684,7 @@ export const MyFarmsPage: React.FC = () => {
                     <div className="relative h-[200px] overflow-hidden bg-[#D6E9DE]">
                       <img
                         src={farmPhoto(farm.soilType, index)}
+                        style={{ objectPosition: photoFocus(farmPhoto(farm.soilType, index)) }}
                         alt={farm.soilType ? tr("{{v0}} sample", { v0: tr(farm.soilType) }) : tr("Illustrative agricultural landscape")}
                         loading="lazy"
                         className={`h-full w-full object-cover transition-transform duration-700 ${

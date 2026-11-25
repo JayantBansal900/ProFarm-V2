@@ -1,5 +1,5 @@
 import { tr, useLocale, locale, formatNumber, isRtl } from '../i18n';
-import { cropImage, sceneImage } from '../data/media';
+import { cropImage, photoFocus, sceneImage } from '../data/media';
 import { LocalizedContent } from '../i18n/LocalizedContent';
 
 import React, { useEffect, useId, useMemo, useState } from 'react';
@@ -976,6 +976,7 @@ export const WeatherPage: React.FC = () => {
             <div className="relative min-h-[205px] overflow-hidden rounded-xl bg-[#25595C]">
               <img
                 src={IMAGES.field}
+                style={{ objectPosition: photoFocus(IMAGES.field) }}
                 alt={tr("Natural green landscape")}
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover"

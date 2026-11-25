@@ -1,7 +1,7 @@
 import { tr, useLocale } from '../i18n';
 import { LocalizedContent } from '../i18n/LocalizedContent';
 
-import { cropImage } from '../data/media';
+import { cropImage, photoFocus } from '../data/media';
 import { ReadAloud } from '../components/ReadAloud';
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -117,6 +117,7 @@ export const CropDetailPage: React.FC = () => {
         {cropImage(crop.slug) && (
           <img
             src={cropImage(crop.slug)!.src}
+            style={{ objectPosition: photoFocus(cropImage(crop.slug)!.src) }}
             alt=""
             className="absolute inset-0 -z-10 h-full w-full object-cover"
           />
