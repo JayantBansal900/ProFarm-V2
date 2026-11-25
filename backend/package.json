@@ -7,6 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "start:prod": "prisma migrate deploy && node dist/scripts/seedDemo.js && node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "test": "node scripts/run-tests.cjs",
@@ -15,7 +16,8 @@
     "typecheck": "tsc --noEmit",
     "admin:grant": "tsx src/scripts/adminRole.ts grant",
     "admin:revoke": "tsx src/scripts/adminRole.ts revoke",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "seed:demo": "tsx src/scripts/seedDemo.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.21.1",

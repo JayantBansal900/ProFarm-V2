@@ -71,7 +71,7 @@ All screenshots use made-up farmers and farms.
 - **Access control:** every farm query is scoped to the signed-in owner. Admin routes re-read the role from the database on every request, require two-step verification, and write to an audit log. Turning an account off ends its sessions immediately, and admins cannot turn off or demote themselves.
 - **Correct dates:** "today" for due dates and overdue tasks follows the Indian calendar day (`APP_TIMEZONE`, default `Asia/Kolkata`) regardless of where the server runs.
 - **Localization:** a build-time check fails if any interface string is missing in any of the five languages.
-- **Testing:** 615 automated tests (449 backend, 166 frontend). Backend tests run against a disposable SQLite database created for each run, behind a guard that refuses to run against the development database. GitHub Actions runs typecheck, lint, tests and the build on every pull request.
+- **Testing:** 642 automated tests (472 backend, 170 frontend). Backend tests run against a disposable SQLite database created for each run, behind a guard that refuses to run against the development database. GitHub Actions runs typecheck, lint, tests and the build on every pull request.
 
 ## Tech stack
 
@@ -123,6 +123,23 @@ npm --workspace=backend run admin:revoke -- farmer@example.com
 
 They then turn on two-step verification from **Account security**, which the admin panel requires.
 
+## Deploy for free on Render
+
+The repository includes a [`render.yaml`](render.yaml) Blueprint. It creates **one free web service** that serves both the API and the built website on a single address, so sign-in cookies just work.
+
+1. Merge this branch into `main`, then sign in to [render.com](https://render.com) with GitHub.
+2. Choose **New → Blueprint**, pick this repository and apply `render.yaml`. When it asks for `DATA_GOV_IN_API_KEY`, paste your data.gov.in key (or leave it empty: the mandi page then says prices are unavailable).
+3. Wait for the first build (a few minutes), then open the `https://….onrender.com` address Render shows.
+
+If Render asks for payment details for Blueprints, create a **Web Service** by hand instead, with the same settings: runtime Node, region Singapore, the build and start commands from `render.yaml`, and the same environment variables.
+
+**What to expect on the free plan** (Render's terms change, so check the current ones):
+
+- The service **sleeps when nobody visits**. The next visit takes about a minute to wake it.
+- The **disk is wiped on every restart**, so accounts that people create on the live site disappear. ProFarm starts with `SEED_DEMO=true`, which recreates a demo farmer with sample farms: `demo.farmer@example.com` / `ProFarm-Demo-2026`.
+- `MFA_ENCRYPTION_KEY` is generated for you. Authenticator secrets live on the same wiped disk, so two-step verification can be tried there but not relied on.
+- For data that lasts, use a paid plan with a persistent disk, or a hosted database (moving to PostgreSQL needs code changes: the sign-in query and the migrations are written for SQLite).
+
 ## Scripts
 
 Run from the repository root.
@@ -134,6 +151,7 @@ Run from the repository root.
 | `npm run lint` | ESLint for backend and frontend |
 | `npm test` | All tests (backend, then frontend) |
 | `npm run build` | Production builds |
+| `npm start` | Apply migrations, add demo data if `SEED_DEMO=true`, and start the server (run `npm run build` first). In production it also serves the built website |
 | `npm --workspace=frontend run check:locales` | Verify every string is translated in all five languages |
 
 ## Environment variables
@@ -142,11 +160,13 @@ Run from the repository root.
 | :--- | :--- | :--- |
 | `DATABASE_URL` | backend | SQLite file, `file:./dev.db` by default |
 | `PORT` | backend | API port, `4000` by default |
-| `FRONTEND_ORIGIN` | backend | The one origin allowed by CORS and CSRF checks |
+| `FRONTEND_ORIGIN` | backend | The one origin allowed by CORS and CSRF checks. Optional on Render, where it defaults to the service address |
+| `TRUST_PROXY` | backend | Reverse-proxy hops to trust for visitor IPs. `1` in production, `0` in development |
+| `SEED_DEMO` / `DEMO_PASSWORD` | backend | Add a demo farmer on start when the database has no accounts. Off by default |
 | `DATA_GOV_IN_API_KEY` | backend | Key for mandi prices |
 | `MFA_ENCRYPTION_KEY` | backend | Encrypts authenticator secrets. **Required in production** (32+ random characters), optional in development |
 | `APP_TIMEZONE` | backend | Timezone that decides what "today" is, `Asia/Kolkata` by default |
-| `VITE_API_BASE_URL` | frontend | API address, `http://localhost:4000` by default |
+| `VITE_API_BASE_URL` | frontend | API address in development, `http://localhost:4000` by default. A production build uses the page's own address |
 
 `OPENWEATHER_API_KEY` and `NASA_POWER_BASE_URL` appear in `.env.example` as placeholders for planned work. Nothing reads them yet.
 
@@ -186,6 +206,7 @@ ProFarm-V2/
 │       ├── api/  components/  context/  pages/  data/  utils/
 │       └── i18n/       # five languages and the build-time check
 ├── .github/workflows/  # CI
+├── render.yaml         # free Render deployment
 └── package.json        # npm workspace root
 ```
 
@@ -199,7 +220,7 @@ ProFarm-V2/
 - **Translations are drafts.** They have not been reviewed by native speakers, and the long crop and soil descriptions are still in English (the app shows a notice in the other languages).
 - **Mandi history is not available.** The source publishes one day at a time, so the trends endpoint says so instead of inventing data.
 - **Not built yet:** NASA POWER data, crop yield prediction, password change and reset, deleting farms or tasks (farms can be archived), reminders and notifications.
-- **Not deployed.** There is no Docker or hosting configuration yet. SQLite suits a single server; a larger deployment would move to PostgreSQL.
+- **Free hosting forgets.** On Render's free plan the disk is wiped on every restart (see above). SQLite suits a single server with a persistent disk; a larger deployment would move to PostgreSQL.
 
 ## License
 
