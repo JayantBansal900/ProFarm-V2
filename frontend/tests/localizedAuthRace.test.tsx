@@ -36,7 +36,7 @@ describe('authentication language restoration races',()=>{
    vi.mocked(api.login).mockReturnValue(new Promise<unknown>(resolve=>{resolveLogin=resolve;}) as ReturnType<typeof api.login>);
    vi.mocked(api.logout).mockResolvedValue({status:'success',message:'done'});
    render(<AuthProvider><Probe/></AuthProvider>);
-   let pending!:Promise<void>;
+   let pending!:Promise<unknown>;
    await act(async()=>{pending=context.login({email:user.email,password:'test-password'});});
    await act(async()=>context.logout());
    await act(async()=>{resolveLogin({status:'success',user});await pending;});

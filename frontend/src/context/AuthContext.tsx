@@ -38,6 +38,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const languageRevision = preferenceRevision();
     try {
       const response = await api.login(credentials);
+      if (generation !== authGeneration.current) return {};
+      if (response.status === 'mfa_required') return { mfaChallengeToken: response.challengeToken };
+      await bindLanguageUser(response.user.id, languageRevision);
+      setUser(response.user);
+      return {};
+    } finally {
+      if (generation === authGeneration.current) setLoading(false);
+    }
+  };
+
+  const completeMfaLogin = async (challengeToken: string, code: string) => {
+    const generation = ++authGeneration.current;
+    const languageRevision = preferenceRevision();
+    try {
+      const response = await api.loginWithMfa({ challengeToken, code });
       if (generation !== authGeneration.current) return;
       await bindLanguageUser(response.user.id, languageRevision);
       setUser(response.user);
@@ -78,6 +93,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         user,
         loading,
         login,
+        completeMfaLogin,
         register,
         logout,
         refreshUser,

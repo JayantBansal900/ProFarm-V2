@@ -1,17 +1,35 @@
 import { tr, useLocale } from '../i18n';
 
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { LanguageSelector } from '../i18n/LanguageSelector';
 
-const navItems = [
+const publicNav = [
   { label: 'Home', path: '/' },
-  { label: 'Dashboard', path: '/dashboard' },
   { label: 'Knowledge', path: '/knowledge' },
   { label: 'Farm Tools', path: '/tools' },
-  { label: 'My Farms', path: '/my-farms' },
 ];
+
+const memberNav = [
+  { label: 'Dashboard', path: '/dashboard' },
+  { label: 'My Farms', path: '/my-farms' },
+  { label: 'Knowledge', path: '/knowledge' },
+  { label: 'Farm Tools', path: '/tools' },
+];
+
+const initials = (name: string) =>
+  name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join('') || 'P';
+
+const Logo: React.FC = () => (
+  <span className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-profarm-forest text-white">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 20V10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M12 14C7.5 14 5 11.4 5 7c4.6 0 7 2.5 7 7Z" fill="currentColor" opacity="0.85" />
+      <path d="M12 11c0-4.4 2.4-7 7-7 0 4.4-2.5 7-7 7Z" fill="#E9A400" />
+    </svg>
+  </span>
+);
 
 export const Header: React.FC = () => {
   useLocale();
@@ -20,26 +38,39 @@ export const Header: React.FC = () => {
   const { user, logout } = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
+
+  const navItems = user ? memberNav : publicNav;
 
   useEffect(() => {
     setMenuOpen(false);
+    setAccountOpen(false);
   }, [location.pathname]);
 
-  const isActive = (path: string) =>
-    path === '/'
-      ? location.pathname === '/'
-      : location.pathname === path ||
-        location.pathname.startsWith(`${path}/`);
+  // Close the account menu on outside click or Escape.
+  useEffect(() => {
+    if (!accountOpen) return;
+    const onPointer = (event: MouseEvent) => {
+      if (!accountRef.current?.contains(event.target as Node)) setAccountOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setAccountOpen(false); };
+    document.addEventListener('mousedown', onPointer);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onPointer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [accountOpen]);
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
-
     setIsLoggingOut(true);
-
     try {
       await logout();
       setMenuOpen(false);
+      setAccountOpen(false);
       navigate('/login');
     } catch (error) {
       console.error('Unable to sign out:', error);
@@ -48,225 +79,149 @@ export const Header: React.FC = () => {
     }
   };
 
-  const navigationLink = (item: (typeof navItems)[number], mobile = false) => {
-    const active = isActive(item.path);
-
-    return (
-      <Link
-        key={item.path}
-        to={item.path}
-        aria-current={active ? 'page' : undefined}
-        onClick={() => setMenuOpen(false)}
-        className={
-          mobile
-            ? `flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
-                active
-                  ? 'bg-[#DDECDC] text-[#22484D]'
-                  : 'text-[#4D5D59] hover:bg-[#F0F4F3] hover:text-[#22484D]'
-              }`
-            : `group relative whitespace-nowrap py-2 text-[15px] font-semibold tracking-normal transition-colors duration-200 ${
-                active
-                  ? 'text-[#22484D]'
-                  : 'text-[#64706D] hover:text-[#22484D]'
-              }`
-        }
-      >
-        {tr(item.label)}
-
-        {!mobile && (
-          <span
-            aria-hidden="true"
-            className={`absolute bottom-0 left-0 h-[2px] rounded-full bg-[#48765C] transition-all duration-300 ${
-              active ? 'w-full' : 'w-0 group-hover:w-full'
-            }`}
-          />
-        )}
-
-        {mobile && active && (
-          <span
-            aria-hidden="true"
-            className="h-1.5 w-1.5 rounded-full bg-[#48765C]"
-          />
-        )}
-      </Link>
-    );
-  };
+  const desktopLink = (item: { label: string; path: string }) => (
+    <NavLink
+      key={item.path}
+      to={item.path}
+      end={item.path === '/'}
+      className={({ isActive }) =>
+        `rounded-full px-4 py-2 text-[15px] font-semibold transition-colors ${
+          isActive ? 'bg-profarm-mist text-profarm-ink' : 'text-profarm-muted hover:text-profarm-ink'
+        }`
+      }
+    >
+      {tr(item.label)}
+    </NavLink>
+  );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#DBE7DB] bg-[#F6F8F8]/95 shadow-[0_2px_24px_rgba(31,61,42,0.035)] backdrop-blur-xl">
-      <div className="mx-auto flex min-h-[76px] w-full max-w-[1440px] flex-wrap items-center justify-between gap-2 py-2 px-3 sm:px-8 lg:px-12">
-        {/* Brand */}
-        <Link
-          to="/"
-          onClick={() => setMenuOpen(false)}
-          aria-label={tr("ProFarm — Home")}
-          className="group flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#48765C]"
-        >
-          <span className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#22484D] text-[#F0F4F3] shadow-[0_6px_14px_rgba(36,75,53,0.14)] transition-transform duration-300 group-hover:-rotate-6">
-            <svg
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 20V10"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-              />
-              <path
-                d="M12 14C7.5 14 5 11.4 5 7c4.6 0 7 2.5 7 7Z"
-                fill="currentColor"
-                opacity="0.9"
-              />
-              <path
-                d="M12 11c0-4.4 2.4-7 7-7 0 4.4-2.5 7-7 7Z"
-                fill="currentColor"
-              />
-              <path
-                d="M5 20h14"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
-
-          <span className="flex flex-col leading-none">
-            <span className="text-[22px] font-extrabold tracking-tight text-[#22484D]">{tr("ProFarm")}<span className="text-[#6DA473]">.</span>
-            </span>
-            <span className="mt-1 text-xs font-bold tracking-normal text-[#73897C]">{tr("Grow with clarity")}</span>
-          </span>
+    <header className="sticky top-0 z-50 border-b border-profarm-border/70 bg-white/85 backdrop-blur-xl">
+      <div className="mx-auto flex h-[72px] w-full max-w-[1440px] items-center gap-4 px-4 sm:px-8 lg:px-12">
+        <Link to="/" aria-label={tr('ProFarm — Home')} className="flex shrink-0 items-center gap-2.5">
+          <Logo />
+          <span className="font-display text-[22px] font-bold leading-none text-profarm-ink">{tr('ProFarm')}</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav
-          aria-label={tr("Main navigation")}
-          className="hidden items-center gap-4 xl:gap-6 xl:flex"
-        >
-          {navItems.map((item) => navigationLink(item))}
+        <nav aria-label={tr('Main navigation')} className="mx-auto hidden items-center gap-1 lg:flex">
+          {navItems.map(desktopLink)}
         </nav>
 
-        {/* Desktop Authentication */}
-        <LanguageSelector />
-        <div className="hidden shrink-0 items-center gap-3 xl:flex">
-          {user ? (
-            <>
-              <div className="hidden max-w-[150px] flex-col items-end xl:flex">
-                <span className="text-xs font-medium text-[#86958E]">{tr("Welcome back")}</span>
-                <span className="max-w-full truncate text-[13px] font-bold text-[#22484D]">
-                  {user.name}
-                </span>
-              </div>
+        <div className="ms-auto flex items-center gap-2 lg:ms-0">
+          <LanguageSelector />
 
+          {user ? (
+            <div ref={accountRef} className="relative hidden lg:block">
               <button
                 type="button"
-                onClick={handleLogout}
-                disabled={isLoggingOut}
-                className="rounded-full border border-[#C8D9CE] px-5 py-2.5 text-sm font-bold text-[#22484D] transition-all duration-200 hover:border-[#22484D] hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C] disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={() => setAccountOpen((open) => !open)}
+                aria-expanded={accountOpen}
+                aria-haspopup="menu"
+                aria-label={tr('Account menu for {{v0}}', { v0: user.name })}
+                className="flex h-11 items-center gap-2 rounded-full border border-profarm-border bg-white ps-1 pe-3 transition hover:border-profarm-sage"
               >
-                {isLoggingOut ? tr("Signing out...") : tr("Sign Out")}
+                <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-full bg-profarm-forest text-sm font-bold text-white">
+                  {initials(user.name)}
+                </span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true" className="text-profarm-muted">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
               </button>
-            </>
+
+              {accountOpen && (
+                <div role="menu" className="absolute end-0 mt-2 w-72 overflow-hidden rounded-2xl border border-profarm-border bg-white shadow-[0_20px_50px_rgba(10,59,63,0.14)]">
+                  <div className="border-b border-profarm-border px-4 py-3">
+                    <p className="truncate font-semibold text-profarm-ink">{user.name}</p>
+                    <p className="truncate text-sm text-profarm-muted">{user.email}</p>
+                  </div>
+                  <div className="p-1.5">
+                    <Link role="menuitem" to="/dashboard" className="block rounded-xl px-3 py-2.5 text-[15px] font-medium text-profarm-ink hover:bg-profarm-mist">
+                      {tr('Dashboard')}
+                    </Link>
+                    <Link role="menuitem" to="/account/security" className="block rounded-xl px-3 py-2.5 text-[15px] font-medium text-profarm-ink hover:bg-profarm-mist">
+                      {tr('Account security')}
+                    </Link>
+                    <button
+                      role="menuitem"
+                      type="button"
+                      onClick={handleLogout}
+                      disabled={isLoggingOut}
+                      className="block w-full rounded-xl px-3 py-2.5 text-start text-[15px] font-medium text-red-700 hover:bg-red-50 disabled:opacity-60"
+                    >
+                      {isLoggingOut ? tr('Signing out...') : tr('Sign Out')}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
-            <>
-              <Link
-                to="/login"
-                className="rounded-full px-4 py-2.5 text-sm font-bold text-[#22484D] transition-colors hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
-              >{tr("Sign In")}</Link>
-
-              <Link
-                to="/signup"
-                className="inline-flex items-center gap-2 rounded-full bg-[#22484D] px-5 py-3 text-sm font-bold text-white shadow-[0_5px_14px_rgba(36,75,53,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#325D5F] hover:shadow-[0_8px_20px_rgba(36,75,53,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
-              >{tr("Get Started")}<span aria-hidden="true">↗</span>
+            <div className="hidden items-center gap-1 lg:flex">
+              <Link to="/login" className="rounded-full px-4 py-2.5 text-[15px] font-semibold text-profarm-ink hover:bg-profarm-mist">
+                {tr('Sign In')}
               </Link>
-            </>
+              <Link to="/signup" className="rounded-full bg-profarm-forest px-5 py-2.5 text-[15px] font-semibold text-white transition hover:bg-profarm-deep">
+                {tr('Create account')}
+              </Link>
+            </div>
           )}
-        </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          aria-label={menuOpen ? tr("Close navigation menu") : tr("Open navigation menu")}
-          aria-expanded={menuOpen}
-          aria-controls="profarm-mobile-navigation"
-          onClick={() => setMenuOpen((previous) => !previous)}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#D7E6DB] text-[#22484D] transition-colors hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C] xl:hidden"
-        >
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+          <button
+            type="button"
+            aria-label={menuOpen ? tr('Close navigation menu') : tr('Open navigation menu')}
+            aria-expanded={menuOpen}
+            aria-controls="profarm-mobile-navigation"
+            onClick={() => setMenuOpen((open) => !open)}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-profarm-border text-profarm-ink hover:bg-profarm-mist lg:hidden"
           >
-            {menuOpen ? (
-              <>
-                <path d="M5 5l14 14" />
-                <path d="M19 5L5 19" />
-              </>
-            ) : (
-              <>
-                <path d="M4 7h16" />
-                <path d="M4 12h16" />
-                <path d="M4 17h16" />
-              </>
-            )}
-          </svg>
-        </button>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+              {menuOpen ? (<><path d="M6 6l12 12" /><path d="M18 6 6 18" /></>) : (<><path d="M4 8h16" /><path d="M4 16h16" /></>)}
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Navigation */}
       {menuOpen && (
-        <div
-          id="profarm-mobile-navigation"
-          className="border-t border-[#DBE7DB] bg-[#F6F8F8] px-5 pb-6 pt-4 shadow-[0_16px_25px_rgba(31,61,42,0.08)] sm:px-8 xl:hidden"
-        >
-          <nav
-            aria-label={tr("Mobile navigation")}
-            className="mx-auto flex max-w-[1440px] flex-col gap-1"
-          >
-            {navItems.map((item) => navigationLink(item, true))}
+        <div id="profarm-mobile-navigation" className="border-t border-profarm-border bg-white px-4 pb-6 pt-3 sm:px-8 lg:hidden">
+          <nav aria-label={tr('Mobile navigation')} className="flex flex-col">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.path === '/'}
+                className={({ isActive }) =>
+                  `rounded-xl px-4 py-3.5 text-base font-semibold ${isActive ? 'bg-profarm-mist text-profarm-ink' : 'text-profarm-muted'}`
+                }
+              >
+                {tr(item.label)}
+              </NavLink>
+            ))}
+            {user && (
+              <NavLink to="/account/security" className="rounded-xl px-4 py-3.5 text-base font-semibold text-profarm-muted">
+                {tr('Account security')}
+              </NavLink>
+            )}
           </nav>
 
-          <div className="mx-auto mt-5 max-w-[1440px] border-t border-[#DBE7DB] pt-5">
+          <div className="mt-4 border-t border-profarm-border pt-4">
             {user ? (
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex min-w-0 flex-col">
-                  <span className="text-xs text-[#86958E]">{tr("Signed in as")}</span>
-                  <span className="truncate text-sm font-bold text-[#22484D]">
-                    {user.name}
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-profarm-forest text-sm font-bold text-white">
+                    {initials(user.name)}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate font-semibold text-profarm-ink">{user.name}</span>
+                    <span className="block truncate text-sm text-profarm-muted">{user.email}</span>
                   </span>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  disabled={isLoggingOut}
-                  className="rounded-full border border-[#C8D9CE] px-5 py-2.5 text-sm font-semibold text-[#22484D] hover:bg-[#E6F0E6] disabled:opacity-60"
-                >
-                  {isLoggingOut ? tr("Signing out...") : tr("Sign Out")}
+                <button type="button" onClick={handleLogout} disabled={isLoggingOut}
+                  className="shrink-0 rounded-full border border-profarm-border px-4 py-2.5 font-semibold text-red-700 disabled:opacity-60">
+                  {isLoggingOut ? tr('Signing out...') : tr('Sign Out')}
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-3">
-                <Link
-                  to="/login"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex-1 rounded-full border border-[#C8D9CE] px-5 py-3 text-center text-sm font-semibold text-[#22484D]"
-                >{tr("Sign In")}</Link>
-
-                <Link
-                  to="/signup"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex-1 rounded-full bg-[#22484D] px-5 py-3 text-center text-sm font-semibold text-white"
-                >{tr("Get Started")}</Link>
+              <div className="grid grid-cols-2 gap-3">
+                <Link to="/login" className="rounded-full border border-profarm-border py-3 text-center font-semibold text-profarm-ink">{tr('Sign In')}</Link>
+                <Link to="/signup" className="rounded-full bg-profarm-forest py-3 text-center font-semibold text-white">{tr('Create account')}</Link>
               </div>
             )}
           </div>

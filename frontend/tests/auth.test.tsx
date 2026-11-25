@@ -5,6 +5,7 @@ import {
   screen,
   fireEvent,
   waitFor,
+  within,
 } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -18,6 +19,7 @@ vi.mock('../src/api/api', () => ({
   api: {
     getMe: vi.fn(),
     login: vi.fn(),
+    loginWithMfa: vi.fn(),
     register: vi.fn(),
     logout: vi.fn(),
   },
@@ -186,16 +188,68 @@ describe('Frontend Authentication UI & Context Flow', () => {
       </BrowserRouter>
     );
 
-    await waitFor(() => {
-      expect(
-        screen.getByText('Sunita Sharma')
-      ).toBeInTheDocument();
+    const accountButton = await screen.findByRole('button', { name: 'Account menu for Sunita Sharma' });
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    fireEvent.click(accountButton);
 
-      expect(
-        screen.getByRole('button', {
-          name: /Sign Out/i,
-        })
-      ).toBeInTheDocument();
+    const menu = screen.getByRole('menu');
+    expect(within(menu).getByText('Sunita Sharma')).toBeInTheDocument();
+    expect(within(menu).getByText('sunita@example.com')).toBeInTheDocument();
+    expect(within(menu).getByRole('menuitem', { name: 'Account security' })).toHaveAttribute('href', '/account/security');
+    expect(within(menu).getByRole('menuitem', { name: /Sign Out/i })).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
+
+  it('asks for a verification code when the account has two-step verification', async () => {
+    vi.mocked(api.getMe).mockResolvedValueOnce(null as any);
+    vi.mocked(api.login).mockResolvedValueOnce({
+      status: 'mfa_required', message: 'Enter the code', mfaRequired: true, challengeToken: 'c'.repeat(64),
     });
+    vi.mocked(api.loginWithMfa)
+      .mockRejectedValueOnce(new ApiError('That code is not correct. Try the newest code from your app, or a backup code.', 400))
+      .mockResolvedValueOnce({ status: 'success', user: { id: 'u-2', name: 'Kiran Rao', email: 'kiran@example.com' } });
+
+    render(<BrowserRouter><AuthProvider><LoginPage /></AuthProvider></BrowserRouter>);
+
+    fireEvent.change(screen.getByLabelText(/^Email Address$/i, { selector: 'input' }), { target: { value: 'kiran@example.com' } });
+    fireEvent.change(screen.getByLabelText(/^Password$/i, { selector: 'input' }), { target: { value: 'secretPass123' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Sign In$/i }));
+
+    expect(await screen.findByRole('heading', { name: 'Enter your verification code' })).toBeInTheDocument();
+    const codeInput = screen.getByLabelText('Verification code');
+    expect(codeInput).toHaveAttribute('autocomplete', 'one-time-code');
+
+    // Non-digits are stripped and the button stays disabled until 6 digits.
+    fireEvent.change(codeInput, { target: { value: '12ab34' } });
+    expect(codeInput).toHaveValue('1234');
+    expect(screen.getByRole('button', { name: 'Verify and sign in' })).toBeDisabled();
+
+    fireEvent.change(codeInput, { target: { value: '000000' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Verify and sign in' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('That code is not correct');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Use a backup code instead' }));
+    fireEvent.change(screen.getByLabelText('Backup code'), { target: { value: 'abcde-fghjk' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Verify and sign in' }));
+
+    await waitFor(() => expect(api.loginWithMfa).toHaveBeenLastCalledWith({ challengeToken: 'c'.repeat(64), code: 'abcde-fghjk' }));
+  });
+
+  it('returns to the password step when the verification session expires', async () => {
+    vi.mocked(api.getMe).mockResolvedValueOnce(null as any);
+    vi.mocked(api.login).mockResolvedValueOnce({ status: 'mfa_required', message: '', mfaRequired: true, challengeToken: 'd'.repeat(64) });
+    vi.mocked(api.loginWithMfa).mockRejectedValueOnce(new ApiError('Your sign-in took too long. Enter your email and password again.', 401));
+
+    render(<BrowserRouter><AuthProvider><LoginPage /></AuthProvider></BrowserRouter>);
+    fireEvent.change(screen.getByLabelText(/^Email Address$/i, { selector: 'input' }), { target: { value: 'kiran@example.com' } });
+    fireEvent.change(screen.getByLabelText(/^Password$/i, { selector: 'input' }), { target: { value: 'secretPass123' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Sign In$/i }));
+    fireEvent.change(await screen.findByLabelText('Verification code'), { target: { value: '123456' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Verify and sign in' }));
+
+    expect(await screen.findByRole('heading', { name: /Welcome Back/i })).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('Your sign-in took too long');
   });
 });

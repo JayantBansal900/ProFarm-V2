@@ -5,6 +5,10 @@ import {
   ApiErrorResponse,
   AuthResponse,
   LogoutResponse,
+  LoginResponse,
+  MfaStatus,
+  MfaSetupResponse,
+  MfaBackupCodesResponse,
 } from '../types';
 
 import {
@@ -197,9 +201,40 @@ export const api = {
     }),
 
   login: (body: { email: string; password: string }) =>
-    request<AuthResponse>('/api/auth/login', {
+    request<LoginResponse>('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(body),
+    }),
+
+  // Second sign-in step for accounts with two-step verification.
+  loginWithMfa: (body: { challengeToken: string; code: string }) =>
+    request<AuthResponse>('/api/auth/login/mfa', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  getMfaStatus: () =>
+    request<{ status: 'success'; mfa: MfaStatus }>('/api/auth/mfa'),
+
+  startMfaSetup: () =>
+    request<MfaSetupResponse>('/api/auth/mfa/setup', { method: 'POST' }),
+
+  enableMfa: (code: string) =>
+    request<MfaBackupCodesResponse>('/api/auth/mfa/enable', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    }),
+
+  disableMfa: (body: { password: string; code: string }) =>
+    request<{ status: 'success'; message: string }>('/api/auth/mfa/disable', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
+
+  regenerateBackupCodes: (code: string) =>
+    request<MfaBackupCodesResponse>('/api/auth/mfa/backup-codes', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
     }),
 
   logout: () =>

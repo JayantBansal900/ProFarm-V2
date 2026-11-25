@@ -28,6 +28,7 @@ import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CreditsPage } from './pages/CreditsPage';
+import { SecurityPage } from './pages/SecurityPage';
 
 export const routes: RouteObject[] = [
   {
@@ -126,6 +127,14 @@ export const routes: RouteObject[] = [
         element: <SignupPage />,
       },
 
+      {
+        path: 'account/security',
+        element: (
+          <ProtectedRoute>
+            <SecurityPage />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: 'credits',
         element: <CreditsPage />,

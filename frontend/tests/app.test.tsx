@@ -133,7 +133,7 @@ describe('Frontend Routes & Authentication Protection', () => {
 
       expect(
         screen.getByRole('link', {
-          name: /Get Started/i,
+          name: /^Create account$/i,
         })
       ).toBeInTheDocument();
     });
