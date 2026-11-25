@@ -140,6 +140,11 @@ export const Header: React.FC = () => {
                     <Link role="menuitem" to="/account/security" className="block rounded-xl px-3 py-2.5 text-[15px] font-medium text-profarm-ink hover:bg-profarm-mist">
                       {tr('Account security')}
                     </Link>
+                    {user.role === 'admin' && (
+                      <Link role="menuitem" to="/admin" className="block rounded-xl px-3 py-2.5 text-[15px] font-medium text-profarm-ink hover:bg-profarm-mist">
+                        {tr('Admin panel')}
+                      </Link>
+                    )}
                     <button
                       role="menuitem"
                       type="button"
@@ -197,6 +202,11 @@ export const Header: React.FC = () => {
             {user && (
               <NavLink to="/account/security" className="rounded-xl px-4 py-3.5 text-base font-semibold text-profarm-muted">
                 {tr('Account security')}
+              </NavLink>
+            )}
+            {user?.role === 'admin' && (
+              <NavLink to="/admin" className="rounded-xl px-4 py-3.5 text-base font-semibold text-profarm-muted">
+                {tr('Admin panel')}
               </NavLink>
             )}
           </nav>

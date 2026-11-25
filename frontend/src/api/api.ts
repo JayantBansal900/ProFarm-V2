@@ -9,6 +9,11 @@ import {
   MfaStatus,
   MfaSetupResponse,
   MfaBackupCodesResponse,
+  AdminStats,
+  AdminUsersResponse,
+  AdminUserResponse,
+  AdminAuditResponse,
+  UserRole,
 } from '../types';
 
 import {
@@ -244,6 +249,41 @@ export const api = {
 
   getMe: () =>
     request<AuthResponse>('/api/auth/me'),
+
+  // ============================================================
+  // Admin (admins only)
+  // ============================================================
+
+  getAdminStats: () =>
+    request<{ status: 'success'; data: AdminStats }>('/api/admin/stats'),
+
+  getAdminUsers: (query: {
+    page?: number;
+    search?: string;
+    role?: UserRole;
+    status?: 'active' | 'inactive';
+  }) =>
+    request<AdminUsersResponse>(
+      `/api/admin/users${buildQueryString({ ...query, limit: 10 })}`
+    ),
+
+  setAdminUserRole: (id: string, role: UserRole) =>
+    request<AdminUserResponse>(`/api/admin/users/${id}/role`, {
+      method: 'PATCH',
+      body: JSON.stringify({ role }),
+    }),
+
+  deactivateAdminUser: (id: string) =>
+    request<AdminUserResponse>(`/api/admin/users/${id}/deactivate`, { method: 'POST' }),
+
+  reactivateAdminUser: (id: string) =>
+    request<AdminUserResponse>(`/api/admin/users/${id}/reactivate`, { method: 'POST' }),
+
+  resetAdminUserMfa: (id: string) =>
+    request<AdminUserResponse>(`/api/admin/users/${id}/reset-mfa`, { method: 'POST' }),
+
+  getAdminAudit: (page = 1) =>
+    request<AdminAuditResponse>(`/api/admin/audit${buildQueryString({ page, limit: 8 })}`),
 
   // ============================================================
   // Weather

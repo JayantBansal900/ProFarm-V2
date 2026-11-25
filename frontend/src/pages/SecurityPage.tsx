@@ -249,7 +249,7 @@ export const SecurityPage: React.FC = () => {
       <section className="mt-6 rounded-3xl border border-profarm-border bg-white p-6 sm:p-8">
         <h2 className="font-display text-2xl font-bold text-profarm-ink">{tr('Who can see your data')}</h2>
         <p className="mt-1 text-profarm-muted">
-          {tr('Only you can see your farms, crop cycles, tasks and activities. ProFarm has no admin accounts that can open them.')}
+          {tr('Only you can see your farms, crop cycles, tasks and activities. ProFarm admins can manage accounts, but they cannot open your farm records.')}
         </p>
       </section>
     </div>

@@ -29,6 +29,8 @@ import { SignupPage } from './pages/SignupPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CreditsPage } from './pages/CreditsPage';
 import { SecurityPage } from './pages/SecurityPage';
+import { AdminPage } from './pages/AdminPage';
+import { AdminRoute } from './components/AdminRoute';
 
 export const routes: RouteObject[] = [
   {
@@ -133,6 +135,14 @@ export const routes: RouteObject[] = [
           <ProtectedRoute>
             <SecurityPage />
           </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin',
+        element: (
+          <AdminRoute>
+            <AdminPage />
+          </AdminRoute>
         ),
       },
       {
