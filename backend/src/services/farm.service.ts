@@ -1,4 +1,6 @@
 import { prisma } from '../lib/prisma';
+import { env } from '../config/env';
+import { dateInTimeZone } from '../lib/timezone';
 import { Prisma, PrismaClient, CropCycle } from '@prisma/client';
 import { findCropByIdOrSlug } from './advisor.service';
 import { paginationWindow, paginationMetadata } from '../validators/pagination.validator';
@@ -70,12 +72,9 @@ export class ForbiddenError extends Error {
 // Helpers
 // ---------------------------------------------------------------------------
 
-export function getTodayDateString(): string {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+/** Today's date as YYYY-MM-DD in the app timezone, not the server's local timezone. */
+export function getTodayDateString(now: Date = new Date(), timeZone: string = env.APP_TIMEZONE): string {
+  return dateInTimeZone(now, timeZone);
 }
 
 export async function ensureFarmOwnership(

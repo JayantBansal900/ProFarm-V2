@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { z } from 'zod';
 import { assertSafeTestDatabase } from '../../testing/database-safety.cjs';
+import { isValidTimeZone } from '../lib/timezone';
 
 // Load local backend .env if present
 const testing = process.env.NODE_ENV === 'test' || Boolean(process.env.VITEST);
@@ -22,6 +23,8 @@ const envSchema = z.object({
   OPENWEATHER_API_KEY: z.string().optional().default(''),
   NASA_POWER_BASE_URL: z.string().url().default('https://power.larc.nasa.gov'),
   DATA_GOV_IN_API_KEY: z.string().optional().default(''),
+  // Decides what "today" means for due dates and overdue tasks. The servers may run in UTC.
+  APP_TIMEZONE: z.string().refine(isValidTimeZone, 'APP_TIMEZONE must be an IANA timezone such as Asia/Kolkata').default('Asia/Kolkata'),
   // Encrypts two-step verification secrets at rest. Required (32+ chars) in production.
   MFA_ENCRYPTION_KEY: z.string().optional().default(''),
 }).transform((value, context) => {

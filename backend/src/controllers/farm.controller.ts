@@ -40,12 +40,6 @@ import {
   cropCycleListQuerySchema,
 } from '../validators/farm.validator';
 
-function getParam(param: string | string[] | undefined): string {
-  if (typeof param === 'string') return param;
-  if (Array.isArray(param) && param.length > 0) return param[0];
-  return '';
-}
-
 function handleServiceError(error: unknown, res: Response, next: NextFunction) {
   if (error instanceof NotFoundError) {
     res.status(404).json({ status: 'error', message: error.message });
@@ -98,7 +92,7 @@ export async function getFarmsController(req: Request, res: Response, next: Next
 export async function getFarmByIdController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const farm = await getFarmById(userId, farmId);
     res.status(200).json({ status: 'success', data: farm });
   } catch (err) {
@@ -109,7 +103,7 @@ export async function getFarmByIdController(req: Request, res: Response, next: N
 export async function updateFarmController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const body = updateFarmBodySchema.parse(req.body);
     const farm = await updateFarm(userId, farmId, body);
     res.status(200).json({ status: 'success', data: farm });
@@ -121,7 +115,7 @@ export async function updateFarmController(req: Request, res: Response, next: Ne
 export async function archiveFarmController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const farm = await archiveFarm(userId, farmId);
     res.status(200).json({ status: 'success', message: 'Farm archived successfully', data: farm });
   } catch (err) {
@@ -132,7 +126,7 @@ export async function archiveFarmController(req: Request, res: Response, next: N
 export async function restoreFarmController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const farm = await restoreFarm(userId, farmId);
     res.status(200).json({ status: 'success', message: 'Farm restored successfully', data: farm });
   } catch (err) {
@@ -147,7 +141,7 @@ export async function restoreFarmController(req: Request, res: Response, next: N
 export async function createCropCycleController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const body = createCropCycleBodySchema.parse(req.body);
     const cycle = await createCropCycle(userId, farmId, body);
     res.status(201).json({ status: 'success', data: cycle });
@@ -159,7 +153,7 @@ export async function createCropCycleController(req: Request, res: Response, nex
 export async function getCropCyclesController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const query = cropCycleListQuerySchema.parse(req.query);
     const result = await getCropCycleCollection(userId, farmId, query);
     res.status(200).json({ status: 'success', ...result });
@@ -171,8 +165,8 @@ export async function getCropCyclesController(req: Request, res: Response, next:
 export async function updateCropCycleController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
-    const cycleId = getParam(req.params.cycleId);
+    const farmId = req.params.farmId;
+    const cycleId = req.params.cycleId;
     const body = updateCropCycleBodySchema.parse(req.body);
     const cycle = await updateCropCycle(userId, farmId, cycleId, body);
     res.status(200).json({ status: 'success', data: cycle });
@@ -188,7 +182,7 @@ export async function updateCropCycleController(req: Request, res: Response, nex
 export async function createActivityController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const body = createFarmActivityBodySchema.parse(req.body);
     const activity = await createActivity(userId, farmId, body);
     res.status(201).json({ status: 'success', data: activity });
@@ -200,7 +194,7 @@ export async function createActivityController(req: Request, res: Response, next
 export async function getActivitiesController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const query = activityListQuerySchema.parse(req.query);
     const result = await getActivities(userId, farmId, query);
     res.status(200).json({ status: 'success', ...result });
@@ -212,8 +206,8 @@ export async function getActivitiesController(req: Request, res: Response, next:
 export async function updateActivityController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
-    const activityId = getParam(req.params.activityId);
+    const farmId = req.params.farmId;
+    const activityId = req.params.activityId;
     const body = updateFarmActivityBodySchema.parse(req.body);
     const activity = await updateActivity(userId, farmId, activityId, body);
     res.status(200).json({ status: 'success', data: activity });
@@ -225,8 +219,8 @@ export async function updateActivityController(req: Request, res: Response, next
 export async function deleteActivityController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
-    const activityId = getParam(req.params.activityId);
+    const farmId = req.params.farmId;
+    const activityId = req.params.activityId;
     await deleteActivity(userId, farmId, activityId);
     res.status(200).json({ status: 'success', message: 'Activity deleted successfully' });
   } catch (err) {
@@ -241,7 +235,7 @@ export async function deleteActivityController(req: Request, res: Response, next
 export async function createTaskController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const body = createFarmTaskBodySchema.parse(req.body);
     const task = await createTask(userId, farmId, body);
     res.status(201).json({ status: 'success', data: task });
@@ -253,7 +247,7 @@ export async function createTaskController(req: Request, res: Response, next: Ne
 export async function getTasksController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
+    const farmId = req.params.farmId;
     const query = taskListQuerySchema.parse(req.query);
     const result = await getTasks(userId, farmId, query);
     res.status(200).json({ status: 'success', ...result });
@@ -265,8 +259,8 @@ export async function getTasksController(req: Request, res: Response, next: Next
 export async function updateTaskController(req: Request, res: Response, next: NextFunction) {
   try {
     const userId = req.user!.id;
-    const farmId = getParam(req.params.farmId);
-    const taskId = getParam(req.params.taskId);
+    const farmId = req.params.farmId;
+    const taskId = req.params.taskId;
     const body = updateFarmTaskBodySchema.parse(req.body);
     const task = await updateTask(userId, farmId, taskId, body);
     res.status(200).json({ status: 'success', data: task });

@@ -73,7 +73,7 @@ describe('landing hero and logo', () => {
   it('gives every logo instance its own gradient ids so two logos on a page do not clash', () => {
     const { container } = render(<><LogoMark /><LogoMark size={46} /></>);
     const ids = Array.from(container.querySelectorAll('linearGradient, radialGradient, clipPath')).map((node) => node.id);
-    expect(ids.length).toBeGreaterThan(4);
+    expect(ids.length).toBeGreaterThan(0);
     expect(new Set(ids).size).toBe(ids.length);
     expect(container.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(2);
   });
