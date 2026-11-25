@@ -154,7 +154,7 @@ export async function completeMfaChallenge(rawToken: string, code: string, db: D
   const tokenHash = hashToken(rawToken);
   const challenge = await db.mfaChallenge.findUnique({
     where: { tokenHash },
-    include: { user: { select: { id: true, name: true, email: true } } },
+    include: { user: { select: { id: true, name: true, email: true, role: true, isActive: true } } },
   });
   const expired = new MfaError('Your sign-in took too long. Enter your email and password again.', 401);
   if (!challenge) throw expired;
@@ -175,5 +175,7 @@ export async function completeMfaChallenge(rawToken: string, code: string, db: D
   // Single use: only the request that deletes the challenge may sign in.
   const consumed = await db.mfaChallenge.deleteMany({ where: { tokenHash } });
   if (consumed.count !== 1) throw expired;
-  return challenge.user;
+  if (!challenge.user.isActive) throw new MfaError('This account has been turned off. Contact ProFarm support.', 403);
+  const { id, name, email, role } = challenge.user;
+  return { id, name, email, role };
 }

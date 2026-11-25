@@ -169,6 +169,26 @@ ProFarm-V2/
 - **Phase 3B:** Crop & Soil Knowledge Explorer (12 Indian crops, 6 soil classifications, seasons, cross-linking).
 - **Phase 3C:** Live Weather & Rainfall Intelligence (Open-Meteo proxy, Indian location search, 7-day forecast, rainfall sum vs prob, rule-based farmer guidance, in-memory caching).
 - **Phase 3D:** Real-Time Mandi Price Tracker & Trends (data.gov.in / AGMARKNET proxy, wholesale modal rates, like-for-like comparison, cascading state/district filters, bounded in-memory caching).
+- **Phase 3E:** Sustainable Farming Advisor (rule-based guidance by crop, soil and conditions).
+- **Phase 3F:** Farm planner (farms, crop cycles, activities, tasks, overview and calendar; archived farms are read-only).
+- **Accounts:** two-step verification (authenticator app plus 10 single-use backup codes) and an admin panel.
+
+---
+
+## Accounts, two-step verification and admins
+
+There are two roles. **Farmers** (every sign-up) can only ever see their own farms, crop cycles, tasks and activities. **Admins** manage accounts: they can list accounts, turn an account off or on, grant or remove admin access, reset a farmer's lost two-step verification, and read an audit log of those actions. Admins see how many farms a farmer has, never what is in them.
+
+- Sign-up can never create an admin. Grant access from the command line (the person must already have signed up):
+
+  ```bash
+  npm --workspace=backend run admin:grant  -- farmer@example.com
+  npm --workspace=backend run admin:revoke -- farmer@example.com
+  ```
+
+- Admin accounts **must turn on two-step verification** (Account security page) before the admin panel opens.
+- Turning an account off signs it out everywhere at once; admins cannot turn off or demote themselves.
+- Set `MFA_ENCRYPTION_KEY` (32+ random characters) in production. It encrypts authenticator secrets at rest and the server will not start in production without it.
 
 ---
 

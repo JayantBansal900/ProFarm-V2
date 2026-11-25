@@ -261,7 +261,7 @@ describe('Express 4 authentication error forwarding', () => {
     expect(next.mock.calls[0][0]).toBeInstanceOf(authService.AuthenticationUnavailableError);
   });
   it('continues once with the authenticated user context', async () => {
-    const user = { id: 'fixture-user', name: 'Phase One Farmer', email: 'fixture@example.com' };
+    const user = { id: 'fixture-user', name: 'Phase One Farmer', email: 'fixture@example.com', role: 'user' };
     vi.spyOn(authService, 'validateSession').mockResolvedValueOnce(user);
     const req = { cookies: { profarm_sid: 'synthetic-token' } } as unknown as Request;
     const next = vi.fn<(error?: unknown) => void>();

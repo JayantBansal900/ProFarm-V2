@@ -13,6 +13,8 @@
     "test:safety": "node --test testing/database-safety.test.cjs",
     "typecheck:tests": "tsc -p tsconfig.tests.json --noEmit",
     "typecheck": "tsc --noEmit",
+    "admin:grant": "tsx src/scripts/adminRole.ts grant",
+    "admin:revoke": "tsx src/scripts/adminRole.ts revoke",
     "lint": "eslint src"
   },
   "dependencies": {

@@ -79,12 +79,12 @@ export async function createSession(userId: string, prisma: SessionDatabase): Pr
 export async function validateSession(
   rawToken: string,
   prisma: SessionDatabase,
-): Promise<{ id: string; name: string; email: string } | null> {
+): Promise<{ id: string; name: string; email: string; role: string } | null> {
   const tokenHash = hashToken(rawToken);
 
   const session = await prisma.session.findUnique({
     where: { tokenHash },
-    include: { user: { select: { id: true, name: true, email: true } } },
+    include: { user: { select: { id: true, name: true, email: true, role: true, isActive: true } } },
   });
 
   if (!session) return null;
@@ -93,8 +93,14 @@ export async function validateSession(
     await prisma.session.deleteMany({ where: { tokenHash } });
     return null;
   }
+  // An admin turned this account off: the session stops working at once.
+  if (!session.user.isActive) {
+    await prisma.session.deleteMany({ where: { tokenHash } });
+    return null;
+  }
 
-  return session.user;
+  const { id, name, email, role } = session.user;
+  return { id, name, email, role };
 }
 
 export async function revokeSession(rawToken: string, prisma: SessionDatabase): Promise<void> {

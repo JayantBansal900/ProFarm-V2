@@ -38,6 +38,11 @@ function cookieOptions() {
   };
 }
 
+/** Best effort: a failure to note the time must never block a sign-in. */
+async function recordLogin(userId: string): Promise<void> {
+  await prisma.user.update({ where: { id: userId }, data: { lastLoginAt: new Date() } }).catch(() => undefined);
+}
+
 // ---------------------------------------------------------------------------
 // POST /api/auth/register
 // ---------------------------------------------------------------------------
@@ -57,7 +62,7 @@ export async function register(req: Request, res: Response, next: NextFunction):
     const { user, rawToken } = await prisma.$transaction(async (transaction) => {
       const user = await transaction.user.create({
         data: { name, email, passwordHash },
-        select: { id: true, name: true, email: true, createdAt: true },
+        select: { id: true, name: true, email: true, role: true, createdAt: true },
       });
 
       const rawToken = await createSession(user.id, transaction);
@@ -100,7 +105,15 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
       return;
     }
 
-    const security = await prisma.user.findUnique({ where: { id: user.id }, select: { mfaEnabled: true } });
+    const security = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { mfaEnabled: true, isActive: true, role: true },
+    });
+    if (security && !security.isActive) {
+      // Only said after the password is right, so it does not reveal which emails exist.
+      res.status(403).json({ status: 'error', message: 'This account has been turned off. Contact ProFarm support.' });
+      return;
+    }
     if (security?.mfaEnabled) {
       // Password was right; no session until the second factor is checked.
       const challengeToken = await createMfaChallenge(user.id, prisma);
@@ -114,12 +127,13 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
     }
 
     const rawToken = await createSession(user.id, prisma);
+    await recordLogin(user.id);
     res.cookie(COOKIE_NAME, rawToken, { ...cookieOptions(), maxAge: SEVEN_DAYS_MS });
 
     res.status(200).json({
       status: 'success',
       message: 'Logged in successfully',
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: user.id, name: user.name, email: user.email, role: security?.role ?? 'user' },
     });
   } catch {
     next(new AuthenticationUnavailableError());
@@ -171,8 +185,13 @@ export async function loginWithMfa(req: Request, res: Response, next: NextFuncti
     const { challengeToken, code } = req.body as { challengeToken: string; code: string };
     const user = await completeMfaChallenge(challengeToken, code, prisma);
     const rawToken = await createSession(user.id, prisma);
+    await recordLogin(user.id);
     res.cookie(COOKIE_NAME, rawToken, { ...cookieOptions(), maxAge: SEVEN_DAYS_MS });
-    res.status(200).json({ status: 'success', message: 'Logged in successfully', user });
+    res.status(200).json({
+      status: 'success',
+      message: 'Logged in successfully',
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
+    });
   } catch (error) {
     mfaFailure(error, res, next);
   }

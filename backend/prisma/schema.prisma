@@ -17,6 +17,14 @@ model User {
   farms        Farm[]
   sessions     Session[]
 
+  // "user" (farmer) or "admin". Admins are granted with `npm run admin:grant`, never by sign-up.
+  role         String    @default("user")
+  // Turned-off accounts cannot sign in; their sessions are removed.
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  adminActions AdminAuditEntry[] @relation("AuditActor")
+  adminTargets AdminAuditEntry[] @relation("AuditTarget")
+
   // Two-step verification (TOTP authenticator app). Secrets are AES-256-GCM encrypted.
   mfaEnabled       Boolean         @default(false)
   mfaSecret        String?
@@ -158,4 +166,20 @@ model Session {
   @@index([userId])
   @@index([expiresAt])
   @@map("sessions")
+}
+
+/// Every change an admin makes to an account, for accountability.
+model AdminAuditEntry {
+  id           String   @id @default(uuid())
+  actorId      String?  // null when done from the command line
+  targetUserId String?
+  action       String   // grant_admin, revoke_admin, deactivate, reactivate, reset_mfa
+  detail       String?
+  createdAt    DateTime @default(now())
+  actor        User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  target       User?    @relation("AuditTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([targetUserId])
+  @@map("admin_audit_log")
 }
