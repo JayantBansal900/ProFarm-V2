@@ -10,38 +10,42 @@ export default {
     extend: {
       colors: {
         profarm: {
-          cream: "#F7F6F2",
-          ivory: "#FDFCF9",
-          forest: "#18392B",
-          deep: "#10291F",
-          olive: "#71805D",
-          sage: "#A7B69A",
-          mist: "#E9EDE6",
-          gold: "#C9A66B",
-          ink: "#1D2520",
-          muted: "#69736B",
-          border: "#E5E9E2",
+          cream: "#F1F5F3",
+          ivory: "#FFFFFF",
+          forest: "#0F5257",
+          deep: "#0A3B3F",
+          olive: "#2C7F72",
+          sage: "#9CC5B6",
+          mist: "#E3EEEA",
+          gold: "#E9A400",
+          turmeric: "#E9A400",
+          soil: "#7A4E2D",
+          paddy: "#3E8E41",
+          ink: "#14262E",
+          muted: "#56676B",
+          border: "#D5E0DD",
         },
 
         brand: {
-          50: "#F3F7F1",
-          100: "#E5EDE1",
-          200: "#CADCC4",
-          300: "#A7C49E",
-          400: "#7FA875",
-          500: "#5B8A56",
-          600: "#426E42",
-          700: "#315638",
-          800: "#24442F",
-          900: "#18392B",
-          950: "#10291F",
+          50: "#EEF6F4",
+          100: "#D9ECE7",
+          200: "#B3D8CE",
+          300: "#84BDAF",
+          400: "#4F9C8C",
+          500: "#2C7F72",
+          600: "#1C6A63",
+          700: "#15585A",
+          800: "#0F5257",
+          900: "#0A3B3F",
+          950: "#072B2E",
         },
       },
 
       fontFamily: {
-        sans: ["Manrope", "Inter", "sans-serif"],
-        display: ["Manrope", "sans-serif"],
-        editorial: ["Instrument Serif", "Georgia", "serif"],
+        sans: ["'Noto Sans'", "'Noto Sans Devanagari'", "'Noto Sans Gurmukhi'", "'Noto Sans Telugu'", "'Noto Sans Tamil'", "system-ui", "sans-serif"],
+        display: ["'Baloo 2'", "'Baloo Paaji 2'", "'Baloo Tammudu 2'", "'Baloo Thambi 2'", "system-ui", "sans-serif"],
+        serif: ["'Baloo 2'", "'Baloo Paaji 2'", "'Baloo Tammudu 2'", "'Baloo Thambi 2'", "system-ui", "sans-serif"],
+        editorial: ["'Baloo 2'", "'Baloo Paaji 2'", "'Baloo Tammudu 2'", "'Baloo Thambi 2'", "system-ui", "sans-serif"],
       },
 
       fontSize: {
@@ -49,8 +53,8 @@ export default {
           "clamp(3.5rem, 7vw, 7rem)",
           {
             lineHeight: "0.98",
-            letterSpacing: "-0.065em",
-            fontWeight: "500",
+            letterSpacing: "-0.02em",
+            fontWeight: "700",
           },
         ],
 
@@ -58,8 +62,8 @@ export default {
           "clamp(2.75rem, 5vw, 5rem)",
           {
             lineHeight: "1.05",
-            letterSpacing: "-0.055em",
-            fontWeight: "500",
+            letterSpacing: "-0.015em",
+            fontWeight: "700",
           },
         ],
 
@@ -67,8 +71,8 @@ export default {
           "clamp(2rem, 3.5vw, 3.5rem)",
           {
             lineHeight: "1.1",
-            letterSpacing: "-0.045em",
-            fontWeight: "500",
+            letterSpacing: "-0.01em",
+            fontWeight: "700",
           },
         ],
       },
@@ -81,9 +85,9 @@ export default {
       },
 
       boxShadow: {
-        soft: "0 8px 30px rgba(16, 41, 31, 0.06)",
-        card: "0 12px 40px rgba(16, 41, 31, 0.08)",
-        elevated: "0 24px 70px rgba(16, 41, 31, 0.14)",
+        soft: "0 8px 30px rgba(10, 59, 63, 0.06)",
+        card: "0 12px 40px rgba(10, 59, 63, 0.08)",
+        elevated: "0 24px 70px rgba(10, 59, 63, 0.14)",
         glow: "0 0 40px rgba(113, 128, 93, 0.14)",
       },
 
@@ -156,13 +160,13 @@ export default {
 
       backgroundImage: {
         "forest-gradient":
-          "linear-gradient(135deg, #18392B 0%, #10291F 100%)",
+          "linear-gradient(135deg, #0F5257 0%, #0A3B3F 100%)",
 
         "cream-gradient":
-          "linear-gradient(180deg, #FDFCF9 0%, #F7F6F2 100%)",
+          "linear-gradient(180deg, #FFFFFF 0%, #F1F5F3 100%)",
 
         "hero-overlay":
-          "linear-gradient(90deg, rgba(16,41,31,0.55) 0%, rgba(16,41,31,0.08) 100%)",
+          "linear-gradient(90deg, rgba(10,59,63,0.55) 0%, rgba(10,59,63,0.08) 100%)",
       },
 
       maxWidth: {

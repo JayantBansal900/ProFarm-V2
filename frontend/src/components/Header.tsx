@@ -61,13 +61,13 @@ export const Header: React.FC = () => {
           mobile
             ? `flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
                 active
-                  ? 'bg-[#E7EBDD] text-[#244B35]'
-                  : 'text-[#4E5C4F] hover:bg-[#F1F2EA] hover:text-[#244B35]'
+                  ? 'bg-[#DDECDC] text-[#22484D]'
+                  : 'text-[#4D5D59] hover:bg-[#F0F4F3] hover:text-[#22484D]'
               }`
-            : `group relative whitespace-nowrap py-2 text-[13px] font-semibold tracking-[0.01em] transition-colors duration-200 ${
+            : `group relative whitespace-nowrap py-2 text-[15px] font-semibold tracking-normal transition-colors duration-200 ${
                 active
-                  ? 'text-[#244B35]'
-                  : 'text-[#647064] hover:text-[#244B35]'
+                  ? 'text-[#22484D]'
+                  : 'text-[#64706D] hover:text-[#22484D]'
               }`
         }
       >
@@ -76,7 +76,7 @@ export const Header: React.FC = () => {
         {!mobile && (
           <span
             aria-hidden="true"
-            className={`absolute bottom-0 left-0 h-[2px] rounded-full bg-[#55744A] transition-all duration-300 ${
+            className={`absolute bottom-0 left-0 h-[2px] rounded-full bg-[#48765C] transition-all duration-300 ${
               active ? 'w-full' : 'w-0 group-hover:w-full'
             }`}
           />
@@ -85,7 +85,7 @@ export const Header: React.FC = () => {
         {mobile && active && (
           <span
             aria-hidden="true"
-            className="h-1.5 w-1.5 rounded-full bg-[#55744A]"
+            className="h-1.5 w-1.5 rounded-full bg-[#48765C]"
           />
         )}
       </Link>
@@ -93,16 +93,16 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E3E7DB] bg-[#FBFAF6]/95 shadow-[0_2px_24px_rgba(31,61,42,0.035)] backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#DBE7DB] bg-[#F6F8F8]/95 shadow-[0_2px_24px_rgba(31,61,42,0.035)] backdrop-blur-xl">
       <div className="mx-auto flex min-h-[76px] w-full max-w-[1440px] flex-wrap items-center justify-between gap-2 py-2 px-3 sm:px-8 lg:px-12">
         {/* Brand */}
         <Link
           to="/"
           onClick={() => setMenuOpen(false)}
           aria-label={tr("ProFarm — Home")}
-          className="group flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#55744A]"
+          className="group flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#48765C]"
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#244B35] text-[#F7F5EA] shadow-[0_6px_14px_rgba(36,75,53,0.14)] transition-transform duration-300 group-hover:-rotate-6">
+          <span className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#22484D] text-[#F0F4F3] shadow-[0_6px_14px_rgba(36,75,53,0.14)] transition-transform duration-300 group-hover:-rotate-6">
             <svg
               width="25"
               height="25"
@@ -135,9 +135,9 @@ export const Header: React.FC = () => {
           </span>
 
           <span className="flex flex-col leading-none">
-            <span className="text-[22px] font-extrabold tracking-[-0.065em] text-[#244B35]">{tr("ProFarm")}<span className="text-[#8DA26F]">.</span>
+            <span className="text-[22px] font-extrabold tracking-[-0.065em] text-[#22484D]">{tr("ProFarm")}<span className="text-[#6DA473]">.</span>
             </span>
-            <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.22em] text-[#7A8874]">{tr("Grow with clarity")}</span>
+            <span className="mt-1 text-[9px] font-bold tracking-normal text-[#73897C]">{tr("Grow with clarity")}</span>
           </span>
         </Link>
 
@@ -155,8 +155,8 @@ export const Header: React.FC = () => {
           {user ? (
             <>
               <div className="hidden max-w-[150px] flex-col items-end xl:flex">
-                <span className="text-[10px] font-medium text-[#899487]">{tr("Welcome back")}</span>
-                <span className="max-w-full truncate text-[13px] font-bold text-[#244B35]">
+                <span className="text-[10px] font-medium text-[#86958E]">{tr("Welcome back")}</span>
+                <span className="max-w-full truncate text-[13px] font-bold text-[#22484D]">
                   {user.name}
                 </span>
               </div>
@@ -165,7 +165,7 @@ export const Header: React.FC = () => {
                 type="button"
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="rounded-full border border-[#CED8C9] px-5 py-2.5 text-[12px] font-bold text-[#244B35] transition-all duration-200 hover:border-[#244B35] hover:bg-[#EDF0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#55744A] disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-full border border-[#C8D9CE] px-5 py-2.5 text-[12px] font-bold text-[#22484D] transition-all duration-200 hover:border-[#22484D] hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isLoggingOut ? tr("Signing out...") : tr("Sign Out")}
               </button>
@@ -174,12 +174,12 @@ export const Header: React.FC = () => {
             <>
               <Link
                 to="/login"
-                className="rounded-full px-4 py-2.5 text-[12px] font-bold text-[#244B35] transition-colors hover:bg-[#EDF0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#55744A]"
+                className="rounded-full px-4 py-2.5 text-[12px] font-bold text-[#22484D] transition-colors hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
               >{tr("Sign In")}</Link>
 
               <Link
                 to="/signup"
-                className="inline-flex items-center gap-2 rounded-full bg-[#244B35] px-5 py-3 text-[12px] font-bold text-white shadow-[0_5px_14px_rgba(36,75,53,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#345D42] hover:shadow-[0_8px_20px_rgba(36,75,53,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#55744A]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#22484D] px-5 py-3 text-[12px] font-bold text-white shadow-[0_5px_14px_rgba(36,75,53,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#325D5F] hover:shadow-[0_8px_20px_rgba(36,75,53,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
               >{tr("Get Started")}<span aria-hidden="true">↗</span>
               </Link>
             </>
@@ -193,7 +193,7 @@ export const Header: React.FC = () => {
           aria-expanded={menuOpen}
           aria-controls="profarm-mobile-navigation"
           onClick={() => setMenuOpen((previous) => !previous)}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#DEE5D8] text-[#244B35] transition-colors hover:bg-[#EDF0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#55744A] xl:hidden"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#D7E6DB] text-[#22484D] transition-colors hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C] xl:hidden"
         >
           <svg
             width="22"
@@ -226,7 +226,7 @@ export const Header: React.FC = () => {
       {menuOpen && (
         <div
           id="profarm-mobile-navigation"
-          className="border-t border-[#E3E7DB] bg-[#FBFAF6] px-5 pb-6 pt-4 shadow-[0_16px_25px_rgba(31,61,42,0.08)] sm:px-8 xl:hidden"
+          className="border-t border-[#DBE7DB] bg-[#F6F8F8] px-5 pb-6 pt-4 shadow-[0_16px_25px_rgba(31,61,42,0.08)] sm:px-8 xl:hidden"
         >
           <nav
             aria-label={tr("Mobile navigation")}
@@ -235,12 +235,12 @@ export const Header: React.FC = () => {
             {navItems.map((item) => navigationLink(item, true))}
           </nav>
 
-          <div className="mx-auto mt-5 max-w-[1440px] border-t border-[#E3E7DB] pt-5">
+          <div className="mx-auto mt-5 max-w-[1440px] border-t border-[#DBE7DB] pt-5">
             {user ? (
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex min-w-0 flex-col">
-                  <span className="text-xs text-[#899487]">{tr("Signed in as")}</span>
-                  <span className="truncate text-sm font-bold text-[#244B35]">
+                  <span className="text-xs text-[#86958E]">{tr("Signed in as")}</span>
+                  <span className="truncate text-sm font-bold text-[#22484D]">
                     {user.name}
                   </span>
                 </div>
@@ -249,7 +249,7 @@ export const Header: React.FC = () => {
                   type="button"
                   onClick={handleLogout}
                   disabled={isLoggingOut}
-                  className="rounded-full border border-[#CED8C9] px-5 py-2.5 text-sm font-semibold text-[#244B35] hover:bg-[#EDF0E6] disabled:opacity-60"
+                  className="rounded-full border border-[#C8D9CE] px-5 py-2.5 text-sm font-semibold text-[#22484D] hover:bg-[#E6F0E6] disabled:opacity-60"
                 >
                   {isLoggingOut ? tr("Signing out...") : tr("Sign Out")}
                 </button>
@@ -259,13 +259,13 @@ export const Header: React.FC = () => {
                 <Link
                   to="/login"
                   onClick={() => setMenuOpen(false)}
-                  className="flex-1 rounded-full border border-[#CED8C9] px-5 py-3 text-center text-sm font-semibold text-[#244B35]"
+                  className="flex-1 rounded-full border border-[#C8D9CE] px-5 py-3 text-center text-sm font-semibold text-[#22484D]"
                 >{tr("Sign In")}</Link>
 
                 <Link
                   to="/signup"
                   onClick={() => setMenuOpen(false)}
-                  className="flex-1 rounded-full bg-[#244B35] px-5 py-3 text-center text-sm font-semibold text-white"
+                  className="flex-1 rounded-full bg-[#22484D] px-5 py-3 text-center text-sm font-semibold text-white"
                 >{tr("Get Started")}</Link>
               </div>
             )}

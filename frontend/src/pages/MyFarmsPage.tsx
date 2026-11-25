@@ -69,13 +69,13 @@ const CloseIcon = () => (
 );
 
 const fieldClass =
-  'w-full rounded-xl border border-[#D4E0D0] bg-white px-4 py-3 text-sm text-[#24432D] outline-none transition placeholder:text-[#91A091] focus:border-[#3F7950] focus:ring-2 focus:ring-[#3F7950]/15';
+  'w-full rounded-xl border border-[#CFE1D7] bg-white px-4 py-3 text-sm text-[#234444] outline-none transition placeholder:text-[#90A19C] focus:border-[#3D7B7B] focus:ring-2 focus:ring-[#3D7B7B]/15';
 
 const labelClass =
-  'mb-2 block text-xs font-bold text-[#385842]';
+  'mb-2 block text-xs font-bold text-[#375959]';
 
 const actionClass =
-  'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3F7950]';
+  'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3D7B7B]';
 
 type FormFieldProps = {
   id: string;
@@ -94,7 +94,7 @@ const FormField: React.FC<FormFieldProps> = ({
     <label htmlFor={id} className={labelClass}>
       {tr(label)}
       {optional && (
-        <span className="ms-1 font-normal text-[#879A88]">{tr("(optional)")}</span>
+        <span className="ms-1 font-normal text-[#869B96]">{tr("(optional)")}</span>
       )}
     </label>
     {children}
@@ -448,44 +448,44 @@ export const MyFarmsPage: React.FC = () => {
   ];
 
   return (
-    <div className="mx-auto max-w-[1440px] space-y-7 pb-16 text-[#24432D]">
+    <div className="mx-auto max-w-[1440px] space-y-7 pb-16 text-[#234444]">
       {/* Page heading */}
       <header className="flex flex-wrap items-end justify-between gap-5">
         <div>
           <nav
             aria-label={tr("Breadcrumb")}
-            className="mb-3 flex items-center gap-2 text-xs font-medium text-[#68816C]"
+            className="mb-3 flex items-center gap-2 text-xs font-medium text-[#67827E]"
           >
-            <Link to="/" className="hover:text-[#285D3D]">{tr("Home")}</Link>
+            <Link to="/" className="hover:text-[#265A5F]">{tr("Home")}</Link>
             <span>/</span>
-            <span className="font-semibold text-[#285D3D]">{tr("My Farms")}</span>
+            <span className="font-semibold text-[#265A5F]">{tr("My Farms")}</span>
           </nav>
 
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#54815D]">{tr("Your agricultural workspace")}</p>
+          <p className="text-[11px] font-bold tracking-normal text-[#52837E]">{tr("Your agricultural workspace")}</p>
 
-          <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-[#173D29] sm:text-4xl">{tr("My Farms")}</h1>
+          <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-[#153A3F] sm:text-4xl">{tr("My Farms")}</h1>
 
-          <p className="mt-2 text-sm text-[#536D59]">{tr("Manage your land, crops and field activities in one place.")}</p>
+          <p className="mt-2 text-sm text-[#526E6C]">{tr("Manage your land, crops and field activities in one place.")}</p>
         </div>
 
         <div className="flex w-full flex-wrap gap-3 sm:w-auto">
           <Link
             to="/my-farms/calendar"
-            className={`${actionClass} border border-[#D1E0CD] bg-white text-[#28563A] hover:bg-[#F1F7ED]`}
+            className={`${actionClass} border border-[#CCE1D6] bg-white text-[#265358] hover:bg-[#EDF7F0]`}
           >
             <CalendarIcon />{tr("Farm Calendar")}</Link>
 
           <button
             type="button"
             onClick={openCreateModal}
-            className={`${actionClass} bg-[#285D3D] text-white hover:bg-[#19482E]`}
+            className={`${actionClass} bg-[#265A5F] text-white hover:bg-[#17454A]`}
           >
             <PlusIcon />{tr("Add New Farm")}</button>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative isolate overflow-hidden rounded-2xl bg-[#153C27]">
+      <section className="relative isolate overflow-hidden rounded-2xl bg-[#13393E]">
         <img
           src={IMAGES.hero}
           alt={tr("Green farmland stretching across the countryside")}
@@ -493,23 +493,23 @@ export const MyFarmsPage: React.FC = () => {
           loading="eager"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#103622]/95 via-[#17462D]/85 to-[#17462D]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0E3338]/95 via-[#154348]/85 to-[#154348]/20" />
 
         <div className="relative flex min-h-[270px] flex-col justify-center p-7 text-white sm:p-10 lg:min-h-[310px] lg:p-12">
-          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] backdrop-blur-sm">{tr("Farm Management")}</span>
+          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-normal backdrop-blur-sm">{tr("Farm Management")}</span>
 
           <h2 className="mt-5 max-w-lg font-serif text-4xl font-semibold leading-tight sm:text-5xl">{tr("Every field.")}<br />{tr("One clear view.")}</h2>
 
-          <p className="mt-4 max-w-md text-sm leading-6 text-[#E1EFE0]">{tr("Keep your farm records organized and your next steps in sight.")}</p>
+          <p className="mt-4 max-w-md text-sm leading-6 text-[#DFF0EA]">{tr("Keep your farm records organized and your next steps in sight.")}</p>
         </div>
       </section>
 
       {/* Summary */}
       <section aria-label={tr("Farm overview")}>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-serif text-2xl font-semibold text-[#193E2A]">{tr("Farm Overview")}</h2>
+          <h2 className="font-serif text-2xl font-semibold text-[#183B3F]">{tr("Farm Overview")}</h2>
 
-          <span className="text-xs font-semibold text-[#68816C]">
+          <span className="text-xs font-semibold text-[#67827E]">
             {isLoading ? tr("Loading records") : tr("Page-level overview of loaded active farms")}
           </span>
         </div>
@@ -518,19 +518,19 @@ export const MyFarmsPage: React.FC = () => {
           {summary.map((item) => (
             <div
               key={item.label}
-              className="rounded-2xl border border-[#DCE6D8] bg-white p-5 sm:p-6"
+              className="rounded-2xl border border-[#D7E7DE] bg-white p-5 sm:p-6"
             >
-              <p className="text-xs font-semibold text-[#617A65]">
+              <p className="text-xs font-semibold text-[#607B77]">
                 {tr(item.label)}
               </p>
 
               <div className="mt-3 flex items-end gap-2">
-                <span className="font-serif text-4xl font-semibold leading-none text-[#1E4B31]">
+                <span className="font-serif text-4xl font-semibold leading-none text-[#1C484D]">
                   {isLoading || error ? '—' : item.value}
                 </span>
               </div>
 
-              <p className="mt-2 text-[11px] font-medium text-[#849585]">
+              <p className="mt-2 text-[11px] font-medium text-[#839691]">
                 {tr(item.unit)}
               </p>
             </div>
@@ -542,12 +542,12 @@ export const MyFarmsPage: React.FC = () => {
       <section>
         <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#598261]">{tr("Your collection")}</p>
+            <p className="text-[11px] font-bold tracking-normal text-[#57847F]">{tr("Your collection")}</p>
 
-            <h2 className="mt-2 font-serif text-[28px] font-semibold text-[#193E2A]">{tr("Registered Farms")}</h2>
+            <h2 className="mt-2 font-serif text-[28px] font-semibold text-[#183B3F]">{tr("Registered Farms")}</h2>
           </div>
 
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#DCE6D8] bg-white px-4 py-3 text-xs font-semibold text-[#47654E]">
+          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#D7E7DE] bg-white px-4 py-3 text-xs font-semibold text-[#466664]">
             <input
               type="checkbox"
               checked={includeArchived}
@@ -555,7 +555,7 @@ export const MyFarmsPage: React.FC = () => {
                 setPage(1);
                 setIncludeArchived(event.target.checked);
               }}
-              className="h-4 w-4 accent-[#285D3D]"
+              className="h-4 w-4 accent-[#265A5F]"
             />{tr("Include archived farms")}</label>
         </div>
 
@@ -600,14 +600,14 @@ export const MyFarmsPage: React.FC = () => {
             {[0, 1, 2].map((index) => (
               <div
                 key={index}
-                className="overflow-hidden rounded-2xl border border-[#DCE6D8] bg-white"
+                className="overflow-hidden rounded-2xl border border-[#D7E7DE] bg-white"
               >
-                <div className="h-48 animate-pulse bg-[#E4ECE0]" />
+                <div className="h-48 animate-pulse bg-[#E0ECE4]" />
 
                 <div className="space-y-4 p-6">
-                  <div className="h-6 w-2/3 animate-pulse rounded bg-[#E4ECE0]" />
-                  <div className="h-4 w-1/2 animate-pulse rounded bg-[#EAF0E7]" />
-                  <div className="h-20 animate-pulse rounded bg-[#F0F4ED]" />
+                  <div className="h-6 w-2/3 animate-pulse rounded bg-[#E0ECE4]" />
+                  <div className="h-4 w-1/2 animate-pulse rounded bg-[#E7F0EA]" />
+                  <div className="h-20 animate-pulse rounded bg-[#EDF4EF]" />
                 </div>
               </div>
             ))}
@@ -615,9 +615,9 @@ export const MyFarmsPage: React.FC = () => {
         )}
 
         {!isLoading && !error && pagination?.totalRecords === 0 && (
-          <div className="overflow-hidden rounded-2xl border border-[#DCE6D8] bg-white">
+          <div className="overflow-hidden rounded-2xl border border-[#D7E7DE] bg-white">
             <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
-              <div className="relative min-h-[240px] bg-[#DCE8D6]">
+              <div className="relative min-h-[240px] bg-[#D5E9DC]">
                 <img
                   src={IMAGES.fields[0]}
                   alt={tr("Cultivated agricultural fields")}
@@ -627,22 +627,22 @@ export const MyFarmsPage: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-start justify-center p-7 sm:p-10">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#EAF4E6] text-[#2F6943]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E5F5EC] text-[#2D696B]">
                   <FieldIcon />
                 </div>
 
-                <h3 className="mt-5 font-serif text-3xl font-semibold text-[#1D432D]">
+                <h3 className="mt-5 font-serif text-3xl font-semibold text-[#1B4045]">
                   {includeArchived ? tr("No farms found") : tr("Your farming journey starts here")}
                 </h3>
 
-                <p className="mt-3 max-w-md text-sm leading-6 text-[#58705C]">
+                <p className="mt-3 max-w-md text-sm leading-6 text-[#57716E]">
                   {includeArchived ? tr("There are no farm records to display.") : tr("Add your first farm to start organizing crop cycles, field tasks and activity records.")}
                 </p>
 
                 <button
                   type="button"
                   onClick={openCreateModal}
-                  className={`${actionClass} mt-6 bg-[#285D3D] text-white hover:bg-[#19482E]`}
+                  className={`${actionClass} mt-6 bg-[#265A5F] text-white hover:bg-[#17454A]`}
                 >
                   <PlusIcon />{tr("Register Your First Farm")}</button>
               </div>
@@ -652,7 +652,7 @@ export const MyFarmsPage: React.FC = () => {
 
         {!isLoading && !error && farms.length > 0 && (
           <>
-            <p className="mb-4 text-xs font-medium text-[#6C816E]">{tr("Showing")}{(page - 1) * FARM_PAGE_SIZE + 1}–
+            <p className="mb-4 text-xs font-medium text-[#6B827D]">{tr("Showing")}{(page - 1) * FARM_PAGE_SIZE + 1}–
               {(page - 1) * FARM_PAGE_SIZE + farms.length} {tr("of")}{' '}
               {pagination?.totalRecords ?? farms.length}{tr("farms")}{includeArchived && archivedFarms.length > 0 ? tr(" · {{v0}} archived on this page", { v0: archivedFarms.length }) : ''}
             </p>
@@ -667,11 +667,11 @@ export const MyFarmsPage: React.FC = () => {
                     key={farm.id}
                     className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-all duration-300 ${
                       archived
-                        ? 'border-[#DCE2D9] opacity-80'
-                        : 'border-[#DCE6D8] hover:-translate-y-1 hover:border-[#B5CEB4] hover:shadow-[0_16px_40px_rgba(24,65,39,0.10)]'
+                        ? 'border-[#D9E2DC] opacity-80'
+                        : 'border-[#D7E7DE] hover:-translate-y-1 hover:border-[#B3CFC6] hover:shadow-[0_16px_40px_rgba(24,65,39,0.10)]'
                     }`}
                   >
-                    <div className="relative h-[200px] overflow-hidden bg-[#DCE8D7]">
+                    <div className="relative h-[200px] overflow-hidden bg-[#D6E9DE]">
                       <img
                         src={IMAGES.fields[index % IMAGES.fields.length]}
                         alt={tr("Illustrative agricultural landscape")}
@@ -683,13 +683,13 @@ export const MyFarmsPage: React.FC = () => {
                         }`}
                       />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#123A25]/60 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#10373C]/60 via-transparent to-transparent" />
 
                       <span
-                        className={`absolute left-4 top-4 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] backdrop-blur-sm ${
+                        className={`absolute left-4 top-4 rounded-full px-3 py-1.5 text-[10px] font-bold tracking-normal backdrop-blur-sm ${
                           archived
-                            ? 'bg-white/90 text-[#66776A]'
-                            : 'bg-[#E8F4E4]/95 text-[#25623C]'
+                            ? 'bg-white/90 text-[#657876]'
+                            : 'bg-[#E3F5EB]/95 text-[#235F64]'
                         }`}
                       >
                         {archived ? tr("Archived") : tr("Active")}
@@ -697,19 +697,19 @@ export const MyFarmsPage: React.FC = () => {
 
                       {farm.area !== null &&
                         farm.area !== undefined && (
-                          <span className="absolute bottom-4 left-4 rounded-lg border border-white/20 bg-[#143E29]/75 px-3 py-2 text-xs font-bold text-white backdrop-blur-sm">
+                          <span className="absolute bottom-4 left-4 rounded-lg border border-white/20 bg-[#123B40]/75 px-3 py-2 text-xs font-bold text-white backdrop-blur-sm">
                             {formatNumber(farm.area)} {formatAreaUnit(farm.areaUnit || 'acres')}
                           </span>
                         )}
                     </div>
 
                     <div className="flex flex-1 flex-col p-5 sm:p-6">
-                      <h3 className="font-serif text-[25px] font-semibold leading-tight text-[#1B412B]">
+                      <h3 className="font-serif text-[25px] font-semibold leading-tight text-[#193E43]">
                         {farm.name}
                       </h3>
 
-                      <div className="mt-3 flex items-start gap-2 text-xs leading-5 text-[#5E7562]">
-                        <span className="mt-0.5 shrink-0 text-[#4E8059]">
+                      <div className="mt-3 flex items-start gap-2 text-xs leading-5 text-[#5D7673]">
+                        <span className="mt-0.5 shrink-0 text-[#4C827E]">
                           <LocationIcon />
                         </span>
 
@@ -738,29 +738,29 @@ export const MyFarmsPage: React.FC = () => {
                         ].map((metric) => (
                           <div
                             key={metric.label}
-                            className="rounded-xl bg-[#F2F7EF] px-2 py-3 text-center"
+                            className="rounded-xl bg-[#EFF7F1] px-2 py-3 text-center"
                           >
-                            <p className="font-serif text-xl font-semibold text-[#285D3D]">
+                            <p className="font-serif text-xl font-semibold text-[#265A5F]">
                               {metric.value}
                             </p>
 
-                            <p className="mt-1 text-[10px] font-semibold text-[#708473]">
+                            <p className="mt-1 text-[10px] font-semibold text-[#6F8582]">
                               {tr(metric.label)}
                             </p>
                           </div>
                         ))}
                       </div>
 
-                      <div className="mt-4 flex items-center justify-between gap-3 border-b border-[#E6EDE2] pb-4">
-                        <span className="text-xs font-medium text-[#788A7B]">{tr("Primary soil")}</span>
+                      <div className="mt-4 flex items-center justify-between gap-3 border-b border-[#E2EDE6] pb-4">
+                        <span className="text-xs font-medium text-[#778B88]">{tr("Primary soil")}</span>
 
-                        <span className="text-end text-xs font-bold text-[#3B6346]">
+                        <span className="text-end text-xs font-bold text-[#396564]">
                           {soilLabel(farm.soilType)}
                         </span>
                       </div>
 
                       {farm.notes && (
-                        <p className="mt-4 line-clamp-2 text-xs italic leading-5 text-[#728474]">
+                        <p className="mt-4 line-clamp-2 text-xs italic leading-5 text-[#718581]">
                           “{farm.notes}”
                         </p>
                       )}
@@ -768,7 +768,7 @@ export const MyFarmsPage: React.FC = () => {
                       <div className="mt-auto pt-6">
                         <Link
                           to={`/my-farms/${farm.id}`}
-                          className={`${actionClass} w-full justify-between bg-[#285D3D] text-white hover:bg-[#19482E]`}
+                          className={`${actionClass} w-full justify-between bg-[#265A5F] text-white hover:bg-[#17454A]`}
                         >{tr("View Farm Details")}<ArrowIcon />
                         </Link>
 
@@ -777,7 +777,7 @@ export const MyFarmsPage: React.FC = () => {
                             type="button"
                             onClick={() => openEditModal(farm)}
                             disabled={actionFarmId !== null}
-                            className="rounded-lg px-3 py-2 text-xs font-bold text-[#466B4E] hover:bg-[#F0F6EC] disabled:opacity-50"
+                            className="rounded-lg px-3 py-2 text-xs font-bold text-[#456C69] hover:bg-[#ECF6EF] disabled:opacity-50"
                           >{tr("Edit Farm")}</button>
 
                           <button
@@ -786,7 +786,7 @@ export const MyFarmsPage: React.FC = () => {
                               void handleToggleArchive(farm)
                             }
                             disabled={actionFarmId !== null}
-                            className="rounded-lg px-3 py-2 text-xs font-bold text-[#758477] hover:bg-[#F1F4EF] disabled:opacity-50"
+                            className="rounded-lg px-3 py-2 text-xs font-bold text-[#748582] hover:bg-[#EFF4F0] disabled:opacity-50"
                           >
                             {busy ? tr("Updating...") : archived ? tr("Restore Farm") : tr("Archive Farm")}
                           </button>
@@ -801,9 +801,9 @@ export const MyFarmsPage: React.FC = () => {
             {pagination && pagination.totalPages > 1 && (
               <nav
                 aria-label={tr("Farm pages")}
-                className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#DCE6D8] bg-white px-4 py-3 sm:px-5"
+                className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#D7E7DE] bg-white px-4 py-3 sm:px-5"
               >
-                <span className="text-xs font-semibold text-[#5E7562]">{tr("Page")}{pagination.currentPage} {tr("of")}{' '}
+                <span className="text-xs font-semibold text-[#5D7673]">{tr("Page")}{pagination.currentPage} {tr("of")}{' '}
                   {pagination.totalPages}
                 </span>
 
@@ -816,7 +816,7 @@ export const MyFarmsPage: React.FC = () => {
                       )
                     }
                     disabled={page <= 1}
-                    className={`${actionClass} border border-[#D1E0CD] bg-white text-[#28563A] hover:bg-[#F1F7ED] disabled:opacity-40`}
+                    className={`${actionClass} border border-[#CCE1D6] bg-white text-[#265358] hover:bg-[#EDF7F0] disabled:opacity-40`}
                   >{tr("Previous")}</button>
 
                   <button
@@ -830,7 +830,7 @@ export const MyFarmsPage: React.FC = () => {
                       )
                     }
                     disabled={page >= pagination.totalPages}
-                    className={`${actionClass} bg-[#285D3D] text-white hover:bg-[#19482E] disabled:opacity-40`}
+                    className={`${actionClass} bg-[#265A5F] text-white hover:bg-[#17454A] disabled:opacity-40`}
                   >{tr("Next")}</button>
                 </div>
               </nav>
@@ -840,16 +840,16 @@ export const MyFarmsPage: React.FC = () => {
       </section>
 
       {/* Secondary navigation */}
-      <section className="flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-[#DCE6D8] bg-[#F1F7EE] p-6 sm:p-8">
+      <section className="flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-[#D7E7DE] bg-[#EEF7F1] p-6 sm:p-8">
         <div>
-          <h2 className="font-serif text-2xl font-semibold text-[#1D432D]">{tr("Plan what comes next")}</h2>
+          <h2 className="font-serif text-2xl font-semibold text-[#1B4045]">{tr("Plan what comes next")}</h2>
 
-          <p className="mt-2 text-sm text-[#5D7561]">{tr("Review upcoming farm tasks and activities in your calendar.")}</p>
+          <p className="mt-2 text-sm text-[#5C7673]">{tr("Review upcoming farm tasks and activities in your calendar.")}</p>
         </div>
 
         <Link
           to="/my-farms/calendar"
-          className={`${actionClass} bg-white text-[#285D3D] shadow-sm hover:bg-[#E6F0E2]`}
+          className={`${actionClass} bg-white text-[#265A5F] shadow-sm hover:bg-[#E1F1E8]`}
         >{tr("Open Farm Calendar")}<ArrowIcon />
         </Link>
       </section>
@@ -857,7 +857,7 @@ export const MyFarmsPage: React.FC = () => {
       {/* Create / Edit modal */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#102719]/70 p-3 backdrop-blur-sm sm:p-5"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0F2628]/70 p-3 backdrop-blur-sm sm:p-5"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
               closeModal();
@@ -869,20 +869,20 @@ export const MyFarmsPage: React.FC = () => {
             role="dialog"
             aria-modal="true"
             aria-labelledby={modalTitleId}
-            className="flex max-h-[94vh] w-full max-w-[660px] flex-col overflow-hidden rounded-2xl bg-[#FAFCF8] shadow-2xl"
+            className="flex max-h-[94vh] w-full max-w-[660px] flex-col overflow-hidden rounded-2xl bg-[#F8FCF9] shadow-2xl"
           >
-            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-[#E0E9DB] bg-white px-6 py-5 sm:px-8">
+            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-[#DAEAE0] bg-white px-6 py-5 sm:px-8">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#608B68]">{tr("Farm Management")}</p>
+                <p className="text-[10px] font-bold tracking-normal text-[#5E8D87]">{tr("Farm Management")}</p>
 
                 <h2
                   id={modalTitleId}
-                  className="mt-2 font-serif text-[27px] font-semibold text-[#1B412B]"
+                  className="mt-2 font-serif text-[27px] font-semibold text-[#193E43]"
                 >
                   {editingFarm ? tr("Edit Farm") : tr("Register New Farm")}
                 </h2>
 
-                <p className="mt-1 text-xs text-[#6C826F]">{tr("Keep your land information accurate and organized.")}</p>
+                <p className="mt-1 text-xs text-[#6B837F]">{tr("Keep your land information accurate and organized.")}</p>
               </div>
 
               <button
@@ -890,7 +890,7 @@ export const MyFarmsPage: React.FC = () => {
                 onClick={closeModal}
                 disabled={isSaving}
                 aria-label={tr("Close farm form")}
-                className="rounded-xl border border-[#DFE8DB] p-2.5 text-[#526C58] hover:bg-[#F0F6EC] disabled:opacity-50"
+                className="rounded-xl border border-[#DAE9E0] p-2.5 text-[#516D6B] hover:bg-[#ECF6EF] disabled:opacity-50"
               >
                 <CloseIcon />
               </button>
@@ -911,7 +911,7 @@ export const MyFarmsPage: React.FC = () => {
                 )}
 
                 <section className="space-y-4">
-                  <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-[#568061]">{tr("Farm Identity")}</h3>
+                  <h3 className="text-xs font-bold tracking-normal text-[#548280]">{tr("Farm Identity")}</h3>
 
                   <FormField
                     id={`${formId}-name`}
@@ -933,8 +933,8 @@ export const MyFarmsPage: React.FC = () => {
                   </FormField>
                 </section>
 
-                <section className="space-y-4 border-t border-[#E2EADD] pt-5">
-                  <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-[#568061]">{tr("Location")}</h3>
+                <section className="space-y-4 border-t border-[#DCEBE1] pt-5">
+                  <h3 className="text-xs font-bold tracking-normal text-[#548280]">{tr("Location")}</h3>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <FormField
@@ -1009,8 +1009,8 @@ export const MyFarmsPage: React.FC = () => {
                   </div>
                 </section>
 
-                <section className="space-y-4 border-t border-[#E2EADD] pt-5">
-                  <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-[#568061]">{tr("Land Details")}</h3>
+                <section className="space-y-4 border-t border-[#DCEBE1] pt-5">
+                  <h3 className="text-xs font-bold tracking-normal text-[#548280]">{tr("Land Details")}</h3>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <FormField
@@ -1077,8 +1077,8 @@ export const MyFarmsPage: React.FC = () => {
                   </FormField>
                 </section>
 
-                <section className="space-y-4 border-t border-[#E2EADD] pt-5">
-                  <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-[#568061]">{tr("Additional Information")}</h3>
+                <section className="space-y-4 border-t border-[#DCEBE1] pt-5">
+                  <h3 className="text-xs font-bold tracking-normal text-[#548280]">{tr("Additional Information")}</h3>
 
                   <FormField
                     id={`${formId}-notes`}
@@ -1099,18 +1099,18 @@ export const MyFarmsPage: React.FC = () => {
                 </section>
               </div>
 
-              <div className="flex shrink-0 items-center justify-end gap-3 border-t border-[#E0E9DB] bg-white px-6 py-4 sm:px-8">
+              <div className="flex shrink-0 items-center justify-end gap-3 border-t border-[#DAEAE0] bg-white px-6 py-4 sm:px-8">
                 <button
                   type="button"
                   onClick={closeModal}
                   disabled={isSaving}
-                  className={`${actionClass} border border-[#DCE6D8] bg-white text-[#536D59] hover:bg-[#F3F7F0] disabled:opacity-50`}
+                  className={`${actionClass} border border-[#D7E7DE] bg-white text-[#526E6C] hover:bg-[#F0F7F2] disabled:opacity-50`}
                 >{tr("Cancel")}</button>
 
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className={`${actionClass} bg-[#285D3D] text-white hover:bg-[#19482E] disabled:cursor-not-allowed disabled:opacity-60`}
+                  className={`${actionClass} bg-[#265A5F] text-white hover:bg-[#17454A] disabled:cursor-not-allowed disabled:opacity-60`}
                 >
                   {isSaving ? tr("Saving...") : editingFarm ? tr("Save Changes") : tr("Register Farm")}
 

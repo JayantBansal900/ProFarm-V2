@@ -10,7 +10,7 @@ function readUniqueJson(file) {
  function visit(node){if(ts.isObjectLiteralExpression(node)){const seen=new Set();for(const property of node.properties){const key=property.name?.text;if(seen.has(key))throw new Error(`Duplicate JSON key ${key} in ${file}`);seen.add(key);}}ts.forEachChild(node,visit);}visit(source);
  return JSON.parse(fs.readFileSync(file,'utf8'));
 }
-const codes=['en','hi','te','ta','kn','ml','mr','bn','gu','pa','or','as','ur'];
+const codes=['en','hi','pa','te','ta'];
 const catalogs=Object.fromEntries(codes.map(code=>[code,{}]));
 const interfaceKeys=new Set();
 const unwrappedInterfaceLiterals=[];
@@ -22,7 +22,7 @@ for(const file of fs.readdirSync(directory).filter(file=>file.endsWith('.tsv')))
   for(const [index,line] of fs.readFileSync(path.join(directory,file),'utf8').split(/\r?\n/).entries()) {
     if(!line.trim())continue;
     const values=line.split('|');
-    if(values.length!==codes.length)throw new Error(`${file}:${index+1}: expected 13 columns, got ${values.length}`);
+    if(values.length!==codes.length)throw new Error(`${file}:${index+1}: expected ${codes.length} columns, got ${values.length}`);
     const key=values[0];
     for(const [i,code] of codes.entries()) {
       if(Object.hasOwn(catalogs[code],key))throw new Error(`Duplicate ${code}:${key}`);

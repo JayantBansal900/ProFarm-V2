@@ -25,19 +25,19 @@ const HERO =
   'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85';
 
 const inputClass =
-  'w-full rounded-xl border border-[#D6E3D2] bg-white px-4 py-3 text-sm text-[#24432D] outline-none focus:border-[#427D52] focus:ring-2 focus:ring-[#427D52]/15';
+  'w-full rounded-xl border border-[#D1E4DA] bg-white px-4 py-3 text-sm text-[#234444] outline-none focus:border-[#407F7E] focus:ring-2 focus:ring-[#407F7E]/15';
 
 const primaryButton =
-  'inline-flex items-center justify-center gap-2 rounded-xl bg-[#285D3D] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#19482E] disabled:cursor-not-allowed disabled:opacity-50';
+  'inline-flex items-center justify-center gap-2 rounded-xl bg-[#265A5F] px-4 py-2.5 text-sm font-bold text-white transition hover:bg-[#17454A] disabled:cursor-not-allowed disabled:opacity-50';
 
 const secondaryButton =
-  'inline-flex items-center justify-center gap-2 rounded-xl border border-[#D7E3D2] bg-white px-4 py-2.5 text-sm font-semibold text-[#42634A] transition hover:bg-[#F0F6ED] disabled:opacity-50';
+  'inline-flex items-center justify-center gap-2 rounded-xl border border-[#D1E4D9] bg-white px-4 py-2.5 text-sm font-semibold text-[#416462] transition hover:bg-[#EDF6F0] disabled:opacity-50';
 
 const textButton =
-  'rounded-lg px-3 py-2 text-xs font-bold text-[#477352] transition hover:bg-[#EEF5EA] disabled:opacity-50';
+  'rounded-lg px-3 py-2 text-xs font-bold text-[#457572] transition hover:bg-[#EAF5EE] disabled:opacity-50';
 
 const cardClass =
-  'rounded-2xl border border-[#DCE6D8] bg-white p-5 sm:p-6';
+  'rounded-2xl border border-[#D7E7DE] bg-white p-5 sm:p-6';
 
 type CropOption = {
   id: string;
@@ -226,16 +226,16 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
 }) => (
   <div className="flex flex-wrap items-end justify-between gap-4">
     <div>
-      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#598361]">
+      <p className="text-[11px] font-bold tracking-normal text-[#578580]">
         {tr(eyebrow)}
       </p>
 
       <div className="mt-2 flex items-center gap-3">
-        <h2 className="font-serif text-[27px] font-semibold text-[#193E2A]">
+        <h2 className="font-serif text-[27px] font-semibold text-[#183B3F]">
           {tr(title)}
         </h2>
 
-        <span className="rounded-full bg-[#EAF3E6] px-2.5 py-1 text-xs font-bold text-[#43734D]">
+        <span className="rounded-full bg-[#E5F4EB] px-2.5 py-1 text-xs font-bold text-[#417570]">
           {count}
         </span>
       </div>
@@ -256,14 +256,14 @@ const EmptySection: React.FC<{
   title: string;
   description: string;
 }> = ({ title, description }) => (
-  <div className="rounded-2xl border border-dashed border-[#C9DAC5] bg-[#F7FAF5] px-6 py-10 text-center">
+  <div className="rounded-2xl border border-dashed border-[#C4DBD0] bg-[#F5FAF6] px-6 py-10 text-center">
     <div className="text-3xl">🌱</div>
 
-    <h3 className="mt-4 font-serif text-xl font-semibold text-[#254B32]">
+    <h3 className="mt-4 font-serif text-xl font-semibold text-[#234B4D]">
       {tr(title)}
     </h3>
 
-    <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#708572]">
+    <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-[#6F8681]">
       {tr(description)}
     </p>
   </div>
@@ -316,13 +316,13 @@ const PaginationControls: React.FC<{
   return (
     <nav
       aria-label={tr("{{v0}} pagination", { v0: label })}
-      className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#DCE6D8] bg-white px-4 py-3"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#D7E7DE] bg-white px-4 py-3"
     >
       <div>
-        <p className="text-xs font-semibold text-[#47654E]">{tr("Showing")}{start}–{end} {tr("of")} {pagination.totalRecords}
+        <p className="text-xs font-semibold text-[#466664]">{tr("Showing")}{start}–{end} {tr("of")} {pagination.totalRecords}
         </p>
 
-        <p className="mt-1 text-xs text-[#819283]">{tr("Page")}{page} {tr("of")} {pagination.totalPages}
+        <p className="mt-1 text-xs text-[#80938F]">{tr("Page")}{page} {tr("of")} {pagination.totalPages}
         </p>
       </div>
 
@@ -959,13 +959,13 @@ export const FarmDetailPage: React.FC = () => {
   if (loading) {
     return (
       <div className="mx-auto max-w-[1440px] space-y-5 pb-16">
-        <div className="h-9 w-48 animate-pulse rounded-xl bg-[#E3EDE0]" />
-        <div className="h-[290px] animate-pulse rounded-2xl bg-[#DCE8D7]" />
+        <div className="h-9 w-48 animate-pulse rounded-xl bg-[#DFEEE6]" />
+        <div className="h-[290px] animate-pulse rounded-2xl bg-[#D6E9DE]" />
         <div className="grid gap-4 md:grid-cols-3">
           {[1, 2, 3].map((item) => (
             <div
               key={item}
-              className="h-28 animate-pulse rounded-2xl bg-[#EDF3E9]"
+              className="h-28 animate-pulse rounded-2xl bg-[#E9F3EC]"
             />
           ))}
         </div>
@@ -977,9 +977,9 @@ export const FarmDetailPage: React.FC = () => {
     return (
       <div className="mx-auto max-w-[900px] py-12">
         <div className={`${cardClass} text-center`}>
-          <h1 className="font-serif text-3xl font-semibold text-[#193E2A]">{tr("Farm unavailable")}</h1>
+          <h1 className="font-serif text-3xl font-semibold text-[#183B3F]">{tr("Farm unavailable")}</h1>
 
-          <p className="mt-3 text-sm text-[#667C69]">
+          <p className="mt-3 text-sm text-[#657D79]">
             {tr(error) || tr("The requested farm could not be found.")}
           </p>
 
@@ -1007,36 +1007,36 @@ export const FarmDetailPage: React.FC = () => {
   const totalActivities = farm.totalActivitiesCount ?? 0;
 
   return (
-    <div className="mx-auto max-w-[1440px] space-y-8 pb-16 text-[#24432D]">
+    <div className="mx-auto max-w-[1440px] space-y-8 pb-16 text-[#234444]">
       {/* Breadcrumb */}
       <nav
         aria-label={tr("Breadcrumb")}
-        className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#66806A]"
+        className="flex flex-wrap items-center gap-2 text-xs font-medium text-[#65817D]"
       >
-        <Link to="/" className="hover:text-[#285D3D]">{tr("Home")}</Link>
+        <Link to="/" className="hover:text-[#265A5F]">{tr("Home")}</Link>
         <span>/</span>
         <Link
           to="/my-farms"
-          className="hover:text-[#285D3D]"
+          className="hover:text-[#265A5F]"
         >{tr("My Farms")}</Link>
         <span>/</span>
-        <span className="font-semibold text-[#285D3D]">
+        <span className="font-semibold text-[#265A5F]">
           {farm.name}
         </span>
       </nav>
 
       {/* Hero */}
-      <section className="relative isolate overflow-hidden rounded-2xl bg-[#153C27]">
+      <section className="relative isolate overflow-hidden rounded-2xl bg-[#13393E]">
         <img
           src={HERO}
           alt={tr("Illustrative green agricultural landscape")}
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#103622]/95 via-[#17462D]/85 to-[#17462D]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0E3338]/95 via-[#154348]/85 to-[#154348]/20" />
 
         <div className="relative flex min-h-[280px] flex-col justify-center p-7 text-white sm:p-10 lg:p-12">
-          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em]">
+          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-normal">
             {farm.isArchived ? tr("Archived Farm") : tr("Farm Workspace")}
           </span>
 
@@ -1044,7 +1044,7 @@ export const FarmDetailPage: React.FC = () => {
             {farm.name}
           </h1>
 
-          <p className="mt-4 text-sm text-[#E1EFE0]">
+          <p className="mt-4 text-sm text-[#DFF0EA]">
             {farmLocation(farm)}
           </p>
 
@@ -1056,7 +1056,7 @@ export const FarmDetailPage: React.FC = () => {
                 setEditMode((value) => !value);
                 setActionError(null);
               }}
-              className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#245637] hover:bg-[#EDF5E9] disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#225458] hover:bg-[#E9F5ED] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {editMode ? tr("Close Edit") : tr("Edit Farm")}
             </button>
@@ -1092,9 +1092,9 @@ export const FarmDetailPage: React.FC = () => {
       {editMode && !farm.isArchived && (
         <form
           onSubmit={handleFarmUpdate}
-          className="space-y-5 rounded-2xl border border-[#DCE6D8] bg-[#F7FAF5] p-6 sm:p-8"
+          className="space-y-5 rounded-2xl border border-[#D7E7DE] bg-[#F5FAF6] p-6 sm:p-8"
         >
-          <h2 className="font-serif text-2xl font-semibold text-[#193E2A]">{tr("Edit Farm Details")}</h2>
+          <h2 className="font-serif text-2xl font-semibold text-[#183B3F]">{tr("Edit Farm Details")}</h2>
 
           <div className="grid gap-4 sm:grid-cols-3">
             <label className="space-y-2 sm:col-span-3">
@@ -1179,15 +1179,15 @@ export const FarmDetailPage: React.FC = () => {
           },
         ].map((metric) => (
           <div key={metric.label} className={cardClass}>
-            <p className="text-xs font-semibold text-[#68816C]">
+            <p className="text-xs font-semibold text-[#67827E]">
               {tr(metric.label)}
             </p>
 
-            <p className="mt-3 font-serif text-4xl font-semibold text-[#205034]">
+            <p className="mt-3 font-serif text-4xl font-semibold text-[#1E4D52]">
               {metric.value}
             </p>
 
-            <p className="mt-2 text-xs text-[#839485]">
+            <p className="mt-2 text-xs text-[#829591]">
               {tr(metric.detail)}
             </p>
           </div>
@@ -1223,7 +1223,7 @@ export const FarmDetailPage: React.FC = () => {
         {showCycleForm && !farm.isArchived && (
           <form
             onSubmit={handleCreateCycle}
-            className="space-y-4 rounded-2xl border border-[#DCE6D8] bg-[#F7FAF5] p-5 sm:p-6"
+            className="space-y-4 rounded-2xl border border-[#D7E7DE] bg-[#F5FAF6] p-5 sm:p-6"
           >
             <h3 className="font-serif text-xl font-semibold">{tr("New Crop Cycle")}</h3>
 
@@ -1350,7 +1350,7 @@ export const FarmDetailPage: React.FC = () => {
                       {showCycleError('sowingDate')}
                     </label>
 
-                    <p className="text-xs text-[#708572]">{tr("Only changed fields will be saved. The cycle status remains unchanged.")}</p>
+                    <p className="text-xs text-[#6F8681]">{tr("Only changed fields will be saved. The cycle status remains unchanged.")}</p>
 
                     <FormActions
                       saving={busy}
@@ -1365,31 +1365,31 @@ export const FarmDetailPage: React.FC = () => {
                   <>
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#739075]">{tr("Cultivation Record")}</p>
+                        <p className="text-[11px] font-bold tracking-normal text-[#72918A]">{tr("Cultivation Record")}</p>
 
-                        <h3 className="mt-2 font-serif text-2xl font-semibold text-[#1D432D]">
+                        <h3 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045]">
                           {cycle.cropName}
                         </h3>
                       </div>
 
-                      <span className="rounded-full bg-[#EAF3E6] px-3 py-1.5 text-[11px] font-bold capitalize text-[#397047]">
+                      <span className="rounded-full bg-[#E5F4EB] px-3 py-1.5 text-[11px] font-bold capitalize text-[#37726F]">
                         {tr(cycle.status)}
                       </span>
                     </div>
 
-                    <div className="mt-5 grid gap-3 rounded-xl bg-[#F4F8F1] p-4 sm:grid-cols-2">
+                    <div className="mt-5 grid gap-3 rounded-xl bg-[#F1F8F3] p-4 sm:grid-cols-2">
                       <div>
-                        <p className="text-[11px] text-[#819283]">{tr("Sowing")}</p>
+                        <p className="text-[11px] text-[#80938F]">{tr("Sowing")}</p>
 
-                        <p className="mt-1 text-sm font-bold text-[#355B3D]">
+                        <p className="mt-1 text-sm font-bold text-[#335D59]">
                           {readableDate(cycle.sowingDate)}
                         </p>
                       </div>
 
                       <div>
-                        <p className="text-[11px] text-[#819283]">{tr("Expected Harvest")}</p>
+                        <p className="text-[11px] text-[#80938F]">{tr("Expected Harvest")}</p>
 
-                        <p className="mt-1 text-sm font-bold text-[#355B3D]">
+                        <p className="mt-1 text-sm font-bold text-[#335D59]">
                           {readableDate(
                             cycle.expectedHarvestDate
                           )}
@@ -1440,7 +1440,7 @@ export const FarmDetailPage: React.FC = () => {
         {showActivityForm && !farm.isArchived && (
           <form
             onSubmit={handleCreateActivity}
-            className="space-y-4 rounded-2xl border border-[#DCE6D8] bg-[#F7FAF5] p-5 sm:p-6"
+            className="space-y-4 rounded-2xl border border-[#D7E7DE] bg-[#F5FAF6] p-5 sm:p-6"
           >
             <h3 className="font-serif text-xl font-semibold">{tr("Record an Activity")}</h3>
 
@@ -1529,7 +1529,7 @@ export const FarmDetailPage: React.FC = () => {
         )}
 
         {activitiesLoading ? (
-          <div className={`${cardClass} text-sm text-[#6C826F]`}>{tr("Loading activities...")}</div>
+          <div className={`${cardClass} text-sm text-[#6B837F]`}>{tr("Loading activities...")}</div>
         ) : !activitiesError && activities.length === 0 ? (
           <EmptySection
             title={tr("No activities recorded")}
@@ -1624,15 +1624,15 @@ export const FarmDetailPage: React.FC = () => {
                 ) : (
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="min-w-0">
-                      <span className="rounded-full bg-[#EAF3E6] px-3 py-1 text-[10px] font-bold text-[#46734F]">
+                      <span className="rounded-full bg-[#E5F4EB] px-3 py-1 text-[10px] font-bold text-[#447570]">
                         {categoryLabel(activity.category)}
                       </span>
 
-                      <h3 className="mt-3 break-words font-serif text-xl font-semibold text-[#21482F]">
+                      <h3 className="mt-3 break-words font-serif text-xl font-semibold text-[#1F474A]">
                         {activity.title}
                       </h3>
 
-                      <p className="mt-2 text-xs text-[#78907B]">
+                      <p className="mt-2 text-xs text-[#77918C]">
                         {readableDate(
                           activity.activityDate
                         )}
@@ -1707,7 +1707,7 @@ export const FarmDetailPage: React.FC = () => {
         {showTaskForm && !farm.isArchived && (
           <form
             onSubmit={handleCreateTask}
-            className="space-y-4 rounded-2xl border border-[#DCE6D8] bg-[#F7FAF5] p-5 sm:p-6"
+            className="space-y-4 rounded-2xl border border-[#D7E7DE] bg-[#F5FAF6] p-5 sm:p-6"
           >
             <h3 className="font-serif text-xl font-semibold">{tr("Create a Task")}</h3>
 
@@ -1771,7 +1771,7 @@ export const FarmDetailPage: React.FC = () => {
         )}
 
         {tasksLoading ? (
-          <div className={`${cardClass} text-sm text-[#6C826F]`}>{tr("Loading tasks...")}</div>
+          <div className={`${cardClass} text-sm text-[#6B837F]`}>{tr("Loading tasks...")}</div>
         ) : !tasksError && tasks.length === 0 ? (
           <EmptySection
             title={tr("No tasks scheduled")}
@@ -1830,18 +1830,18 @@ export const FarmDetailPage: React.FC = () => {
                 ) : (
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="min-w-0">
-                      <h3 className="break-words font-serif text-xl font-semibold text-[#21482F]">
+                      <h3 className="break-words font-serif text-xl font-semibold text-[#1F474A]">
                         {task.title}
                       </h3>
 
-                      <p className="mt-2 text-xs text-[#78907B]">{tr("Due")}{readableDate(task.dueDate)}
+                      <p className="mt-2 text-xs text-[#77918C]">{tr("Due")}{readableDate(task.dueDate)}
                       </p>
 
                       <span
                         className={`mt-3 inline-flex rounded-full px-3 py-1 text-[10px] font-bold capitalize ${
                           task.status === 'pending'
                             ? 'bg-[#FFF4DE] text-[#946D28]'
-                            : 'bg-[#E8F3E5] text-[#39734B]'
+                            : 'bg-[#E4F4EC] text-[#377575]'
                         }`}
                       >
                         {tr(task.status)}
@@ -1897,13 +1897,13 @@ export const FarmDetailPage: React.FC = () => {
       </section>
 
       {/* Calendar shortcut */}
-      <section className="flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-[#DCE6D8] bg-[#F1F7EE] p-6 sm:p-8">
+      <section className="flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-[#D7E7DE] bg-[#EEF7F1] p-6 sm:p-8">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#598361]">{tr("Farm Planning")}</p>
+          <p className="text-[11px] font-bold tracking-normal text-[#578580]">{tr("Farm Planning")}</p>
 
-          <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1D432D]">{tr("Keep your schedule on track")}</h2>
+          <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045]">{tr("Keep your schedule on track")}</h2>
 
-          <p className="mt-2 text-sm text-[#627A66]">{tr("Review upcoming tasks and farming activities in your calendar.")}</p>
+          <p className="mt-2 text-sm text-[#617B78]">{tr("Review upcoming tasks and farming activities in your calendar.")}</p>
         </div>
 
         <Link

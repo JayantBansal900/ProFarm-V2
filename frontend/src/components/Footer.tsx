@@ -8,6 +8,7 @@ const exploreLinks = [
   { label: 'Knowledge Hub', path: '/knowledge' },
   { label: 'Crop Library', path: '/knowledge/crops' },
   { label: 'Soil Library', path: '/knowledge/soils' },
+  { label: 'Photo credits', path: '/credits' },
 ];
 
 const toolLinks = [
@@ -21,7 +22,7 @@ const toolLinks = [
 export const Footer: React.FC = () => {
   useLocale();
   return (
-    <footer className="mt-auto overflow-hidden bg-[#183D2B] text-[#F8F7F0]">
+    <footer className="mt-auto overflow-hidden bg-[#173A3E] text-[#F1F5F3]">
       {/* Main footer */}
       <div className="mx-auto w-full max-w-[1440px] px-5 pb-12 pt-16 sm:px-8 lg:px-12 lg:pb-16 lg:pt-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
@@ -30,9 +31,9 @@ export const Footer: React.FC = () => {
             <Link
               to="/"
               aria-label={tr("ProFarm — Home")}
-              className="inline-flex items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B9D19D]"
+              className="inline-flex items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9BD3A4]"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#E8EDDC] text-[#244B35]">
+              <span className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#DBEEDB] text-[#22484D]">
                 <svg
                   width="27"
                   height="27"
@@ -64,24 +65,24 @@ export const Footer: React.FC = () => {
                 </svg>
               </span>
 
-              <span className="text-[29px] font-extrabold tracking-[-0.065em]">{tr("ProFarm")}<span className="text-[#A8C58D]">.</span>
+              <span className="text-[29px] font-extrabold tracking-[-0.065em]">{tr("ProFarm")}<span className="text-[#8BC798]">.</span>
               </span>
             </Link>
 
-            <p className="mt-6 max-w-[350px] text-[14px] leading-[1.9] text-[#C5D4C7]">{tr("Making sustainable agriculture more accessible through practical knowledge, thoughtful technology, and smarter farming decisions.")}</p>
+            <p className="mt-6 max-w-[350px] text-[14px] leading-[1.9] text-[#C4D5D2]">{tr("Making sustainable agriculture more accessible through practical knowledge, thoughtful technology, and smarter farming decisions.")}</p>
 
             <div className="mt-8 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.05] px-4 py-2.5">
               <span
                 aria-hidden="true"
-                className="h-2 w-2 rounded-full bg-[#A8C58D]"
+                className="h-2 w-2 rounded-full bg-[#8BC798]"
               />
-              <span className="text-[11px] font-semibold tracking-[0.04em] text-[#E2EBD9]">{tr("Rooted in knowledge. Growing for tomorrow.")}</span>
+              <span className="text-[11px] font-semibold tracking-normal text-[#D8ECDC]">{tr("Rooted in knowledge. Growing for tomorrow.")}</span>
             </div>
           </div>
 
           {/* Explore */}
           <div className="lg:col-span-3">
-            <h2 className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#B4CBA6]">{tr("Explore")}</h2>
+            <h2 className="text-[12px] font-bold tracking-normal text-[#A5CCB1]">{tr("Explore")}</h2>
 
             <nav aria-label={tr("Footer explore navigation")} className="mt-6">
               <ul className="space-y-4">
@@ -89,7 +90,7 @@ export const Footer: React.FC = () => {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className="text-[13px] text-[#D5E0D3] transition-colors duration-200 hover:text-white focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B9D19D]"
+                      className="text-[13px] text-[#D2E1DA] transition-colors duration-200 hover:text-white focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9BD3A4]"
                     >
                       {tr(link.label)}
                     </Link>
@@ -101,7 +102,7 @@ export const Footer: React.FC = () => {
 
           {/* Tools */}
           <div className="lg:col-span-4">
-            <h2 className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#B4CBA6]">{tr("Farming Tools")}</h2>
+            <h2 className="text-[12px] font-bold tracking-normal text-[#A5CCB1]">{tr("Farming Tools")}</h2>
 
             <nav aria-label={tr("Footer farming tools navigation")} className="mt-6">
               <ul className="space-y-4">
@@ -109,7 +110,7 @@ export const Footer: React.FC = () => {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className="text-[13px] text-[#D5E0D3] transition-colors duration-200 hover:text-white focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#B9D19D]"
+                      className="text-[13px] text-[#D2E1DA] transition-colors duration-200 hover:text-white focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9BD3A4]"
                     >
                       {tr(link.label)}
                     </Link>
@@ -128,10 +129,10 @@ export const Footer: React.FC = () => {
 
       {/* Bottom footer */}
       <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-5 py-7 text-center sm:px-8 md:flex-row md:items-center md:justify-between md:text-start lg:px-12">
-        <p className="text-[11px] leading-relaxed text-[#B6C9B8]">
+        <p className="text-[11px] leading-relaxed text-[#B5CAC6]">
           © {new Date().getFullYear()}{tr("ProFarm. All rights reserved.")}</p>
 
-        <p className="text-[11px] leading-relaxed text-[#B6C9B8]">{tr("Thoughtfully built for a more sustainable agricultural future.")}</p>
+        <p className="text-[11px] leading-relaxed text-[#B5CAC6]">{tr("Thoughtfully built for a more sustainable agricultural future.")}</p>
       </div>
     </footer>
   );

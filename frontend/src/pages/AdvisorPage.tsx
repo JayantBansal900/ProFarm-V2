@@ -45,7 +45,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const fieldClass =
-  'w-full rounded-xl border border-[#D4E1D0] bg-[#FBFCF9] px-4 py-3 text-sm font-semibold text-[#193E29] outline-none transition focus:border-[#679B73] focus:ring-2 focus:ring-[#679B73]/15';
+  'w-full rounded-xl border border-[#CFE2D8] bg-[#F9FCF9] px-4 py-3 text-sm font-semibold text-[#183B3F] outline-none transition focus:border-[#659D99] focus:ring-2 focus:ring-[#659D99]/15';
 
 const isAbortError = (error: unknown) =>
   error instanceof Error && error.name === 'AbortError';
@@ -108,7 +108,7 @@ const PriorityDot = ({ priority }: { priority: string }) => (
         ? 'bg-[#C36A42]'
         : priority === 'medium'
         ? 'bg-[#C4A45C]'
-        : 'bg-[#78A481]'
+        : 'bg-[#76A6A1]'
     }`}
   />
 );
@@ -120,29 +120,29 @@ const RecommendationItem: React.FC<{
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <article className="group border-b border-[#E2EADF] py-5 last:border-b-0 sm:py-6">
+    <article className="group border-b border-[#DFEAE4] py-5 last:border-b-0 sm:py-6">
       <div className="flex items-start gap-4 sm:gap-5">
-        <span className="hidden w-9 shrink-0 pt-1 text-xs font-bold tabular-nums text-[#819482] sm:block">
+        <span className="hidden w-9 shrink-0 pt-1 text-xs font-bold tabular-nums text-[#809590] sm:block">
           {String(index + 1).padStart(2, '0')}
         </span>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <span className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#4C7654]">
+            <span className="text-[10px] font-extrabold tracking-normal text-[#4A7873]">
               {tr(CATEGORY_LABELS[rec.category]) || rec.category.replace(/_/g, ' ')}
             </span>
 
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#566A59]">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#556B68]">
               <PriorityDot priority={rec.priority} />
               {rec.priority === 'high' ? tr("High priority") : rec.priority === 'medium' ? tr("Important") : tr("General")}
             </span>
           </div>
 
-          <h3 className="mt-2 font-serif text-xl font-semibold leading-snug text-[#193D2A]">
+          <h3 className="mt-2 font-serif text-xl font-semibold leading-snug text-[#183B3E]">
             {<LocalizedContent text={rec.title} />}
           </h3>
 
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-[#365441]">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-[#355355]">
             {<LocalizedContent text={rec.explanation} />}
           </p>
 
@@ -150,7 +150,7 @@ const RecommendationItem: React.FC<{
             type="button"
             onClick={() => setExpanded((value) => !value)}
             aria-expanded={expanded}
-            className="mt-3 inline-flex items-center gap-2 text-xs font-bold text-[#286442] hover:text-[#173E29]"
+            className="mt-3 inline-flex items-center gap-2 text-xs font-bold text-[#266066] hover:text-[#153B40]"
           >
             {expanded ? tr("Hide details") : tr("Why this matters")}
             <span
@@ -161,22 +161,22 @@ const RecommendationItem: React.FC<{
           </button>
 
           {expanded && (
-            <div className="mt-4 space-y-3 rounded-xl border border-[#DDE9D8] bg-[#F5F9F2] p-4 text-xs leading-5 text-[#3A5943]">
+            <div className="mt-4 space-y-3 rounded-xl border border-[#D7EADF] bg-[#F2F9F4] p-4 text-xs leading-5 text-[#395A5A]">
               {rec.whyThisApplies && (
                 <div>
-                  <p className="font-bold text-[#244B32]">{tr("Why it applies")}</p>
+                  <p className="font-bold text-[#224A4D]">{tr("Why it applies")}</p>
                   <p className="mt-1"><LocalizedContent text={rec.whyThisApplies} /></p>
                 </div>
               )}
 
               {rec.evidence?.length > 0 && (
                 <div>
-                  <p className="font-bold text-[#244B32]">{tr("Supporting evidence")}</p>
+                  <p className="font-bold text-[#224A4D]">{tr("Supporting evidence")}</p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {rec.evidence.map((item, itemIndex) => (
                       <span
                         key={`${item}-${itemIndex}`}
-                        className="rounded-md border border-[#D5E4D1] bg-white px-2.5 py-1 font-medium"
+                        className="rounded-md border border-[#D0E5DA] bg-white px-2.5 py-1 font-medium"
                       >
                         <LocalizedContent text={item} />
                       </span>
@@ -187,13 +187,13 @@ const RecommendationItem: React.FC<{
 
               {rec.limitations && (
                 <div>
-                  <p className="font-bold text-[#244B32]">{tr("Considerations")}</p>
+                  <p className="font-bold text-[#224A4D]">{tr("Considerations")}</p>
                   <p className="mt-1"><LocalizedContent text={rec.limitations} /></p>
                 </div>
               )}
 
               {rec.source && (
-                <p className="border-t border-[#DCE7D8] pt-3 text-[#4E6654]">{tr("Source:")}<strong>{tr(rec.source.name)}</strong>
+                <p className="border-t border-[#D7E8DE] pt-3 text-[#4D6766]">{tr("Source:")}<strong>{tr(rec.source.name)}</strong>
                   {rec.source.organization
                     ? ` · ${rec.source.organization}`
                     : ''}
@@ -220,7 +220,7 @@ const RainGauge: React.FC<{ rain: number }> = ({ rain }) => {
             cx="50"
             cy="50"
             r="40"
-            stroke="#D9E7D8"
+            stroke="#D7E8E2"
             strokeWidth="9"
             fill="none"
           />
@@ -228,7 +228,7 @@ const RainGauge: React.FC<{ rain: number }> = ({ rain }) => {
             cx="50"
             cy="50"
             r="40"
-            stroke="#5F9E77"
+            stroke="#5C9BA1"
             strokeWidth="9"
             fill="none"
             strokeLinecap="round"
@@ -236,17 +236,17 @@ const RainGauge: React.FC<{ rain: number }> = ({ rain }) => {
             transform="rotate(-90 50 50)"
           />
         </svg>
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-extrabold text-[#244B34]">{tr("7 days")}</div>
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-extrabold text-[#22484D]">{tr("7 days")}</div>
       </div>
 
       <div>
-        <p className="text-3xl font-bold tracking-tight text-[#1C422D]">
+        <p className="text-3xl font-bold tracking-tight text-[#1A3F44]">
           {displayRain.toLocaleString(locale(), {
             maximumFractionDigits: 1,
           })}
-          <span className="ms-1 text-sm font-semibold text-[#57705D]">{tr("mm")}</span>
+          <span className="ms-1 text-sm font-semibold text-[#56716F]">{tr("mm")}</span>
         </p>
-        <p className="mt-1 text-xs font-semibold text-[#4C6853]">{tr("Forecast rainfall")}</p>
+        <p className="mt-1 text-xs font-semibold text-[#4B6968]">{tr("Forecast rainfall")}</p>
       </div>
     </div>
   );
@@ -470,53 +470,53 @@ export const AdvisorPage: React.FC = () => {
   const weather = advisorData?.weatherSummary;
 
   return (
-    <div className="mx-auto max-w-[1440px] space-y-6 pb-16 text-[#1D3F2C]">
+    <div className="mx-auto max-w-[1440px] space-y-6 pb-16 text-[#1C3D40]">
       <header>
-        <nav className="mb-3 flex items-center gap-2 text-xs font-semibold text-[#5A705E]">
-          <Link to="/" className="hover:text-[#285D3C]">{tr("Home")}</Link>
+        <nav className="mb-3 flex items-center gap-2 text-xs font-semibold text-[#59716E]">
+          <Link to="/" className="hover:text-[#265B5F]">{tr("Home")}</Link>
           <span>/</span>
-          <span className="text-[#2D6343]">{tr("Farming Advisor")}</span>
+          <span className="text-[#2B5F65]">{tr("Farming Advisor")}</span>
         </nav>
 
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#173D29] sm:text-4xl">{tr("Sustainable Farming Advisor")}</h1>
-        <p className="mt-2 text-sm font-medium text-[#45614D]">{tr("Practical crop, soil and weather guidance for your field.")}</p>
+        <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#153A3F] sm:text-4xl">{tr("Sustainable Farming Advisor")}</h1>
+        <p className="mt-2 text-sm font-medium text-[#446262]">{tr("Practical crop, soil and weather guidance for your field.")}</p>
       </header>
 
       {/* Editorial hero */}
-      <section className="relative isolate overflow-hidden rounded-2xl bg-[#173D29]">
+      <section className="relative isolate overflow-hidden rounded-2xl bg-[#153A3F]">
         <img
           src={HERO_IMAGE}
           alt={tr("Green agricultural fields")}
           className="absolute inset-0 h-full w-full object-cover"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#103824]/95 via-[#17452D]/85 to-[#17452D]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0E353A]/95 via-[#154247]/85 to-[#154247]/20" />
 
         <div className="relative grid min-h-[265px] gap-6 p-6 sm:p-9 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div className="max-w-xl text-white">
-            <p className="text-[11px] font-bold uppercase tracking-[0.17em] text-[#CFE7CC]">{tr("ProFarm · Field Intelligence")}</p>
+            <p className="text-[11px] font-bold tracking-normal text-[#CBE8DC]">{tr("ProFarm · Field Intelligence")}</p>
             <h2 className="mt-4 max-w-lg font-serif text-3xl font-semibold leading-tight sm:text-4xl">{tr("Smarter decisions,")}<br />{tr("healthier harvests.")}</h2>
-            <p className="mt-4 max-w-md text-sm leading-6 text-[#E3F0DF]">{tr("Select your crop and field conditions to build a focused farming plan.")}</p>
+            <p className="mt-4 max-w-md text-sm leading-6 text-[#DEF1E7]">{tr("Select your crop and field conditions to build a focused farming plan.")}</p>
           </div>
 
-          <div className="rounded-xl border border-white/20 bg-[#143A27]/75 p-5 text-white backdrop-blur-sm sm:p-6">
+          <div className="rounded-xl border border-white/20 bg-[#12373C]/75 p-5 text-white backdrop-blur-sm sm:p-6">
             <div className="flex items-center gap-3">
               <div className="rounded-lg bg-white/15 p-3">
                 <Leaf />
               </div>
               <div>
-                <p className="text-xs text-[#D5E9D3]">{tr("Advisory engine")}</p>
+                <p className="text-xs text-[#D2EAE1]">{tr("Advisory engine")}</p>
                 <p className="mt-1 text-lg font-bold">{tr("Field guidance")}</p>
               </div>
             </div>
 
             <div className="mt-5 grid grid-cols-2 gap-5 border-t border-white/20 pt-5">
               <div>
-                <p className="text-xs text-[#D5E9D3]">{tr("Crop library")}</p>
+                <p className="text-xs text-[#D2EAE1]">{tr("Crop library")}</p>
                 <p className="mt-1 text-2xl font-bold">{crops.length}</p>
               </div>
               <div>
-                <p className="text-xs text-[#D5E9D3]">{tr("Soil profiles")}</p>
+                <p className="text-xs text-[#D2EAE1]">{tr("Soil profiles")}</p>
                 <p className="mt-1 text-2xl font-bold">{soils.length}</p>
               </div>
             </div>
@@ -525,13 +525,13 @@ export const AdvisorPage: React.FC = () => {
       </section>
 
       {/* Configuration */}
-      <section className="overflow-hidden rounded-xl border border-[#D9E5D5] bg-white">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E3ECE0] px-5 py-5 sm:px-7">
+      <section className="overflow-hidden rounded-xl border border-[#D4E6DC] bg-white">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E0ECE5] px-5 py-5 sm:px-7">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-[#56805C]">{tr("Field configuration")}</p>
-            <h2 className="mt-1 font-serif text-2xl font-semibold text-[#1B422C]">{tr("Tell us about your field")}</h2>
+            <p className="text-[11px] font-bold tracking-normal text-[#54827B]">{tr("Field configuration")}</p>
+            <h2 className="mt-1 font-serif text-2xl font-semibold text-[#193F44]">{tr("Tell us about your field")}</h2>
           </div>
-          <span className="rounded-full bg-[#EFF6EC] px-3 py-1.5 text-xs font-bold text-[#3E704B]">{tr("3 simple inputs")}</span>
+          <span className="rounded-full bg-[#ECF6F0] px-3 py-1.5 text-xs font-bold text-[#3C7270]">{tr("3 simple inputs")}</span>
         </div>
 
         <form onSubmit={handleSubmit} className="p-5 sm:p-7">
@@ -539,7 +539,7 @@ export const AdvisorPage: React.FC = () => {
             <div>
               <label
                 htmlFor="advisor-crop"
-                className="mb-2 block text-xs font-bold text-[#35583E]"
+                className="mb-2 block text-xs font-bold text-[#345958]"
               >{tr("01 · Crop")}</label>
               <select
                 id="advisor-crop"
@@ -554,7 +554,7 @@ export const AdvisorPage: React.FC = () => {
                   </option>
                 ))}
               </select>
-              <p className="mt-2 text-xs font-medium text-[#5D735F]">
+              <p className="mt-2 text-xs font-medium text-[#5C746F]">
                 {selectedCrop ? tr("{{v0}} · {{v1}} water requirement", { v0: selectedCrop.seasons.map(season => tr(season)).join(' · '), v1: tr(selectedCrop.waterLevel) }) : tr("Choose a crop")}
               </p>
             </div>
@@ -562,7 +562,7 @@ export const AdvisorPage: React.FC = () => {
             <div>
               <label
                 htmlFor="advisor-soil"
-                className="mb-2 block text-xs font-bold text-[#35583E]"
+                className="mb-2 block text-xs font-bold text-[#345958]"
               >{tr("02 · Soil profile")}</label>
               <select
                 id="advisor-soil"
@@ -577,27 +577,27 @@ export const AdvisorPage: React.FC = () => {
                   </option>
                 ))}
               </select>
-              <p className="mt-2 text-xs font-medium text-[#5D735F]">
+              <p className="mt-2 text-xs font-medium text-[#5C746F]">
                 {selectedSoil ? tr("Drainage: {{v0}}", { v0: tr(selectedSoil.drainage) }) : tr("Optional")}
               </p>
             </div>
 
             <div>
-              <label className="mb-2 block text-xs font-bold text-[#35583E]">{tr("03 · Weather context")}</label>
+              <label className="mb-2 block text-xs font-bold text-[#345958]">{tr("03 · Weather context")}</label>
 
-              <label className="flex min-h-[48px] cursor-pointer items-center justify-between rounded-xl border border-[#D4E1D0] bg-[#FBFCF9] px-4">
-                <span className="text-sm font-semibold text-[#254B33]">{tr("Include 7-day forecast")}</span>
+              <label className="flex min-h-[48px] cursor-pointer items-center justify-between rounded-xl border border-[#CFE2D8] bg-[#F9FCF9] px-4">
+                <span className="text-sm font-semibold text-[#234A4D]">{tr("Include 7-day forecast")}</span>
                 <input
                   type="checkbox"
                   checked={includeWeather}
                   onChange={(event) => setIncludeWeather(event.target.checked)}
-                  className="h-4 w-4 accent-[#2B6945]"
+                  className="h-4 w-4 accent-[#29656B]"
                 />
               </label>
 
               {includeWeather && (
                 <div className="mt-2 flex items-center justify-between gap-2">
-                  <span className="flex min-w-0 items-center gap-1.5 text-xs font-semibold text-[#49674F]">
+                  <span className="flex min-w-0 items-center gap-1.5 text-xs font-semibold text-[#486865]">
                     <LocationIcon />
                     <span className="truncate">
                       {selectedLocation ? `${selectedLocation.name}${
@@ -610,7 +610,7 @@ export const AdvisorPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowLocationPicker((value) => !value)}
-                    className="shrink-0 text-xs font-bold text-[#286A43] underline underline-offset-2"
+                    className="shrink-0 text-xs font-bold text-[#25666D] underline underline-offset-2"
                   >
                     {selectedLocation ? tr("Change") : tr("Set location")}
                   </button>
@@ -620,13 +620,13 @@ export const AdvisorPage: React.FC = () => {
           </div>
 
           {includeWeather && showLocationPicker && (
-            <div className="mt-6 rounded-xl border border-[#D5E3D0] bg-[#F4F8F1] p-4 sm:p-5">
+            <div className="mt-6 rounded-xl border border-[#CFE4D8] bg-[#F1F8F3] p-4 sm:p-5">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="text-sm font-bold text-[#234B32]">{tr("Find your location")}</h3>
+                <h3 className="text-sm font-bold text-[#21494D]">{tr("Find your location")}</h3>
                 <button
                   type="button"
                   onClick={() => setShowLocationPicker(false)}
-                  className="text-xs font-bold text-[#56715C]"
+                  className="text-xs font-bold text-[#557270]"
                 >{tr("Close")}</button>
               </div>
 
@@ -657,7 +657,7 @@ export const AdvisorPage: React.FC = () => {
                   disabled={
                     isSearchingLocation || locationSearchInput.trim().length < 2
                   }
-                  className="rounded-xl bg-[#285D3D] px-6 py-3 text-sm font-bold text-white hover:bg-[#1C4B2F] disabled:opacity-50"
+                  className="rounded-xl bg-[#265A5F] px-6 py-3 text-sm font-bold text-white hover:bg-[#1A484D] disabled:opacity-50"
                 >
                   {isSearchingLocation ? tr("Searching...") : tr("Search")}
                 </button>
@@ -670,7 +670,7 @@ export const AdvisorPage: React.FC = () => {
               )}
 
               {locationSearchResults.length > 0 && (
-                <div className="mt-3 max-h-48 overflow-y-auto rounded-xl border border-[#DCE8D8] bg-white">
+                <div className="mt-3 max-h-48 overflow-y-auto rounded-xl border border-[#D7E9DF] bg-white">
                   {locationSearchResults.map((location) => (
                     <button
                       key={`${location.id}-${location.latitude}-${location.longitude}`}
@@ -680,7 +680,7 @@ export const AdvisorPage: React.FC = () => {
                         setShowLocationPicker(false);
                         setLocationSearchResults([]);
                       }}
-                      className="flex w-full items-center justify-between gap-3 border-b border-[#E8EFE5] px-4 py-3 text-start text-sm font-semibold text-[#254B34] last:border-0 hover:bg-[#F4F8F1]"
+                      className="flex w-full items-center justify-between gap-3 border-b border-[#E5EFE9] px-4 py-3 text-start text-sm font-semibold text-[#23494D] last:border-0 hover:bg-[#F1F8F3]"
                     >
                       <span>
                         {location.name}
@@ -697,18 +697,18 @@ export const AdvisorPage: React.FC = () => {
                 !locationSearchError &&
                 locationSearchInput.trim().length >= 2 &&
                 locationSearchResults.length === 0 && (
-                  <p className="mt-3 text-xs text-[#59705D]">{tr("Search to view matching locations.")}</p>
+                  <p className="mt-3 text-xs text-[#58716E]">{tr("Search to view matching locations.")}</p>
                 )}
             </div>
           )}
 
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#E5EDE2] pt-5">
-            <p className="text-xs font-medium text-[#5C715F]">{tr("Rule-based recommendations tailored to your selection.")}</p>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#E2EDE7] pt-5">
+            <p className="text-xs font-medium text-[#5B726E]">{tr("Rule-based recommendations tailored to your selection.")}</p>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="inline-flex items-center justify-center gap-3 rounded-xl bg-[#285D3D] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#1B482E] disabled:cursor-wait disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-3 rounded-xl bg-[#265A5F] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#19454A] disabled:cursor-wait disabled:opacity-60"
             >
               {isLoading ? tr("Generating guidance...") : tr("Generate field guidance")}
               {!isLoading && <Arrow />}
@@ -736,7 +736,7 @@ export const AdvisorPage: React.FC = () => {
                 includeWeather
               )
             }
-            className="rounded-lg bg-[#285D3D] px-4 py-2.5 text-xs font-bold text-white"
+            className="rounded-lg bg-[#265A5F] px-4 py-2.5 text-xs font-bold text-white"
           >{tr("Retry")}</button>
         </section>
       )}
@@ -744,13 +744,13 @@ export const AdvisorPage: React.FC = () => {
       {isLoading && (
         <section
           role="status"
-          className="rounded-xl border border-[#DCE7D8] bg-white p-8"
+          className="rounded-xl border border-[#D7E8DE] bg-white p-8"
         >
           <div className="flex items-center gap-4">
-            <div className="h-9 w-9 animate-spin rounded-full border-4 border-[#E1EBDD] border-t-[#34764E]" />
+            <div className="h-9 w-9 animate-spin rounded-full border-4 border-[#DCECE3] border-t-[#317279]" />
             <div>
-              <p className="text-sm font-bold text-[#214A31]">{tr("Preparing your field plan")}</p>
-              <p className="mt-1 text-xs text-[#58715D]">{tr("Reviewing crop, soil and forecast inputs.")}</p>
+              <p className="text-sm font-bold text-[#1F484C]">{tr("Preparing your field plan")}</p>
+              <p className="mt-1 text-xs text-[#57726F]">{tr("Reviewing crop, soil and forecast inputs.")}</p>
             </div>
           </div>
         </section>
@@ -759,32 +759,32 @@ export const AdvisorPage: React.FC = () => {
       {!isLoading && advisorData && (
         <>
           {/* Results introduction */}
-          <section className="overflow-hidden rounded-xl border border-[#D9E5D5] bg-[#F0F6EC]">
+          <section className="overflow-hidden rounded-xl border border-[#D4E6DC] bg-[#ECF6EF]">
             <div className="grid lg:grid-cols-[1fr_300px]">
               <div className="p-6 sm:p-8">
-                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#4D8055]">{tr("Your field assessment")}</p>
+                <p className="text-[11px] font-bold tracking-normal text-[#4B827A]">{tr("Your field assessment")}</p>
 
-                <h2 className="mt-3 font-serif text-3xl font-semibold leading-tight text-[#1A432D]">
+                <h2 className="mt-3 font-serif text-3xl font-semibold leading-tight text-[#184045]">
                   {tr(advisorData.crop.name)}
-                  <span className="font-normal text-[#67856A]"> / </span>
+                  <span className="font-normal text-[#668680]"> / </span>
                   {tr(advisorData.soil?.name) || tr("General soil guidance")}
                 </h2>
 
                 {advisorData.crop.scientificName && (
-                  <p className="mt-1 text-sm italic text-[#58735D]">
+                  <p className="mt-1 text-sm italic text-[#577471]">
                     {advisorData.crop.scientificName}
                   </p>
                 )}
 
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-[#D1E1CD] bg-white px-3 py-2 text-xs font-bold text-[#2D5C3C]">
+                  <span className="rounded-full border border-[#CCE2D7] bg-white px-3 py-2 text-xs font-bold text-[#2B5D5E]">
                     {advisorData.summary.totalRecommendations}{tr("recommendations")}</span>
 
-                  <span className="rounded-full border border-[#D1E1CD] bg-white px-3 py-2 text-xs font-bold text-[#2D5C3C]">
+                  <span className="rounded-full border border-[#CCE2D7] bg-white px-3 py-2 text-xs font-bold text-[#2B5D5E]">
                     {highPriorityCount}{tr("high priority")}</span>
 
                   {weather && (
-                    <span className="rounded-full border border-[#D1E1CD] bg-white px-3 py-2 text-xs font-bold text-[#2D5C3C]">
+                    <span className="rounded-full border border-[#CCE2D7] bg-white px-3 py-2 text-xs font-bold text-[#2B5D5E]">
                       {weather.locationName} · {weather.temperatureC}°C
                     </span>
                   )}
@@ -798,7 +798,7 @@ export const AdvisorPage: React.FC = () => {
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#F0F6EC] to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#ECF6EF] to-transparent" />
               </div>
             </div>
           </section>
@@ -811,13 +811,13 @@ export const AdvisorPage: React.FC = () => {
               }`}
             >
               {compatibility && (
-                <section className="rounded-xl border border-[#D9E5D5] bg-white p-6">
+                <section className="rounded-xl border border-[#D4E6DC] bg-white p-6">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#537B59]">{tr("Crop–soil compatibility")}</p>
+                    <p className="text-[11px] font-bold tracking-normal text-[#517D76]">{tr("Crop–soil compatibility")}</p>
                     <span
                       className={`rounded-full px-3 py-1 text-[11px] font-bold ${
                         compatibility.status === 'recommended'
-                          ? 'bg-[#E7F3E4] text-[#2A6A3E]'
+                          ? 'bg-[#E3F4EC] text-[#276C6D]'
                           : compatibility.status === 'acceptable'
                           ? 'bg-[#FBF0D9] text-[#94692C]'
                           : 'bg-[#FBE7E0] text-[#9B4C33]'
@@ -827,21 +827,21 @@ export const AdvisorPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="mt-5 font-serif text-2xl font-semibold text-[#1D442E]">
+                  <h3 className="mt-5 font-serif text-2xl font-semibold text-[#1B4146]">
                     {<LocalizedContent text={compatibility.headline} />}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-[#45624C]">
+                  <p className="mt-3 text-sm leading-6 text-[#446361]">
                     {<LocalizedContent text={compatibility.reason} />}
                   </p>
                 </section>
               )}
 
               {weather && (
-                <section className="rounded-xl border border-[#D9E5D5] bg-white p-6">
+                <section className="rounded-xl border border-[#D4E6DC] bg-white p-6">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#537B59]">{tr("Weather outlook")}</p>
-                    <span className="text-xs font-bold text-[#496A52]">
+                    <p className="text-[11px] font-bold tracking-normal text-[#517D76]">{tr("Weather outlook")}</p>
+                    <span className="text-xs font-bold text-[#486B6A]">
                       {weather.locationName}
                     </span>
                   </div>
@@ -851,25 +851,25 @@ export const AdvisorPage: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-end">
                       <div>
-                        <p className="text-[11px] font-semibold text-[#647B67]">{tr("Temperature")}</p>
-                        <p className="mt-1 text-lg font-bold text-[#214A32]">
+                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Temperature")}</p>
+                        <p className="mt-1 text-lg font-bold text-[#1F474C]">
                           {weather.temperatureC}°C
                         </p>
                       </div>
                       <div>
-                        <p className="text-[11px] font-semibold text-[#647B67]">{tr("Rain chance")}</p>
-                        <p className="mt-1 text-lg font-bold text-[#214A32]">
+                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Rain chance")}</p>
+                        <p className="mt-1 text-lg font-bold text-[#1F474C]">
                           {weather.maxDailyPrecipProb}%
                         </p>
                       </div>
                       <div>
-                        <p className="text-[11px] font-semibold text-[#647B67]">{tr("Today's rain")}</p>
-                        <p className="mt-1 text-sm font-bold text-[#214A32]">
+                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Today's rain")}</p>
+                        <p className="mt-1 text-sm font-bold text-[#1F474C]">
                           {weather.todayRainMm}{tr("mm")}</p>
                       </div>
                       <div>
-                        <p className="text-[11px] font-semibold text-[#647B67]">{tr("Max wind")}</p>
-                        <p className="mt-1 text-sm font-bold text-[#214A32]">
+                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Max wind")}</p>
+                        <p className="mt-1 text-sm font-bold text-[#1F474C]">
                           {weather.maxWindSpeedKmH}{tr("km/h")}</p>
                       </div>
                     </div>
@@ -886,15 +886,15 @@ export const AdvisorPage: React.FC = () => {
           )}
 
           {/* Recommendations */}
-          <section className="overflow-hidden rounded-xl border border-[#D9E5D5] bg-white">
-            <div className="border-b border-[#E2EADF] px-5 py-6 sm:px-8">
+          <section className="overflow-hidden rounded-xl border border-[#D4E6DC] bg-white">
+            <div className="border-b border-[#DFEAE4] px-5 py-6 sm:px-8">
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-[#4F7B57]">{tr("Your action plan")}</p>
-                  <h2 className="mt-2 font-serif text-2xl font-semibold text-[#193F2B] sm:text-3xl">{tr("Farming Recommendations")}</h2>
+                  <p className="text-[11px] font-bold tracking-normal text-[#4D7D77]">{tr("Your action plan")}</p>
+                  <h2 className="mt-2 font-serif text-2xl font-semibold text-[#173C41] sm:text-3xl">{tr("Farming Recommendations")}</h2>
                 </div>
 
-                <p className="text-xs font-bold text-[#5C735F]">
+                <p className="text-xs font-bold text-[#5B7470]">
                   {filteredRecommendations.length}{tr("recommendations")}</p>
               </div>
 
@@ -917,8 +917,8 @@ export const AdvisorPage: React.FC = () => {
                       aria-pressed={active}
                       className={`rounded-full border px-4 py-2 text-xs font-bold transition ${
                         active
-                          ? 'border-[#285D3D] bg-[#285D3D] text-white'
-                          : 'border-[#D8E4D4] bg-[#F6F9F4] text-[#395C42] hover:border-[#A8C6A9]'
+                          ? 'border-[#265A5F] bg-[#265A5F] text-white'
+                          : 'border-[#D3E5DB] bg-[#F4F9F5] text-[#385D5C] hover:border-[#A7C7BF]'
                       }`}
                     >
                       {tr(category.label)} <span className="opacity-75">{count}</span>
@@ -939,16 +939,16 @@ export const AdvisorPage: React.FC = () => {
                 ))
               ) : (
                 <div className="py-12 text-center">
-                  <p className="text-sm font-semibold text-[#536D59]">{tr("No recommendations in this category.")}</p>
+                  <p className="text-sm font-semibold text-[#526E6C]">{tr("No recommendations in this category.")}</p>
                 </div>
               )}
             </div>
           </section>
 
           {/* Disclaimer */}
-          <footer className="rounded-xl border border-[#DCE7D8] bg-[#F6F9F3] px-5 py-5 sm:px-7">
-            <p className="text-xs font-bold text-[#2B5538]">{tr("About this guidance")}</p>
-            <p className="mt-2 text-xs leading-5 text-[#536C59]">
+          <footer className="rounded-xl border border-[#D7E8DE] bg-[#F3F9F4] px-5 py-5 sm:px-7">
+            <p className="text-xs font-bold text-[#295657]">{tr("About this guidance")}</p>
+            <p className="mt-2 text-xs leading-5 text-[#526D6B]">
               <LocalizedContent text={advisorData.disclaimer} />
             </p>
           </footer>

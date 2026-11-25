@@ -13,13 +13,13 @@ beforeEach(async () => { await bindLanguageUser(null); await selectLanguage('en'
 afterEach(async () => { cleanup(); await bindLanguageUser(null); await selectLanguage('en'); localStorage.clear(); });
 
 describe('language registry and catalog contracts', () => {
-  it('has exactly the requested 13 unique languages with explicit availability', () => {
-    expect(languages.map(item => item.code)).toEqual(['en','hi','te','ta','kn','ml','mr','bn','gu','pa','or','as','ur']);
-    expect(new Set(languages.map(item => item.code)).size).toBe(13);
+  it('has exactly the requested 5 farmer languages with explicit availability', () => {
+    expect(languages.map(item => item.code)).toEqual(['en','hi','pa','te','ta']);
+    expect(new Set(languages.map(item => item.code)).size).toBe(5);
     expect(languageRegistry.every(item => item.nativeName && item.englishName && item.fallback === 'en' && item.contentAvailability)).toBe(true);
   });
   it('normalizes supported BCP 47 tags and rejects unsupported codes', () => {
-    expect(supportedLanguage('TE_in')).toBe('te'); expect(supportedLanguage('ur-PK')).toBe('ur');
+    expect(supportedLanguage('TE_in')).toBe('te'); expect(supportedLanguage('pa-IN')).toBe('pa'); expect(supportedLanguage('ur')).toBeUndefined();
     expect(supportedLanguage('fr')).toBeUndefined(); expect(supportedLanguage(null)).toBeUndefined();
   });
   it.each(languages)('$code has valid keys, interpolation, names, and honest fallbacks', ({ code }) => {
@@ -73,8 +73,8 @@ describe('switching and preference precedence', () => {
   });
   it('does not overwrite an explicit selection made while authentication is pending', async () => {
     await bindLanguageUser('a'); await selectLanguage('hi'); await bindLanguageUser(null);
-    const revision=preferenceRevision(); await selectLanguage('ur'); await bindLanguageUser('a',revision);
-    expect(currentLanguage()).toBe('ur'); await bindLanguageUser(null); await bindLanguageUser('a'); expect(currentLanguage()).toBe('ur');
+    const revision=preferenceRevision(); await selectLanguage('pa'); await bindLanguageUser('a',revision);
+    expect(currentLanguage()).toBe('pa'); await bindLanguageUser(null); await bindLanguageUser('a'); expect(currentLanguage()).toBe('pa');
   });
   it('keeps an explicit guest selection made before login starts', async () => {
     await bindLanguageUser('saved'); await selectLanguage('hi'); await bindLanguageUser(null);
@@ -85,8 +85,8 @@ describe('switching and preference precedence', () => {
     await bindLanguageUser('a'); await selectLanguage('ta'); await bindLanguageUser(null);
     await selectLanguage('xx'); expect(currentLanguage()).toBe('ta'); expect(localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe('ta');
   });
-  it('sets Urdu direction and restores LTR when switching away', async () => {
-    await selectLanguage('ur'); expect(document.documentElement).toHaveAttribute('lang','ur'); expect(document.documentElement).toHaveAttribute('dir','rtl');
+  it('sets the document language and keeps LTR for every supported script', async () => {
+    await selectLanguage('pa'); expect(document.documentElement).toHaveAttribute('lang','pa'); expect(document.documentElement).toHaveAttribute('dir','ltr');
     await selectLanguage('te'); expect(document.documentElement).toHaveAttribute('dir','ltr');
   });
 });
@@ -102,15 +102,15 @@ describe('localized public data presentation', () => {
     expect(normalizeSearch('  Ｗｈｅａｔ  ')).toBe('wheat');
   });
   it('formats weather and Mandi numbers with Intl without changing their values',async()=>{
-    for(const code of ['te','ta','ur']){await selectLanguage(code); expect(formatNumber(24.2,{maximumFractionDigits:1})).toBe(new Intl.NumberFormat(locale(),{maximumFractionDigits:1}).format(24.2)); expect(formatNumber(125000)).toBe(new Intl.NumberFormat(locale()).format(125000));}
+    for(const code of ['pa','te','ta']){await selectLanguage(code); expect(formatNumber(24.2,{maximumFractionDigits:1})).toBe(new Intl.NumberFormat(locale(),{maximumFractionDigits:1}).format(24.2)); expect(formatNumber(125000)).toBe(new Intl.NumberFormat(locale()).format(125000));}
     expect(formatNumber(Number.NaN)).toBe('—');
   });
   it('formats valid Mandi dates but preserves invalid and missing data without inventing dates', async()=>{
     expect(formatReportedDate('17/10/2026')).toBe('17/10/2026');
-    await selectLanguage('ur');
-    expect(formatReportedDate('17/10/2026')).toBe(new Intl.DateTimeFormat('ur-IN',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(2026,9,17))));
+    await selectLanguage('pa');
+    expect(formatReportedDate('17/10/2026')).toBe(new Intl.DateTimeFormat('pa-IN',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(2026,9,17))));
     expect(formatReportedDate('31/02/2026')).toBe('31/02/2026'); expect(formatReportedDate(null)).toBe('—');
-    expect(formatReportedDate('Not reported')).toBe(catalogs.ur['Not reported']);
+    expect(formatReportedDate('Not reported')).toBe(catalogs.pa['Not reported']);
   });
   it('labels unreviewed Advisor and agricultural prose as English fallback',async()=>{
     await selectLanguage('hi'); render(<LocalizedContent text="Apply exactly 24 mm only if recommended by your agronomist."/>);
@@ -142,6 +142,6 @@ describe('verified translation cache',()=>{
   });
   it('prefers an existing reviewed translation and otherwise falls back without requests',()=>{
     expect(resolvePublicContent(entry.source,entry.contentId,'v1','te',{language:'te',text:entry.text,reviewed:true})).toMatchObject({text:entry.text,origin:'existing-reviewed'});
-    expect(resolvePublicContent(entry.source,entry.contentId,'v2','ur')).toMatchObject({text:entry.source,fallback:true,language:'en'});
+    expect(resolvePublicContent(entry.source,entry.contentId,'v2','pa')).toMatchObject({text:entry.source,fallback:true,language:'en'});
   });
 });

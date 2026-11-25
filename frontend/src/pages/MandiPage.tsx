@@ -124,11 +124,11 @@ const SectionTitle: React.FC<{
   <div className="flex flex-wrap items-end justify-between gap-3">
     <div>
       {eyebrow && (
-        <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#4A7852]">
+        <p className="mb-1.5 text-[11px] font-bold tracking-normal text-[#487A74]">
           {tr(eyebrow)}
         </p>
       )}
-      <h2 className="font-serif text-[23px] font-semibold tracking-tight text-[#193D2B] sm:text-[26px]">
+      <h2 className="font-serif text-[23px] font-semibold tracking-tight text-[#183B3E] sm:text-[26px]">
         {tr(title)}
       </h2>
     </div>
@@ -141,20 +141,20 @@ const MetricCard: React.FC<{
   value: string;
   footnote: string;
   accent?: string;
-}> = ({ label, value, footnote, accent = '#295D40' }) => (
-  <div className="rounded-xl border border-[#DCE6D9] bg-white px-5 py-5 sm:px-6">
+}> = ({ label, value, footnote, accent = '#27595F' }) => (
+  <div className="rounded-xl border border-[#D8E7DF] bg-white px-5 py-5 sm:px-6">
     <div className="mb-4 h-1 w-9 rounded-full" style={{ backgroundColor: accent }} />
-    <p className="text-xs font-semibold text-[#4A6250]">{tr(label)}</p>
-    <p className="mt-2 break-words text-[26px] font-bold leading-tight tracking-tight text-[#193D2B] sm:text-[30px]">
+    <p className="text-xs font-semibold text-[#496362]">{tr(label)}</p>
+    <p className="mt-2 break-words text-[26px] font-bold leading-tight tracking-tight text-[#183B3E] sm:text-[30px]">
       {value}
     </p>
-    <p className="mt-2 text-xs font-medium text-[#526857]">{tr(footnote)}</p>
+    <p className="mt-2 text-xs font-medium text-[#516967]">{tr(footnote)}</p>
   </div>
 );
 
 const EmptyChart: React.FC<{ message: string }> = ({ message }) => (
-  <div className="flex min-h-[220px] items-center justify-center rounded-lg border border-dashed border-[#C9D9C6] bg-[#F8FAF7] px-5 text-center">
-    <p className="max-w-sm text-sm font-medium text-[#526B57]">{tr(message)}</p>
+  <div className="flex min-h-[220px] items-center justify-center rounded-lg border border-dashed border-[#C5DAD0] bg-[#F7FAF8] px-5 text-center">
+    <p className="max-w-sm text-sm font-medium text-[#516C69]">{tr(message)}</p>
   </div>
 );
 
@@ -185,20 +185,20 @@ const MarketPriceChart: React.FC<{
   const maxPrice = Math.max(1, ...ranked.map((record) => record.modalPrice));
 
   return (
-    <section className="rounded-xl border border-[#DCE6D9] bg-white p-5 sm:p-7">
+    <section className="rounded-xl border border-[#D8E7DF] bg-white p-5 sm:p-7">
       <SectionTitle
         eyebrow={tr("Market comparison")}
         title={tr("Price by Mandi")}
         trailing={
-          <div className="flex rounded-lg bg-[#F0F5ED] p-1">
+          <div className="flex rounded-lg bg-[#EDF5EF] p-1">
             <button
               type="button"
               onClick={() => setView('highest')}
               aria-pressed={view === 'highest'}
               className={`rounded-md px-3 py-2 text-xs font-bold transition ${
                 view === 'highest'
-                  ? 'bg-[#285C3D] text-white shadow-sm'
-                  : 'text-[#365841] hover:bg-white'
+                  ? 'bg-[#26585E] text-white shadow-sm'
+                  : 'text-[#355859] hover:bg-white'
               }`}
             >{tr("Highest")}</button>
             <button
@@ -207,15 +207,15 @@ const MarketPriceChart: React.FC<{
               aria-pressed={view === 'lowest'}
               className={`rounded-md px-3 py-2 text-xs font-bold transition ${
                 view === 'lowest'
-                  ? 'bg-[#285C3D] text-white shadow-sm'
-                  : 'text-[#365841] hover:bg-white'
+                  ? 'bg-[#26585E] text-white shadow-sm'
+                  : 'text-[#355859] hover:bg-white'
               }`}
             >{tr("Lowest")}</button>
           </div>
         }
       />
 
-      <p className="mt-2 text-xs font-medium text-[#516956]">
+      <p className="mt-2 text-xs font-medium text-[#506A68]">
         {tr(commodity) || tr("Selected commodities")}{tr("· up to 7 markets from this results page")}</p>
 
       <div className="mt-7">
@@ -233,26 +233,26 @@ const MarketPriceChart: React.FC<{
                 >
                   <div className="min-w-0">
                     <p
-                      className="truncate text-xs font-bold text-[#244731]"
+                      className="truncate text-xs font-bold text-[#234648]"
                       title={tr(record.market)}
                     >
                       {tr(record.market)}
                     </p>
-                    <p className="mt-0.5 truncate text-[11px] text-[#627365]">
+                    <p className="mt-0.5 truncate text-[11px] text-[#617471]">
                       {tr(record.district)}
                     </p>
                   </div>
 
-                  <div className="order-3 col-span-2 h-3 overflow-hidden rounded-full bg-[#E8EFE5] sm:order-none sm:col-span-1">
+                  <div className="order-3 col-span-2 h-3 overflow-hidden rounded-full bg-[#E5EFE9] sm:order-none sm:col-span-1">
                     <div
                       className={`h-full rounded-full ${
-                        index === 0 ? 'bg-[#2D704A]' : 'bg-[#94B69A]'
+                        index === 0 ? 'bg-[#2A6B73]' : 'bg-[#93B7B3]'
                       }`}
                       style={{ width: `${percent}%` }}
                     />
                   </div>
 
-                  <p className="text-end text-sm font-bold tabular-nums text-[#1C412D]">
+                  <p className="text-end text-sm font-bold tabular-nums text-[#1B3E42]">
                     {formatPrice(record.modalPrice)}
                   </p>
                 </div>
@@ -262,7 +262,7 @@ const MarketPriceChart: React.FC<{
         )}
       </div>
 
-      <p className="mt-7 border-t border-[#E4EBE1] pt-4 text-[11px] font-medium text-[#617264]">{tr("Modal prices in ₹/quintal. Varieties, grades and arrival dates may differ between markets.")}</p>
+      <p className="mt-7 border-t border-[#E1EBE5] pt-4 text-[11px] font-medium text-[#607370]">{tr("Modal prices in ₹/quintal. Varieties, grades and arrival dates may differ between markets.")}</p>
     </section>
   );
 };
@@ -289,13 +289,13 @@ const PriceRangeChart: React.FC<{ records: MandiRecord[] }> = ({ records }) => {
   );
 
   return (
-    <section className="rounded-xl border border-[#DCE6D9] bg-white p-5 sm:p-7">
+    <section className="rounded-xl border border-[#D8E7DF] bg-white p-5 sm:p-7">
       <SectionTitle
         eyebrow={tr("Trading range")}
         title={tr("Minimum to Maximum")}
       />
 
-      <p className="mt-2 text-xs font-medium text-[#516956]">{tr("Reported price bands for up to 6 visible records")}</p>
+      <p className="mt-2 text-xs font-medium text-[#506A68]">{tr("Reported price bands for up to 6 visible records")}</p>
 
       <div className="mt-7">
         {entries.length === 0 ? (
@@ -312,26 +312,26 @@ const PriceRangeChart: React.FC<{ records: MandiRecord[] }> = ({ records }) => {
                 <div key={`${record.id}-${index}`}>
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <p
-                      className="min-w-0 truncate text-xs font-bold text-[#294A35]"
+                      className="min-w-0 truncate text-xs font-bold text-[#28494B]"
                       title={tr(record.market)}
                     >
                       {tr(record.market)}
                     </p>
-                    <p className="shrink-0 text-[11px] font-semibold tabular-nums text-[#506754]">
+                    <p className="shrink-0 text-[11px] font-semibold tabular-nums text-[#4F6865]">
                       {formatPrice(low)} – {formatPrice(high)}
                     </p>
                   </div>
 
-                  <div className="relative h-3 rounded-full bg-[#EEF3EB]">
+                  <div className="relative h-3 rounded-full bg-[#EBF3ED]">
                     <div
-                      className="absolute h-3 rounded-full bg-[#85B3A0]"
+                      className="absolute h-3 rounded-full bg-[#83B0B5]"
                       style={{
                         left: `${start}%`,
                         width: `${Math.max(width, 0.5)}%`,
                       }}
                     />
                     <div
-                      className="absolute top-1/2 h-[18px] w-[3px] -translate-y-1/2 rounded-full bg-[#285C3D]"
+                      className="absolute top-1/2 h-[18px] w-[3px] -translate-y-1/2 rounded-full bg-[#26585E]"
                       style={{ left: `${(record.modalPrice / max) * 100}%` }}
                       title={tr("Modal: {{v0}}", { v0: formatPrice(record.modalPrice) })}
                     />
@@ -343,11 +343,11 @@ const PriceRangeChart: React.FC<{ records: MandiRecord[] }> = ({ records }) => {
         )}
       </div>
 
-      <div className="mt-6 flex items-center gap-5 border-t border-[#E4EBE1] pt-4 text-[11px] font-semibold text-[#536957]">
+      <div className="mt-6 flex items-center gap-5 border-t border-[#E1EBE5] pt-4 text-[11px] font-semibold text-[#526A67]">
         <span className="flex items-center gap-2">
-          <span className="h-2.5 w-5 rounded-full bg-[#85B3A0]" />{tr("Min–max range")}</span>
+          <span className="h-2.5 w-5 rounded-full bg-[#83B0B5]" />{tr("Min–max range")}</span>
         <span className="flex items-center gap-2">
-          <span className="h-3 w-[3px] rounded-full bg-[#285C3D]" />{tr("Modal price")}</span>
+          <span className="h-3 w-[3px] rounded-full bg-[#26585E]" />{tr("Modal price")}</span>
       </div>
     </section>
   );
@@ -537,27 +537,27 @@ export const MandiPage: React.FC = () => {
   const latestVisibleDate = records[0]?.arrivalDate || '—';
 
   return (
-    <div className="mx-auto w-full min-w-0 max-w-[1440px] space-y-6 pb-14 text-[#203B29]">
+    <div className="mx-auto w-full min-w-0 max-w-[1440px] space-y-6 pb-14 text-[#1F3B3C]">
       {/* Page heading */}
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <nav className="mb-3 flex items-center gap-2 text-xs font-medium text-[#536758]">
-            <Link to="/" className="hover:text-[#245F3C]">{tr("Home")}</Link>
+          <nav className="mb-3 flex items-center gap-2 text-xs font-medium text-[#526867]">
+            <Link to="/" className="hover:text-[#225B61]">{tr("Home")}</Link>
             <span>/</span>
-            <span className="text-[#285F3E]">{tr("Mandi Prices")}</span>
+            <span className="text-[#265B61]">{tr("Mandi Prices")}</span>
           </nav>
 
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#173C29] sm:text-4xl">{tr("Mandi Prices & Market Trends")}</h1>
+          <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#16393D] sm:text-4xl">{tr("Mandi Prices & Market Trends")}</h1>
 
-          <p className="mt-2 text-sm text-[#425B49]">{tr("Explore wholesale crop prices reported across Indian markets.")}</p>
+          <p className="mt-2 text-sm text-[#415C5B]">{tr("Explore wholesale crop prices reported across Indian markets.")}</p>
         </div>
 
-        <span className="flex items-center gap-2 rounded-full border border-[#D2E2CF] bg-[#F0F6ED] px-3 py-2 text-xs font-bold text-[#326243]">
-          <span className="h-2 w-2 rounded-full bg-[#659B6B]" />{tr("AGMARKNET data")}</span>
+        <span className="flex items-center gap-2 rounded-full border border-[#CEE3D9] bg-[#EDF6F0] px-3 py-2 text-xs font-bold text-[#306164]">
+          <span className="h-2 w-2 rounded-full bg-[#639D92]" />{tr("AGMARKNET data")}</span>
       </header>
 
       {/* Image hero */}
-      <section className="relative isolate overflow-hidden rounded-2xl bg-[#1B452D]">
+      <section className="relative isolate overflow-hidden rounded-2xl bg-[#194247]">
         <img
           src={IMAGES.hero}
           alt={tr("Agricultural landscape")}
@@ -565,25 +565,25 @@ export const MandiPage: React.FC = () => {
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#103A26]/95 via-[#17452D]/85 to-[#17452D]/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0E373C]/95 via-[#154247]/85 to-[#154247]/25" />
 
         <div className="relative grid min-h-[265px] gap-8 p-6 sm:p-9 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
           <div className="max-w-xl text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#D9EED7]">{tr("Agricultural market intelligence")}</p>
+            <p className="text-xs font-bold tracking-normal text-[#D6EFE5]">{tr("Agricultural market intelligence")}</p>
 
             <h2 className="mt-4 font-serif text-3xl font-semibold leading-tight sm:text-4xl">{tr("Know the market.")}<br />{tr("Compare the price.")}</h2>
 
-            <p className="mt-4 max-w-md text-sm font-medium leading-6 text-[#E2EEE1]">{tr("Search commodities, compare mandi rates and review reported price ranges.")}</p>
+            <p className="mt-4 max-w-md text-sm font-medium leading-6 text-[#E0EFE9]">{tr("Search commodities, compare mandi rates and review reported price ranges.")}</p>
           </div>
 
-          <div className="rounded-xl border border-white/25 bg-[#163D29]/70 p-5 text-white backdrop-blur-sm sm:p-6">
+          <div className="rounded-xl border border-white/25 bg-[#143A3F]/70 p-5 text-white backdrop-blur-sm sm:p-6">
             <div className="flex items-center gap-3">
               <div className="rounded-lg bg-white/15 p-2.5">
                 <MarketIcon />
               </div>
 
               <div>
-                <p className="text-xs font-medium text-[#D8EAD7]">{tr("Current selection")}</p>
+                <p className="text-xs font-medium text-[#D6EBE4]">{tr("Current selection")}</p>
                 <p className="mt-0.5 text-lg font-bold">
                   {tr(commodity) || tr("All commodities")}
                 </p>
@@ -592,14 +592,14 @@ export const MandiPage: React.FC = () => {
 
             <div className="mt-5 grid grid-cols-2 gap-5 border-t border-white/20 pt-5">
               <div>
-                <p className="text-xs text-[#D8EAD7]">{tr("Matching records")}</p>
+                <p className="text-xs text-[#D6EBE4]">{tr("Matching records")}</p>
                 <p className="mt-1 text-2xl font-bold">
                   {isLoading || error ? '—' : formatCount(totalRecords)}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs text-[#D8EAD7]">{tr("Selected region")}</p>
+                <p className="text-xs text-[#D6EBE4]">{tr("Selected region")}</p>
                 <p className="mt-2 truncate text-sm font-bold">
                   {selectedDistrict || selectedState || tr("All India")}
                 </p>
@@ -610,25 +610,25 @@ export const MandiPage: React.FC = () => {
       </section>
 
       {/* Search and filters */}
-      <section className="rounded-xl border border-[#DCE6D9] bg-white p-5 sm:p-6">
+      <section className="rounded-xl border border-[#D8E7DF] bg-white p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-base font-bold text-[#1C422D]">{tr("Find Market Rates")}</h2>
-            <p className="mt-1 text-xs font-medium text-[#5B705F]">{tr("Search by commodity and narrow results by location.")}</p>
+            <h2 className="text-base font-bold text-[#1A3F44]">{tr("Find Market Rates")}</h2>
+            <p className="mt-1 text-xs font-medium text-[#5A716E]">{tr("Search by commodity and narrow results by location.")}</p>
           </div>
 
           <button
             type="button"
             onClick={handleRetry}
             disabled={isLoading}
-            className="flex items-center gap-2 text-xs font-bold text-[#286241] hover:text-[#17492C] disabled:opacity-50"
+            className="flex items-center gap-2 text-xs font-bold text-[#265E64] hover:text-[#15464B] disabled:opacity-50"
           >
             <RefreshIcon />{tr("Refresh rates")}</button>
         </div>
 
         <form onSubmit={handleSearchSubmit} className="mt-5 flex flex-col gap-3 sm:flex-row">
           <div className="relative flex-1">
-            <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#6B816E]">
+            <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#6A827E]">
               <SearchIcon />
             </span>
 
@@ -638,19 +638,19 @@ export const MandiPage: React.FC = () => {
               onChange={(event) => setSearchInput(event.target.value)}
               placeholder={tr("Search wheat, cotton, onion, mustard...")}
               aria-label={tr("Search commodity")}
-              className="w-full rounded-lg border border-[#D4E0D1] bg-[#F8FAF7] py-3 ps-11 pe-4 text-sm font-medium text-[#203F2C] placeholder:text-[#708171] outline-none focus:border-[#649775] focus:ring-2 focus:ring-[#649775]/15"
+              className="w-full rounded-lg border border-[#D0E1D8] bg-[#F7FAF8] py-3 ps-11 pe-4 text-sm font-medium text-[#1F3D40] placeholder:text-[#6F827D] outline-none focus:border-[#629799] focus:ring-2 focus:ring-[#629799]/15"
             />
           </div>
 
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 rounded-lg bg-[#285C3D] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#1D4B30]"
+            className="flex items-center justify-center gap-2 rounded-lg bg-[#26585E] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#1B484D]"
           >{tr("Search rates")}<ArrowIcon />
           </button>
         </form>
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <span className="me-1 text-xs font-semibold text-[#526B57]">{tr("Popular:")}</span>
+          <span className="me-1 text-xs font-semibold text-[#516C69]">{tr("Popular:")}</span>
 
           {popularCommodities.slice(0, 9).map((crop) => {
             const active = crop.toLowerCase() === commodity.toLowerCase();
@@ -663,8 +663,8 @@ export const MandiPage: React.FC = () => {
                 aria-pressed={active}
                 className={`rounded-full border px-3.5 py-1.5 text-xs font-bold transition ${
                   active
-                    ? 'border-[#285C3D] bg-[#285C3D] text-white'
-                    : 'border-[#D7E4D4] bg-[#F5F8F3] text-[#385842] hover:border-[#A9C7AA]'
+                    ? 'border-[#26585E] bg-[#26585E] text-white'
+                    : 'border-[#D3E5DC] bg-[#F3F8F4] text-[#375959] hover:border-[#A8C8C0]'
                 }`}
               >
                 <LocalizedLabel text={crop} />
@@ -673,17 +673,17 @@ export const MandiPage: React.FC = () => {
           })}
         </div>
 
-        <div className="mt-6 grid gap-4 border-t border-[#E5ECE3] pt-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1.15fr_auto] lg:items-end">
+        <div className="mt-6 grid gap-4 border-t border-[#E3ECE7] pt-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1.15fr_auto] lg:items-end">
           <div>
             <label
               htmlFor="mandi-state"
-              className="mb-2 block text-xs font-bold text-[#34543E]"
+              className="mb-2 block text-xs font-bold text-[#335555]"
             >{tr("State")}</label>
             <select
               id="mandi-state"
               value={selectedState}
               onChange={(event) => handleStateChange(event.target.value)}
-              className="w-full rounded-lg border border-[#D6E2D3] bg-[#FAFCF9] px-3 py-3 text-sm font-medium text-[#274833] outline-none focus:border-[#649775]"
+              className="w-full rounded-lg border border-[#D2E3DA] bg-[#F9FCFA] px-3 py-3 text-sm font-medium text-[#264749] outline-none focus:border-[#629799]"
             >
               <option value="">{tr("All states")}</option>
               {availableStates.map((item) => (
@@ -697,14 +697,14 @@ export const MandiPage: React.FC = () => {
           <div>
             <label
               htmlFor="mandi-district"
-              className="mb-2 block text-xs font-bold text-[#34543E]"
+              className="mb-2 block text-xs font-bold text-[#335555]"
             >{tr("District")}</label>
             <select
               id="mandi-district"
               value={selectedDistrict}
               onChange={(event) => handleDistrictChange(event.target.value)}
               disabled={!selectedState}
-              className="w-full rounded-lg border border-[#D6E2D3] bg-[#FAFCF9] px-3 py-3 text-sm font-medium text-[#274833] outline-none focus:border-[#649775] disabled:cursor-not-allowed disabled:opacity-55"
+              className="w-full rounded-lg border border-[#D2E3DA] bg-[#F9FCFA] px-3 py-3 text-sm font-medium text-[#264749] outline-none focus:border-[#629799] disabled:cursor-not-allowed disabled:opacity-55"
             >
               <option value="">
                 {selectedState ? tr("All districts") : tr("Select state first")}
@@ -720,7 +720,7 @@ export const MandiPage: React.FC = () => {
           <div>
             <label
               htmlFor="mandi-sort"
-              className="mb-2 block text-xs font-bold text-[#34543E]"
+              className="mb-2 block text-xs font-bold text-[#335555]"
             >{tr("Sort by")}</label>
             <select
               id="mandi-sort"
@@ -728,7 +728,7 @@ export const MandiPage: React.FC = () => {
               onChange={(event) =>
                 handleSortChange(event.target.value as SortOrder)
               }
-              className="w-full rounded-lg border border-[#D6E2D3] bg-[#FAFCF9] px-3 py-3 text-sm font-medium text-[#274833] outline-none focus:border-[#649775]"
+              className="w-full rounded-lg border border-[#D2E3DA] bg-[#F9FCFA] px-3 py-3 text-sm font-medium text-[#264749] outline-none focus:border-[#629799]"
             >
               <option value="modal_price_desc">{tr("Highest modal price")}</option>
               <option value="modal_price_asc">{tr("Lowest modal price")}</option>
@@ -739,7 +739,7 @@ export const MandiPage: React.FC = () => {
           <button
             type="button"
             onClick={handleResetFilters}
-            className="rounded-lg border border-[#C9D9C7] bg-white px-5 py-3 text-sm font-bold text-[#365B42] hover:bg-[#F2F7F0]"
+            className="rounded-lg border border-[#C6DAD2] bg-white px-5 py-3 text-sm font-bold text-[#355C5C] hover:bg-[#F0F7F3]"
           >{tr("Reset filters")}</button>
         </div>
       </section>
@@ -748,11 +748,11 @@ export const MandiPage: React.FC = () => {
       {isLoading ? (
         <section
           role="status"
-          className="rounded-xl border border-[#DCE6D9] bg-white px-6 py-20 text-center"
+          className="rounded-xl border border-[#D8E7DF] bg-white px-6 py-20 text-center"
         >
-          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-[#E0EADD] border-t-[#2E704A]" />
-          <h2 className="mt-5 text-base font-bold text-[#234B33]">{tr("Loading market prices")}</h2>
-          <p className="mt-2 text-sm text-[#536C59]">{tr("Retrieving reported wholesale rates...")}</p>
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-[#DCEBE3] border-t-[#2B6C73]" />
+          <h2 className="mt-5 text-base font-bold text-[#21484D]">{tr("Loading market prices")}</h2>
+          <p className="mt-2 text-sm text-[#526D6B]">{tr("Retrieving reported wholesale rates...")}</p>
         </section>
       ) : error ? (
         <section
@@ -764,23 +764,23 @@ export const MandiPage: React.FC = () => {
           <button
             type="button"
             onClick={handleRetry}
-            className="mt-5 rounded-lg bg-[#285C3D] px-5 py-2.5 text-sm font-bold text-white"
+            className="mt-5 rounded-lg bg-[#26585E] px-5 py-2.5 text-sm font-bold text-white"
           >{tr("Try again")}</button>
         </section>
       ) : records.length === 0 ? (
-        <section className="rounded-xl border border-[#DCE6D9] bg-white p-10 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-[#EDF5EA] text-[#285C3D]">
+        <section className="rounded-xl border border-[#D8E7DF] bg-white p-10 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-[#EAF5EF] text-[#26585E]">
             <MarketIcon />
           </div>
 
-          <h2 className="mt-5 text-xl font-bold text-[#1E432E]">{tr("No market records found")}</h2>
+          <h2 className="mt-5 text-xl font-bold text-[#1D4044]">{tr("No market records found")}</h2>
 
-          <p className="mx-auto mt-2 max-w-md text-sm text-[#4C6552]">{tr("Try another commodity or broaden the state and district filters.")}</p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-[#4B6664]">{tr("Try another commodity or broaden the state and district filters.")}</p>
 
           <button
             type="button"
             onClick={handleResetFilters}
-            className="mt-6 rounded-lg bg-[#285C3D] px-5 py-3 text-sm font-bold text-white"
+            className="mt-6 rounded-lg bg-[#26585E] px-5 py-3 text-sm font-bold text-white"
           >{tr("Reset filters")}</button>
         </section>
       ) : (
@@ -791,13 +791,13 @@ export const MandiPage: React.FC = () => {
               label={tr("Matching records")}
               value={formatCount(totalRecords)}
               footnote={tr("{{v0}} shown on this page", { v0: records.length })}
-              accent="#3E7B51"
+              accent="#3C7D7D"
             />
             <MetricCard
               label={tr("Highest modal price")}
               value={formatPrice(highestRecord?.modalPrice)}
               footnote={tr("Visible records · ₹/quintal")}
-              accent="#2D7651"
+              accent="#2A7179"
             />
             <MetricCard
               label={tr("Lowest modal price")}
@@ -821,49 +821,49 @@ export const MandiPage: React.FC = () => {
 
           {/* Market spread */}
           {highestRecord && lowestRecord && validRecords.length > 1 && (
-            <section className="overflow-hidden rounded-xl border border-[#D6E5D3] bg-[#F0F6EC]">
+            <section className="overflow-hidden rounded-xl border border-[#D2E6DD] bg-[#ECF6EF]">
               <div className="grid gap-6 p-5 sm:p-7 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
                 <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-[#477A4F]">{tr("Visible market comparison")}</p>
+                  <p className="text-[11px] font-bold tracking-normal text-[#457C74]">{tr("Visible market comparison")}</p>
 
-                  <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1B442D]">{tr("Price Difference")}</h2>
+                  <h2 className="mt-2 font-serif text-2xl font-semibold text-[#194146]">{tr("Price Difference")}</h2>
 
-                  <p className="mt-3 text-[36px] font-bold tracking-tight text-[#1B442D]">
+                  <p className="mt-3 text-[36px] font-bold tracking-tight text-[#194146]">
                     {formatPrice(priceSpread)}
                   </p>
 
-                  <p className="mt-1 text-xs font-semibold text-[#506C55]">{tr("Spread per quintal on this page")}</p>
+                  <p className="mt-1 text-xs font-semibold text-[#4F6D69]">{tr("Spread per quintal on this page")}</p>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-lg border border-[#D6E5D3] bg-white p-5">
-                    <p className="text-xs font-bold text-[#467B4E]">{tr("Highest reported")}</p>
-                    <p className="mt-3 text-xl font-bold text-[#1D452E]">
+                  <div className="rounded-lg border border-[#D2E6DD] bg-white p-5">
+                    <p className="text-xs font-bold text-[#447D75]">{tr("Highest reported")}</p>
+                    <p className="mt-3 text-xl font-bold text-[#1B4247]">
                       {formatPrice(highestRecord.modalPrice)}
                     </p>
-                    <p className="mt-2 text-sm font-bold text-[#2B4B36]">
+                    <p className="mt-2 text-sm font-bold text-[#2A4B4C]">
                       {tr(highestRecord.market)}
                     </p>
-                    <p className="mt-1 text-xs text-[#5B6D5E]">
+                    <p className="mt-1 text-xs text-[#5A6E6B]">
                       {tr(highestRecord.district)}, {tr(highestRecord.state)}
                     </p>
-                    <p className="mt-1 text-[11px] text-[#617262]">
+                    <p className="mt-1 text-[11px] text-[#60736E]">
                       {highestRecord.variety} · {highestRecord.grade}
                     </p>
                   </div>
 
-                  <div className="rounded-lg border border-[#D6E5D3] bg-white p-5">
+                  <div className="rounded-lg border border-[#D2E6DD] bg-white p-5">
                     <p className="text-xs font-bold text-[#A27539]">{tr("Lowest reported")}</p>
-                    <p className="mt-3 text-xl font-bold text-[#1D452E]">
+                    <p className="mt-3 text-xl font-bold text-[#1B4247]">
                       {formatPrice(lowestRecord.modalPrice)}
                     </p>
-                    <p className="mt-2 text-sm font-bold text-[#2B4B36]">
+                    <p className="mt-2 text-sm font-bold text-[#2A4B4C]">
                       {tr(lowestRecord.market)}
                     </p>
-                    <p className="mt-1 text-xs text-[#5B6D5E]">
+                    <p className="mt-1 text-xs text-[#5A6E6B]">
                       {tr(lowestRecord.district)}, {tr(lowestRecord.state)}
                     </p>
-                    <p className="mt-1 text-[11px] text-[#617262]">
+                    <p className="mt-1 text-[11px] text-[#60736E]">
                       {lowestRecord.variety} · {lowestRecord.grade}
                     </p>
                   </div>
@@ -873,7 +873,7 @@ export const MandiPage: React.FC = () => {
           )}
 
           {/* Records */}
-          <section className="overflow-hidden rounded-xl border border-[#DCE6D9] bg-white">
+          <section className="overflow-hidden rounded-xl border border-[#D8E7DF] bg-white">
             <div className="flex flex-wrap items-end justify-between gap-3 p-5 sm:p-7">
               <SectionTitle
                 eyebrow={tr("Wholesale market records")}
@@ -881,9 +881,9 @@ export const MandiPage: React.FC = () => {
               />
 
               <div className="text-end">
-                <p className="text-xs font-bold text-[#34583F]">
+                <p className="text-xs font-bold text-[#335959]">
                   {formatCount(totalRecords)}{tr("matching records")}</p>
-                <p className="mt-1 text-xs text-[#637465]">{tr('Page {{page}} of {{total}}', { page: currentPage, total: totalPages })}
+                <p className="mt-1 text-xs text-[#627571]">{tr('Page {{page}} of {{total}}', { page: currentPage, total: totalPages })}
                 </p>
               </div>
             </div>
@@ -891,8 +891,8 @@ export const MandiPage: React.FC = () => {
             {/* Desktop table */}
             <div className="hidden overflow-x-auto md:block">
               <table className="w-full min-w-[920px] border-collapse text-start">
-                <thead className="bg-[#F1F6EF]">
-                  <tr className="text-[11px] font-bold uppercase tracking-[0.05em] text-[#3C5D45]">
+                <thead className="bg-[#EFF6F2]">
+                  <tr className="text-[11px] font-bold tracking-normal text-[#3B5E5D]">
                     <th className="px-5 py-4 sm:ps-7">{tr("Mandi / Market")}</th>
                     <th className="px-4 py-4">{tr("Commodity")}</th>
                     <th className="px-4 py-4">{tr("Grade")}</th>
@@ -902,50 +902,50 @@ export const MandiPage: React.FC = () => {
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-[#E5ECE3]">
+                <tbody className="divide-y divide-[#E3ECE7]">
                   {records.map((record, index) => (
                     <tr
                       key={`${record.id}-${index}`}
-                      className="transition hover:bg-[#F8FBF7]"
+                      className="transition hover:bg-[#F7FBF9]"
                     >
                       <td className="px-5 py-4 sm:ps-7">
-                        <p className="text-sm font-bold text-[#1D412C]">
+                        <p className="text-sm font-bold text-[#1C3F42]">
                           {tr(record.market)}
                         </p>
-                        <p className="mt-1 text-xs text-[#5C705F]">
+                        <p className="mt-1 text-xs text-[#5B716E]">
                           {tr(record.district)}, {tr(record.state)}
                         </p>
                       </td>
 
                       <td className="px-4 py-4">
-                        <p className="text-sm font-semibold text-[#294936]">
+                        <p className="text-sm font-semibold text-[#28474A]">
                           <LocalizedLabel text={record.commodity} />
                         </p>
-                        <p className="mt-1 text-xs text-[#637566]">
+                        <p className="mt-1 text-xs text-[#627673]">
                           {record.variety || '—'}
                         </p>
                       </td>
 
                       <td className="px-4 py-4">
-                        <span className="rounded-md bg-[#EEF4EB] px-2.5 py-1.5 text-xs font-semibold text-[#42634A]">
+                        <span className="rounded-md bg-[#EBF4EE] px-2.5 py-1.5 text-xs font-semibold text-[#416462]">
                           {record.grade || '—'}
                         </span>
                       </td>
 
                       <td className="px-4 py-4 text-end">
-                        <p className="text-base font-bold tabular-nums text-[#236342]">
+                        <p className="text-base font-bold tabular-nums text-[#205F66]">
                           {formatPrice(record.modalPrice)}
                         </p>
-                        <p className="mt-1 text-[11px] text-[#617464]">{tr("/ quintal")}</p>
+                        <p className="mt-1 text-[11px] text-[#607572]">{tr("/ quintal")}</p>
                       </td>
 
-                      <td className="px-4 py-4 text-end text-xs font-semibold tabular-nums text-[#425C48]">
+                      <td className="px-4 py-4 text-end text-xs font-semibold tabular-nums text-[#415D5B]">
                         {record.minPrice !== null && record.maxPrice !== null
                           ? `${formatPrice(record.minPrice)} – ${formatPrice(record.maxPrice)}`
                           : '—'}
                       </td>
 
-                      <td className="px-4 py-4 text-end text-xs font-semibold text-[#4D6552]">
+                      <td className="px-4 py-4 text-end text-xs font-semibold text-[#4C6664]">
                         {shortDate(record.arrivalDate)}
                       </td>
                     </tr>
@@ -959,47 +959,47 @@ export const MandiPage: React.FC = () => {
               {records.map((record, index) => (
                 <article
                   key={`${record.id}-${index}`}
-                  className="rounded-xl border border-[#E0E9DD] bg-[#FBFCFA] p-4"
+                  className="rounded-xl border border-[#DDE9E2] bg-[#FAFCFA] p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h3 className="text-sm font-bold text-[#1E442E]">
+                      <h3 className="text-sm font-bold text-[#1C4146]">
                         {tr(record.market)}
                       </h3>
-                      <p className="mt-1 text-xs text-[#5D715F]">
+                      <p className="mt-1 text-xs text-[#5C726D]">
                         {tr(record.district)}, {tr(record.state)}
                       </p>
                     </div>
 
                     <div className="shrink-0 text-end">
-                      <p className="text-lg font-bold text-[#256643]">
+                      <p className="text-lg font-bold text-[#226269]">
                         {formatPrice(record.modalPrice)}
                       </p>
-                      <p className="text-[10px] text-[#657768]">{tr("/ quintal")}</p>
+                      <p className="text-[10px] text-[#647875]">{tr("/ quintal")}</p>
                     </div>
                   </div>
 
-                  <div className="mt-4 grid grid-cols-2 gap-4 border-t border-[#E1EADF] pt-4 text-xs">
+                  <div className="mt-4 grid grid-cols-2 gap-4 border-t border-[#DFEAE5] pt-4 text-xs">
                     <div>
-                      <p className="text-[#657768]">{tr("Commodity")}</p>
-                      <p className="mt-1 font-bold text-[#294A35]">
+                      <p className="text-[#647875]">{tr("Commodity")}</p>
+                      <p className="mt-1 font-bold text-[#28494B]">
                         <LocalizedLabel text={record.commodity} />
                       </p>
-                      <p className="mt-0.5 text-[#5B6F5E]">
+                      <p className="mt-0.5 text-[#5A706D]">
                         {record.variety}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-[#657768]">{tr("Grade")}</p>
-                      <p className="mt-1 font-bold text-[#294A35]">
+                      <p className="text-[#647875]">{tr("Grade")}</p>
+                      <p className="mt-1 font-bold text-[#28494B]">
                         {record.grade || '—'}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-[#657768]">{tr("Price range")}</p>
-                      <p className="mt-1 font-bold text-[#294A35]">
+                      <p className="text-[#647875]">{tr("Price range")}</p>
+                      <p className="mt-1 font-bold text-[#28494B]">
                         {record.minPrice !== null && record.maxPrice !== null
                           ? `${formatPrice(record.minPrice)} – ${formatPrice(record.maxPrice)}`
                           : '—'}
@@ -1007,8 +1007,8 @@ export const MandiPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <p className="text-[#657768]">{tr("Arrival date")}</p>
-                      <p className="mt-1 font-bold text-[#294A35]">
+                      <p className="text-[#647875]">{tr("Arrival date")}</p>
+                      <p className="mt-1 font-bold text-[#28494B]">
                         {shortDate(record.arrivalDate)}
                       </p>
                     </div>
@@ -1019,18 +1019,18 @@ export const MandiPage: React.FC = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#E2EAE0] bg-[#FBFCFA] px-5 py-4 sm:px-7">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#E0EAE5] bg-[#FAFCFA] px-5 py-4 sm:px-7">
                 <button
                   type="button"
                   onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
                   disabled={currentPage <= 1}
-                  className="flex items-center gap-2 rounded-lg border border-[#D1DFCE] bg-white px-4 py-2.5 text-xs font-bold text-[#31563D] hover:bg-[#F1F6EF] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex items-center gap-2 rounded-lg border border-[#CDE0D7] bg-white px-4 py-2.5 text-xs font-bold text-[#305757] hover:bg-[#EFF6F2] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <ArrowIcon direction="left" />{tr("Previous")}</button>
 
                 <span
                   data-testid="pagination-info"
-                  className="text-xs font-bold text-[#4C6552]"
+                  className="text-xs font-bold text-[#4B6664]"
                 >{tr('Page {{page}} of {{total}}', { page: currentPage, total: totalPages })}
                 </span>
 
@@ -1040,7 +1040,7 @@ export const MandiPage: React.FC = () => {
                     setCurrentPage((page) => Math.min(totalPages, page + 1))
                   }
                   disabled={currentPage >= totalPages}
-                  className="flex items-center gap-2 rounded-lg border border-[#D1DFCE] bg-white px-4 py-2.5 text-xs font-bold text-[#31563D] hover:bg-[#F1F6EF] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex items-center gap-2 rounded-lg border border-[#CDE0D7] bg-white px-4 py-2.5 text-xs font-bold text-[#305757] hover:bg-[#EFF6F2] disabled:cursor-not-allowed disabled:opacity-40"
                 >{tr("Next")}<ArrowIcon />
                 </button>
               </div>
@@ -1051,39 +1051,39 @@ export const MandiPage: React.FC = () => {
 
       {/* Source status and visual feature */}
       <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-xl border border-[#DCE6D9] bg-white p-5 sm:p-7">
+        <div className="rounded-xl border border-[#D8E7DF] bg-white p-5 sm:p-7">
           <SectionTitle
             eyebrow={tr("Data coverage")}
             title={tr("Historical Price Trends")}
           />
 
-          <div className="mt-5 flex items-start gap-3 rounded-lg border border-[#D9E6D6] bg-[#F3F8F0] p-4">
-            <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#6C9D72]" />
+          <div className="mt-5 flex items-start gap-3 rounded-lg border border-[#D5E7DE] bg-[#F0F8F2] p-4">
+            <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#6A9F96]" />
 
             <div>
-              <p className="text-sm font-bold text-[#254A32]">{tr("Daily market snapshots")}</p>
-              <p className="mt-1 text-xs leading-5 text-[#4C6652]">{tr("The current feed provides reported daily prices, not a verified multi-week historical series. Historical trend charts will require accumulated dated records.")}</p>
+              <p className="text-sm font-bold text-[#24494B]">{tr("Daily market snapshots")}</p>
+              <p className="mt-1 text-xs leading-5 text-[#4B6765]">{tr("The current feed provides reported daily prices, not a verified multi-week historical series. Historical trend charts will require accumulated dated records.")}</p>
             </div>
           </div>
 
           <div className="mt-5 grid grid-cols-2 gap-4">
-            <div className="rounded-lg border border-[#E0E9DE] p-4">
-              <p className="text-xs font-medium text-[#526B58]">{tr("Example arrival date")}</p>
-              <p className="mt-2 text-lg font-bold text-[#214730]">
+            <div className="rounded-lg border border-[#DEE9E4] p-4">
+              <p className="text-xs font-medium text-[#516C6A]">{tr("Example arrival date")}</p>
+              <p className="mt-2 text-lg font-bold text-[#1F4549]">
                 {shortDate(latestVisibleDate)}
               </p>
             </div>
 
-            <div className="rounded-lg border border-[#E0E9DE] p-4">
-              <p className="text-xs font-medium text-[#526B58]">{tr("Data retrieval")}</p>
-              <p className="mt-2 text-lg font-bold text-[#214730]">
+            <div className="rounded-lg border border-[#DEE9E4] p-4">
+              <p className="text-xs font-medium text-[#516C6A]">{tr("Data retrieval")}</p>
+              <p className="mt-2 text-lg font-bold text-[#1F4549]">
                 {freshness ? freshness.cached ? tr("Cached") : tr("Fetched") : '—'}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="relative min-h-[290px] overflow-hidden rounded-xl bg-[#204A31]">
+        <div className="relative min-h-[290px] overflow-hidden rounded-xl bg-[#1E474C]">
           <img
             src={IMAGES.crops}
             alt={tr("Agricultural field at sunset")}
@@ -1091,28 +1091,28 @@ export const MandiPage: React.FC = () => {
             className="absolute inset-0 h-full w-full object-cover"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-r from-[#103B28]/90 via-[#103B28]/55 to-[#103B28]/15" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0E383D]/90 via-[#0E383D]/55 to-[#0E383D]/15" />
 
           <div className="relative flex h-full min-h-[290px] flex-col justify-end p-7 text-white">
-            <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#D9ECD6]">{tr("ProFarm Market Intelligence")}</p>
+            <p className="text-xs font-bold tracking-normal text-[#D5EDE3]">{tr("ProFarm Market Intelligence")}</p>
 
             <h2 className="mt-3 max-w-sm font-serif text-3xl font-semibold leading-tight">{tr("Better prices begin with better information.")}</h2>
 
-            <p className="mt-3 max-w-xs text-xs font-medium leading-5 text-[#E1EFE0]">{tr("Compare reported rates before choosing where to sell.")}</p>
+            <p className="mt-3 max-w-xs text-xs font-medium leading-5 text-[#DFF0EA]">{tr("Compare reported rates before choosing where to sell.")}</p>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="flex flex-wrap items-start justify-between gap-4 border-t border-[#DCE6D9] pt-5 text-xs text-[#506753]">
+      <footer className="flex flex-wrap items-start justify-between gap-4 border-t border-[#D8E7DF] pt-5 text-xs text-[#4F6864]">
         <div className="max-w-3xl space-y-2">
           <p>
-            <span className="font-bold text-[#2D5138]">{tr("Source:")}</span>{' '}
+            <span className="font-bold text-[#2C5252]">{tr("Source:")}</span>{' '}
             <a
               href="https://data.gov.in/resource/variety-wise-daily-market-prices-data-commodity"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-[#286541] underline underline-offset-2"
+              className="font-semibold text-[#266167] underline underline-offset-2"
             >{tr("Government of India · AGMARKNET / data.gov.in")}</a>
           </p>
 
@@ -1120,7 +1120,7 @@ export const MandiPage: React.FC = () => {
         </div>
 
         {freshness && (
-          <p className="text-xs font-semibold text-[#536B58]">{tr("Retrieved:")}{' '}
+          <p className="text-xs font-semibold text-[#526C6A]">{tr("Retrieved:")}{' '}
             {new Date(freshness.fetchedAt).toLocaleString(locale(), {
               dateStyle: 'medium',
               timeStyle: 'short',

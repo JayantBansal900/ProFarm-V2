@@ -1,13 +1,11 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* System shaping fonts keep all Indian scripts usable without remote font requests. */
-html[lang] body { font-family: Inter, system-ui, "Nirmala UI", "Mangal", "Noto Sans", sans-serif; }
-html[lang="ur"] body { font-family: "Nirmala UI", "Urdu Typesetting", "Noto Nastaliq Urdu", system-ui, sans-serif; line-height: 1.8; }
+html[lang] body { font-family: "Noto Sans", "Noto Sans Devanagari", "Noto Sans Gurmukhi", "Noto Sans Telugu", "Noto Sans Tamil", system-ui, "Nirmala UI", sans-serif; }
 html[dir="rtl"] input[type="email"], html[dir="rtl"] input[type="number"], html[dir="rtl"] input[type="date"] { direction: ltr; text-align: end; }
 html[dir="rtl"] .tabular-nums { unicode-bidi: isolate; direction: ltr; }
 html[dir="rtl"] svg { flex-shrink: 0; }
@@ -22,25 +20,24 @@ main button, main label, main h1, main h2, main h3 { overflow-wrap: anywhere; }
 
 @layer base {
   :root {
-    font-family: 'Manrope', sans-serif;
-    color: #1d2520;
-    background-color: #f7f6f2;
+    color: #14262e;
+    background-color: #f1f5f3;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    --pf-background: #f7f6f2;
-    --pf-surface: #fdfcf9;
-    --pf-forest: #18392b;
-    --pf-deep: #10291f;
-    --pf-olive: #71805d;
-    --pf-sage: #a7b69a;
-    --pf-ink: #1d2520;
-    --pf-muted: #69736b;
-    --pf-border: #e5e9e2;
-    --pf-gold: #c9a66b;
+    --pf-background: #f1f5f3;
+    --pf-surface: #ffffff;
+    --pf-forest: #0f5257;
+    --pf-deep: #0a3b3f;
+    --pf-olive: #2c7f72;
+    --pf-sage: #9cc5b6;
+    --pf-ink: #14262e;
+    --pf-muted: #56676b;
+    --pf-border: #d5e0dd;
+    --pf-gold: #e9a400;
   }
 
   *,
@@ -65,8 +62,8 @@ main button, main label, main h1, main h2, main h3 { overflow-wrap: anywhere; }
   }
 
   ::selection {
-    background: #a7b69a;
-    color: #10291f;
+    background: #f6d47a;
+    color: #0a3b3f;
   }
 
   h1,
@@ -75,8 +72,9 @@ main button, main label, main h1, main h2, main h3 { overflow-wrap: anywhere; }
   h4,
   h5,
   h6 {
-    font-family: 'Manrope', sans-serif;
-    letter-spacing: -0.035em;
+    font-family: 'Baloo 2', 'Baloo Paaji 2', 'Baloo Tammudu 2', 'Baloo Thambi 2', system-ui, sans-serif;
+    letter-spacing: -0.005em;
+    line-height: 1.15;
   }
 
   p {
@@ -110,7 +108,7 @@ main button, main label, main h1, main h2, main h3 { overflow-wrap: anywhere; }
   }
 
   :focus-visible {
-    outline: 2px solid var(--pf-olive);
+    outline: 3px solid var(--pf-gold);
     outline-offset: 3px;
   }
 }
@@ -129,7 +127,7 @@ main button, main label, main h1, main h2, main h3 { overflow-wrap: anywhere; }
   }
 
   .pf-section-label {
-    @apply text-[10px] font-bold uppercase tracking-[0.25em] text-profarm-olive;
+    @apply text-[10px] font-bold tracking-normal text-profarm-olive;
   }
 
   .pf-heading {

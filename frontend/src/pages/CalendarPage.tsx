@@ -17,7 +17,7 @@ const HERO_IMAGE =
   'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=85';
 
 const buttonBase =
-  'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#285D3D] disabled:cursor-not-allowed disabled:opacity-40';
+  'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#265A5F] disabled:cursor-not-allowed disabled:opacity-40';
 
 const MIN_YEAR = 2000;
 const MAX_YEAR = 2100;
@@ -120,8 +120,8 @@ const EVENT_STYLES: Record<
   { background: string; dot: string; symbol: string }
 > = {
   activity: {
-    background: 'bg-[#E8F3E5] text-[#347044]',
-    dot: 'bg-[#3C8650]',
+    background: 'bg-[#E4F4EC] text-[#327270]',
+    dot: 'bg-[#398987]',
     symbol: '●',
   },
   task: {
@@ -135,8 +135,8 @@ const EVENT_STYLES: Record<
     symbol: '✦',
   },
   sowing: {
-    background: 'bg-[#E7F3E6] text-[#34764A]',
-    dot: 'bg-[#3C9254]',
+    background: 'bg-[#E5F4EE] text-[#317679]',
+    dot: 'bg-[#399593]',
     symbol: '🌱',
   },
   'expected-harvest': {
@@ -451,21 +451,21 @@ export const CalendarPage: React.FC = () => {
         onClick={() => setSelectedDate(day.date)}
         aria-label={tr("{{v0}}, {{v1}} events", { v0: formatDate(day.date), v1: day.events.length })}
         aria-pressed={isSelected}
-        className={`group relative flex min-h-[90px] min-w-0 flex-col border-b border-r border-[#E5ECE1] p-2 text-start transition sm:min-h-[125px] sm:p-3 lg:min-h-[145px] ${
+        className={`group relative flex min-h-[90px] min-w-0 flex-col border-b border-r border-[#E1ECE5] p-2 text-start transition sm:min-h-[125px] sm:p-3 lg:min-h-[145px] ${
           day.isCurrentMonth
-            ? 'bg-white hover:bg-[#F5F9F2]'
-            : 'bg-[#F8FAF6] text-[#B2BDB0]'
+            ? 'bg-white hover:bg-[#F2F9F4]'
+            : 'bg-[#F6FAF7] text-[#AFBEB7]'
         } ${
-          isSelected ? 'ring-2 ring-inset ring-[#3B7950]' : ''
+          isSelected ? 'ring-2 ring-inset ring-[#39797B]' : ''
         }`}
       >
         <span
           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold sm:h-8 sm:w-8 sm:text-sm ${
             isToday
-              ? 'bg-[#285D3D] text-white'
+              ? 'bg-[#265A5F] text-white'
               : day.isCurrentMonth
-                ? 'text-[#35543D]'
-                : 'text-[#B2BDB0]'
+                ? 'text-[#345554]'
+                : 'text-[#AFBEB7]'
           }`}
         >
           {day.day}
@@ -488,7 +488,7 @@ export const CalendarPage: React.FC = () => {
           })}
 
           {additionalCount > 0 && (
-            <span className="block px-1 text-[10px] font-semibold text-[#708772]">
+            <span className="block px-1 text-[10px] font-semibold text-[#6F8883]">
               +{additionalCount}{tr("more")}</span>
           )}
         </div>
@@ -508,37 +508,37 @@ export const CalendarPage: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto w-full min-w-0 max-w-[1440px] space-y-7 pb-16 text-[#24432D]">
+    <div className="mx-auto w-full min-w-0 max-w-[1440px] space-y-7 pb-16 text-[#234444]">
       {/* Heading */}
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <nav
             aria-label={tr("Breadcrumb")}
-            className="mb-3 flex items-center gap-2 text-xs font-medium text-[#68816C]"
+            className="mb-3 flex items-center gap-2 text-xs font-medium text-[#67827E]"
           >
-            <Link to="/" className="hover:text-[#285D3D]">{tr("Home")}</Link>
+            <Link to="/" className="hover:text-[#265A5F]">{tr("Home")}</Link>
             <span>/</span>
-            <Link to="/my-farms" className="hover:text-[#285D3D]">{tr("My Farms")}</Link>
+            <Link to="/my-farms" className="hover:text-[#265A5F]">{tr("My Farms")}</Link>
             <span>/</span>
-            <span className="font-semibold text-[#285D3D]">{tr("Calendar")}</span>
+            <span className="font-semibold text-[#265A5F]">{tr("Calendar")}</span>
           </nav>
 
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#54815D]">{tr("Farm Planning")}</p>
+          <p className="text-[11px] font-bold tracking-normal text-[#52837E]">{tr("Farm Planning")}</p>
 
-          <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-[#173D29] sm:text-4xl">{tr("Farm Calendar")}</h1>
+          <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-[#153A3F] sm:text-4xl">{tr("Farm Calendar")}</h1>
 
-          <p className="mt-2 text-sm text-[#5F7663]">{tr("Stay organized with field activities, tasks, and crop milestones.")}</p>
+          <p className="mt-2 text-sm text-[#5E7774]">{tr("Stay organized with field activities, tasks, and crop milestones.")}</p>
         </div>
 
         <Link
           to="/my-farms"
-          className={`${buttonBase} border border-[#D5E2D0] bg-white text-[#315C3E] hover:bg-[#F0F6EC]`}
+          className={`${buttonBase} border border-[#CFE3D7] bg-white text-[#2F5E5E] hover:bg-[#ECF6EF]`}
         >
           <ArrowLeft />{tr("Back to My Farms")}</Link>
       </header>
 
       {/* Hero */}
-      <section className="relative isolate overflow-hidden rounded-2xl bg-[#173E2A]">
+      <section className="relative isolate overflow-hidden rounded-2xl bg-[#153B40]">
         <img
           src={HERO_IMAGE}
           alt={tr("Green agricultural fields")}
@@ -546,16 +546,16 @@ export const CalendarPage: React.FC = () => {
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#123823]/95 via-[#18462E]/85 to-[#18462E]/25" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#10353A]/95 via-[#164348]/85 to-[#164348]/25" />
 
         <div className="relative flex min-h-[220px] flex-col justify-center p-7 text-white sm:p-10">
-          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] backdrop-blur-sm">
+          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-normal backdrop-blur-sm">
             {farmId ? tr("Selected Farm Calendar") : tr("All Farms Calendar")}
           </span>
 
           <h2 className="mt-4 max-w-lg font-serif text-3xl font-semibold sm:text-4xl">{tr("Plan every season")}<br />{tr("with confidence.")}</h2>
 
-          <p className="mt-3 max-w-md text-sm leading-6 text-[#E2EFE0]">{tr("Track scheduled work, sowing dates, and expected or actual harvest milestones in one calendar.")}</p>
+          <p className="mt-3 max-w-md text-sm leading-6 text-[#DFF0E9]">{tr("Track scheduled work, sowing dates, and expected or actual harvest milestones in one calendar.")}</p>
         </div>
       </section>
 
@@ -585,17 +585,17 @@ export const CalendarPage: React.FC = () => {
         ].map((metric) => (
           <div
             key={metric.label}
-            className="rounded-2xl border border-[#DCE6D8] bg-white p-5 sm:p-6"
+            className="rounded-2xl border border-[#D7E7DE] bg-white p-5 sm:p-6"
           >
-            <p className="text-xs font-semibold text-[#6C816E]">
+            <p className="text-xs font-semibold text-[#6B827D]">
               {tr(metric.label)}
             </p>
 
-            <p className="mt-3 font-serif text-4xl font-semibold text-[#245638]">
+            <p className="mt-3 font-serif text-4xl font-semibold text-[#225358]">
               {loading || error ? '—' : metric.value}
             </p>
 
-            <p className="mt-2 text-[11px] text-[#899A8A]">
+            <p className="mt-2 text-[11px] text-[#889B96]">
               {tr(metric.detail)}
             </p>
           </div>
@@ -616,12 +616,12 @@ export const CalendarPage: React.FC = () => {
       )}
 
       {/* Calendar */}
-      <section className="overflow-hidden rounded-2xl border border-[#DCE6D8] bg-white shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E2EADD] p-5 sm:p-7">
+      <section className="overflow-hidden rounded-2xl border border-[#D7E7DE] bg-white shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#DCEBE1] p-5 sm:p-7">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B8B70]">{tr("Monthly Overview")}</p>
+            <p className="text-[11px] font-bold tracking-normal text-[#6A8C87]">{tr("Monthly Overview")}</p>
 
-            <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1D432D] sm:text-3xl">
+            <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045] sm:text-3xl">
               {monthLabel}
             </h2>
           </div>
@@ -630,7 +630,7 @@ export const CalendarPage: React.FC = () => {
             <button
               type="button"
               onClick={goToToday}
-              className={`${buttonBase} border border-[#D7E3D2] bg-white text-[#4E6D54] hover:bg-[#F1F6EE]`}
+              className={`${buttonBase} border border-[#D1E4D9] bg-white text-[#4D6E6B] hover:bg-[#EEF6F0]`}
             >{tr("Today")}</button>
 
             <button
@@ -638,7 +638,7 @@ export const CalendarPage: React.FC = () => {
               onClick={prevMonth}
               disabled={year === MIN_YEAR && month === 1}
               aria-label={tr("Previous month")}
-              className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#D7E3D2] bg-white text-[#3F6449] transition hover:bg-[#F1F6EE] disabled:opacity-40"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#D1E4D9] bg-white text-[#3E6564] transition hover:bg-[#EEF6F0] disabled:opacity-40"
             >
               <ArrowLeft />
             </button>
@@ -648,7 +648,7 @@ export const CalendarPage: React.FC = () => {
               onClick={nextMonth}
               disabled={year === MAX_YEAR && month === 12}
               aria-label={tr("Next month")}
-              className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#D7E3D2] bg-white text-[#3F6449] transition hover:bg-[#F1F6EE] disabled:opacity-40"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#D1E4D9] bg-white text-[#3E6564] transition hover:bg-[#EEF6F0] disabled:opacity-40"
             >
               <ArrowRight />
             </button>
@@ -656,7 +656,7 @@ export const CalendarPage: React.FC = () => {
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5ECE1] bg-[#F8FAF6] px-5 py-3 text-xs sm:px-7">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E1ECE5] bg-[#F6FAF7] px-5 py-3 text-xs sm:px-7">
           <div className="flex flex-wrap items-center gap-4">
             {[
               ['Activities', EVENT_STYLES.activity.dot],
@@ -667,7 +667,7 @@ export const CalendarPage: React.FC = () => {
             ].map(([label, dot]) => (
               <span
                 key={label}
-                className="flex items-center gap-2 font-semibold text-[#56715C]"
+                className="flex items-center gap-2 font-semibold text-[#557270]"
               >
                 <span className={`h-2.5 w-2.5 rounded-full ${dot}`} />
                 {tr(label)}
@@ -675,7 +675,7 @@ export const CalendarPage: React.FC = () => {
             ))}
           </div>
 
-          <span className="text-[#809383]">{tr("Select a date to view details")}</span>
+          <span className="text-[#7F9491]">{tr("Select a date to view details")}</span>
         </div>
 
         {error && (
@@ -692,11 +692,11 @@ export const CalendarPage: React.FC = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-7 border-b border-[#E5ECE1] bg-[#F2F7EF]">
+        <div className="grid grid-cols-7 border-b border-[#E1ECE5] bg-[#EFF7F1]">
           {weekdayLabels().map((weekday) => (
             <div
               key={weekday}
-              className="py-3 text-center text-[10px] font-bold uppercase tracking-[0.05em] text-[#647E68] sm:py-4 sm:text-xs"
+              className="py-3 text-center text-[10px] font-bold tracking-normal text-[#637F7B] sm:py-4 sm:text-xs"
             >
               {weekday}
             </div>
@@ -708,7 +708,7 @@ export const CalendarPage: React.FC = () => {
             {Array.from({ length: 35 }, (_, index) => (
               <div
                 key={index}
-                className="h-[90px] animate-pulse border-b border-r border-[#E5ECE1] bg-[#F6F9F4] sm:h-[130px]"
+                className="h-[90px] animate-pulse border-b border-r border-[#E1ECE5] bg-[#F4F9F5] sm:h-[130px]"
               />
             ))}
           </div>
@@ -721,29 +721,29 @@ export const CalendarPage: React.FC = () => {
         {!loading &&
           !error &&
           activities.length + tasks.length + milestones.length === 0 && (
-            <div className="border-t border-[#E5ECE1] bg-[#F8FAF6] px-5 py-5 text-center">
-              <p className="text-sm font-medium text-[#708572]">{tr("No activities, tasks, or crop milestones are recorded for this month. You can still select any date.")}</p>
+            <div className="border-t border-[#E1ECE5] bg-[#F6FAF7] px-5 py-5 text-center">
+              <p className="text-sm font-medium text-[#6F8681]">{tr("No activities, tasks, or crop milestones are recorded for this month. You can still select any date.")}</p>
             </div>
           )}
       </section>
 
       {/* Below calendar */}
       <section className="grid grid-cols-1 gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="rounded-2xl border border-[#DCE6D8] bg-white p-6 sm:p-7">
+        <div className="rounded-2xl border border-[#D7E7DE] bg-white p-6 sm:p-7">
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EAF3E6] text-[#39734B]">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E5F4EB] text-[#377575]">
               <CalendarIcon />
             </span>
 
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#709075]">{tr("Upcoming")}</p>
+              <p className="text-[11px] font-bold tracking-normal text-[#6F918C]">{tr("Upcoming")}</p>
 
-              <h2 className="font-serif text-xl font-semibold text-[#21482F]">{tr("Scheduled Work")}</h2>
+              <h2 className="font-serif text-xl font-semibold text-[#1F474A]">{tr("Scheduled Work")}</h2>
             </div>
           </div>
 
           {upcomingEvents.length === 0 ? (
-            <p className="mt-6 text-sm leading-6 text-[#748876]">{tr("No upcoming events are listed in this month.")}</p>
+            <p className="mt-6 text-sm leading-6 text-[#738984]">{tr("No upcoming events are listed in this month.")}</p>
           ) : (
             <div className="mt-5 space-y-3">
               {upcomingEvents.map((day) => (
@@ -751,14 +751,14 @@ export const CalendarPage: React.FC = () => {
                   key={day.date}
                   type="button"
                   onClick={() => setSelectedDate(day.date)}
-                  className="flex w-full items-center justify-between gap-4 rounded-xl border border-[#E4ECE0] bg-[#F8FAF6] p-4 text-start transition hover:border-[#BBD1B8] hover:bg-[#F0F7EC]"
+                  className="flex w-full items-center justify-between gap-4 rounded-xl border border-[#E0ECE4] bg-[#F6FAF7] p-4 text-start transition hover:border-[#B7D2C7] hover:bg-[#ECF7F0]"
                 >
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-[#2C5538]">
+                    <p className="text-sm font-bold text-[#2A5756]">
                       {formatDate(day.date)}
                     </p>
 
-                    <p className="mt-1 truncate text-xs text-[#748876]">
+                    <p className="mt-1 truncate text-xs text-[#738984]">
                       {day.events
                         .map((event) => `${tr(event.label)}: ${event.title}`)
                         .join(' · ')}
@@ -772,13 +772,13 @@ export const CalendarPage: React.FC = () => {
           )}
         </div>
 
-        <div className="flex flex-col justify-between rounded-2xl bg-[#1D4930] p-7 text-white">
+        <div className="flex flex-col justify-between rounded-2xl bg-[#1B464B] p-7 text-white">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#B8D8B8]">{tr("Farm Workspace")}</p>
+            <p className="text-[11px] font-bold tracking-normal text-[#B7D9CF]">{tr("Farm Workspace")}</p>
 
             <h2 className="mt-4 font-serif text-3xl font-semibold">{tr("Organize your")}<br />{tr("next field activity.")}</h2>
 
-            <p className="mt-4 max-w-sm text-sm leading-6 text-[#D0E3CE]">{tr("Add tasks, record activities, and manage crop cycles from your farm detail page.")}</p>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[#CDE4DB]">{tr("Add tasks, record activities, and manage crop cycles from your farm detail page.")}</p>
           </div>
 
           <Link
@@ -787,7 +787,7 @@ export const CalendarPage: React.FC = () => {
                 ? `/my-farms/${encodeURIComponent(farmId)}`
                 : '/my-farms'
             }
-            className={`${buttonBase} mt-8 w-fit bg-white text-[#285D3D] hover:bg-[#E9F2E5]`}
+            className={`${buttonBase} mt-8 w-fit bg-white text-[#265A5F] hover:bg-[#E4F3EA]`}
           >
             {farmId ? tr("Open Farm Details") : tr("Manage My Farms")}
             <ArrowRight />
@@ -798,7 +798,7 @@ export const CalendarPage: React.FC = () => {
       {/* Date detail modal */}
       {selectedDate && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#102719]/70 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0F2628]/70 p-4 backdrop-blur-sm"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
               setSelectedDate(null);
@@ -810,17 +810,17 @@ export const CalendarPage: React.FC = () => {
             role="dialog"
             aria-modal="true"
             aria-label={tr("Events on {{v0}}", { v0: formatDate(selectedDate) })}
-            className="flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-[#FAFCF8] shadow-2xl"
+            className="flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-[#F8FCF9] shadow-2xl"
           >
-            <div className="flex items-start justify-between gap-4 border-b border-[#E0E9DB] bg-white p-6">
+            <div className="flex items-start justify-between gap-4 border-b border-[#DAEAE0] bg-white p-6">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#598361]">{tr("Daily Schedule")}</p>
+                <p className="text-[11px] font-bold tracking-normal text-[#578580]">{tr("Daily Schedule")}</p>
 
-                <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1D432D]">
+                <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045]">
                   {formatDate(selectedDate)}
                 </h2>
 
-                <p className="mt-2 text-xs text-[#7B907D]">
+                <p className="mt-2 text-xs text-[#7A918C]">
                   {selectedEvents.length}{tr("event")}{selectedEvents.length === 1 ? '' : 's'}{tr("recorded")}</p>
               </div>
 
@@ -829,7 +829,7 @@ export const CalendarPage: React.FC = () => {
                 type="button"
                 onClick={() => setSelectedDate(null)}
                 aria-label={tr("Close date details")}
-                className="rounded-xl border border-[#DCE6D8] p-2.5 text-[#59715E] hover:bg-[#EFF5EB]"
+                className="rounded-xl border border-[#D7E7DE] p-2.5 text-[#587270] hover:bg-[#EBF5EE]"
               >
                 <CloseIcon />
               </button>
@@ -837,10 +837,10 @@ export const CalendarPage: React.FC = () => {
 
             <div className="space-y-3 overflow-y-auto p-6">
               {selectedEvents.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-[#CEDDC9] bg-white p-8 text-center">
-                  <p className="font-serif text-xl font-semibold text-[#285438]">{tr("Nothing scheduled")}</p>
+                <div className="rounded-xl border border-dashed border-[#C8DED2] bg-white p-8 text-center">
+                  <p className="font-serif text-xl font-semibold text-[#265356]">{tr("Nothing scheduled")}</p>
 
-                  <p className="mt-2 text-sm text-[#7B907D]">{tr("No tasks, activities, or crop milestones are recorded for this day.")}</p>
+                  <p className="mt-2 text-sm text-[#7A918C]">{tr("No tasks, activities, or crop milestones are recorded for this day.")}</p>
                 </div>
               ) : (
                 selectedEvents.map((event) => {
@@ -849,19 +849,19 @@ export const CalendarPage: React.FC = () => {
                   return (
                     <article
                       key={event.id}
-                      className="rounded-xl border border-[#DFE9DB] bg-white p-4"
+                      className="rounded-xl border border-[#DAEAE1] bg-white p-4"
                     >
                       <span
-                        className={`inline-flex rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.06em] ${style.background}`}
+                        className={`inline-flex rounded-full px-3 py-1 text-[10px] font-bold tracking-normal ${style.background}`}
                       >
                         {tr(event.label)}
                       </span>
 
-                      <h3 className="mt-3 break-words font-serif text-xl font-semibold text-[#234A31]">
+                      <h3 className="mt-3 break-words font-serif text-xl font-semibold text-[#21494C]">
                         {event.title}
                       </h3>
 
-                      <p className="mt-2 text-xs text-[#748876]">
+                      <p className="mt-2 text-xs text-[#738984]">
                         {event.type === 'activity' ? tr("Category: {{v0}}", { v0: formatCategory(event.category || 'general') }) : event.type === 'task' ? tr("Status: {{v0}}", { v0: formatCategory(event.status || 'unknown') }) : tr("Crop: {{v0}}", { v0: event.cropName || 'Not specified' })}
                       </p>
                     </article>
@@ -870,11 +870,11 @@ export const CalendarPage: React.FC = () => {
               )}
             </div>
 
-            <div className="flex justify-end border-t border-[#E0E9DB] bg-white p-4">
+            <div className="flex justify-end border-t border-[#DAEAE0] bg-white p-4">
               <button
                 type="button"
                 onClick={() => setSelectedDate(null)}
-                className={`${buttonBase} bg-[#285D3D] text-white hover:bg-[#19482E]`}
+                className={`${buttonBase} bg-[#265A5F] text-white hover:bg-[#17454A]`}
               >{tr("Done")}</button>
             </div>
           </div>

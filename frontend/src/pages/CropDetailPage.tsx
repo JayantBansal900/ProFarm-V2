@@ -1,6 +1,8 @@
 import { tr, useLocale } from '../i18n';
 import { LocalizedContent } from '../i18n/LocalizedContent';
 
+import { cropImage } from '../data/media';
+import { ReadAloud } from '../components/ReadAloud';
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCropBySlug } from '../data/crops';
@@ -20,20 +22,20 @@ const Accordion: React.FC<AccordionProps> = ({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="overflow-hidden rounded-[20px] border border-[#E1E7DC] bg-white">
+    <div className="overflow-hidden rounded-[20px] border border-[#DCE7DE] bg-white">
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-4 px-5 py-5 text-start transition hover:bg-[#F7F9F4] sm:px-7"
+        className="flex w-full items-center justify-between gap-4 px-5 py-5 text-start transition hover:bg-[#F4F9F4] sm:px-7"
       >
-        <span className="font-serif text-xl tracking-[-0.025em] text-[#244532] sm:text-2xl">
+        <span className="font-serif text-xl tracking-[-0.025em] text-[#234346] sm:text-2xl">
           {tr(title)}
         </span>
 
         <span
           aria-hidden="true"
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#EEF2E8] text-xl text-[#31563C] transition-transform duration-300 ${
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E8F2E9] text-xl text-[#305757] transition-transform duration-300 ${
             open ? 'rotate-45' : ''
           }`}
         >
@@ -42,7 +44,7 @@ const Accordion: React.FC<AccordionProps> = ({
       </button>
 
       {open && (
-        <div className="border-t border-[#EDF0E9] px-5 py-5 text-sm leading-7 text-[#60715E] sm:px-7">
+        <div className="border-t border-[#E9F0EA] px-5 py-5 text-sm leading-7 text-[#5D7269] sm:px-7">
           {children}
         </div>
       )}
@@ -53,7 +55,7 @@ const Accordion: React.FC<AccordionProps> = ({
 const DetailLabel: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => (
-  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8A9A81]">
+  <span className="text-[10px] font-bold tracking-normal text-[#809B89]">
     {children}
   </span>
 );
@@ -65,16 +67,16 @@ export const CropDetailPage: React.FC = () => {
 
   if (!crop) {
     return (
-      <div className="mx-auto my-16 max-w-lg rounded-[26px] border border-[#E0E6DA] bg-white px-8 py-16 text-center">
-        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#849579]">{tr("ProFarm Knowledge")}</span>
+      <div className="mx-auto my-16 max-w-lg rounded-[26px] border border-[#DAE6DC] bg-white px-8 py-16 text-center">
+        <span className="text-[11px] font-bold tracking-normal text-[#789681]">{tr("ProFarm Knowledge")}</span>
 
-        <h1 className="mt-4 font-serif text-4xl text-[#203F2C]">{tr("Crop not found.")}</h1>
+        <h1 className="mt-4 font-serif text-4xl text-[#1F3D40]">{tr("Crop not found.")}</h1>
 
-        <p className="mt-3 text-sm text-[#7B8977]">{tr("This crop is not in our catalog.")}</p>
+        <p className="mt-3 text-sm text-[#768A80]">{tr("This crop is not in our catalog.")}</p>
 
         <Link
           to="/knowledge/crops"
-          className="mt-7 inline-flex rounded-full bg-[#244B35] px-6 py-3 text-xs font-bold text-white transition hover:bg-[#345D42]"
+          className="mt-7 inline-flex rounded-full bg-[#22484D] px-6 py-3 text-xs font-bold text-white transition hover:bg-[#325D5F]"
         >{tr("Back to Crops")}</Link>
       </div>
     );
@@ -89,37 +91,42 @@ export const CropDetailPage: React.FC = () => {
       {/* BREADCRUMB */}
       <nav
         aria-label={tr("Breadcrumb")}
-        className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#8B9786]"
+        className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#85988D]"
       >
-        <Link to="/" className="hover:text-[#244B35]">{tr("Home")}</Link>
+        <Link to="/" className="hover:text-[#22484D]">{tr("Home")}</Link>
         <span>/</span>
 
         <Link
           to="/knowledge"
-          className="hover:text-[#244B35]"
+          className="hover:text-[#22484D]"
         >{tr("Knowledge")}</Link>
         <span>/</span>
 
         <Link
           to="/knowledge/crops"
-          className="hover:text-[#244B35]"
+          className="hover:text-[#22484D]"
         >{tr("Crops")}</Link>
         <span>/</span>
 
-        <span className="font-bold text-[#244B35]">
+        <span className="font-bold text-[#22484D]">
           {tr(crop.name)}
         </span>
       </nav>
 
       {/* HERO */}
-      <section className="relative isolate overflow-hidden rounded-[28px] bg-[#234631]">
-        <div className="pointer-events-none absolute -right-24 -top-32 h-[420px] w-[420px] rounded-full border border-white/10" />
-        <div className="pointer-events-none absolute -right-10 -top-16 h-[300px] w-[300px] rounded-full border border-white/10" />
-        <div className="pointer-events-none absolute -bottom-40 right-28 h-[340px] w-[340px] rounded-full bg-[#6E9564]/15 blur-3xl" />
+      <section className="relative isolate overflow-hidden rounded-[28px] bg-[#224447]">
+        {cropImage(crop.slug) && (
+          <img
+            src={cropImage(crop.slug)!.src}
+            alt=""
+            className="absolute inset-0 -z-10 h-full w-full object-cover"
+          />
+        )}
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-[#072B2E] via-[#072B2E]/70 to-[#072B2E]/20" />
 
         <div className="relative flex min-h-[350px] flex-col justify-between gap-12 p-7 sm:min-h-[410px] sm:p-12 lg:p-14">
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <span className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm">
+            <span className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[10px] font-bold tracking-normal text-white backdrop-blur-sm">
               {tr(crop.category)}
             </span>
 
@@ -131,12 +138,16 @@ export const CropDetailPage: React.FC = () => {
           </div>
 
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#B8D1AD]">{tr("Crop Profile")}</span>
+            <span className="text-[11px] font-bold tracking-normal text-[#ACD2BB]">{tr("Crop Profile")}</span>
 
             <h1 className="mt-4 font-serif text-[clamp(4rem,10vw,8rem)] leading-[0.95] tracking-[-0.065em] text-white">
               {tr(crop.name)}
-              <span className="text-[#A8C49A]">.</span>
+              <span className="text-[#98C6A9]">.</span>
             </h1>
+            <ReadAloud
+              className="mt-5"
+              text={[tr(crop.name), tr(crop.shortDescription), `${tr('Sowing')}: ${tr(crop.sowingAndHarvest.sowingPeriod)}`, `${tr('Harvest')}: ${tr(crop.sowingAndHarvest.harvestPeriod)}`].join('. ')}
+            />
 
             <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/75">
               {crop.hindiName && (
@@ -167,52 +178,52 @@ export const CropDetailPage: React.FC = () => {
         <div>
           <DetailLabel>{tr("Overview")}</DetailLabel>
 
-          <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#203F2C] sm:text-4xl">{tr("At a glance.")}</h2>
+          <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("At a glance.")}</h2>
         </div>
 
-        <p className="max-w-2xl text-sm leading-8 text-[#667662] sm:text-base">
+        <p className="max-w-2xl text-sm leading-8 text-[#61776C] sm:text-base">
           {<LocalizedContent text={crop.shortDescription} />}
         </p>
       </section>
 
       {/* KEY METRICS */}
       <section className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-[22px] border border-[#E1E7DC] bg-white p-6">
+        <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <DetailLabel>{tr("Temperature")}</DetailLabel>
 
-          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#244532]">
+          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#234346]">
             {crop.temperatureRange.minC}–
             {crop.temperatureRange.maxC}
             <span className="text-2xl">°C</span>
           </p>
 
-          <p className="mt-3 text-xs leading-6 text-[#81907C]">
+          <p className="mt-3 text-xs leading-6 text-[#7B9185]">
             {<LocalizedContent text={crop.temperatureRange.description} />}
           </p>
         </div>
 
-        <div className="rounded-[22px] border border-[#E1E7DC] bg-white p-6">
+        <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <DetailLabel>{tr("Water Demand")}</DetailLabel>
 
-          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#244532]">
+          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#234346]">
             {tr(crop.waterRequirement.level)}
           </p>
 
           {crop.waterRequirement.annualMm && (
-            <p className="mt-2 text-xs font-semibold text-[#67835E]">
+            <p className="mt-2 text-xs font-semibold text-[#5D846F]">
               {crop.waterRequirement.annualMm}
             </p>
           )}
 
-          <p className="mt-3 text-xs leading-6 text-[#81907C]">
+          <p className="mt-3 text-xs leading-6 text-[#7B9185]">
             {<LocalizedContent text={crop.waterRequirement.description} />}
           </p>
         </div>
 
-        <div className="rounded-[22px] border border-[#E1E7DC] bg-white p-6">
+        <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <DetailLabel>{tr("Growing Seasons")}</DetailLabel>
 
-          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#244532]">
+          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#234346]">
             {crop.seasons.length}
           </p>
 
@@ -220,7 +231,7 @@ export const CropDetailPage: React.FC = () => {
             {crop.seasons.map((season) => (
               <span
                 key={season}
-                className="rounded-full bg-[#EEF2E8] px-3 py-1.5 text-[10px] font-bold text-[#587651]"
+                className="rounded-full bg-[#E8F2E9] px-3 py-1.5 text-[10px] font-bold text-[#507764]"
               >
                 {tr(season)}
               </span>
@@ -230,12 +241,12 @@ export const CropDetailPage: React.FC = () => {
       </section>
 
       {/* GROWING CALENDAR */}
-      <section className="rounded-[24px] border border-[#E1E7DC] bg-[#EFF3E9] p-6 sm:p-8">
+      <section className="rounded-[24px] border border-[#DCE7DE] bg-[#E9F3EA] p-6 sm:p-8">
         <div className="mb-7 flex items-end justify-between gap-4">
           <div>
             <DetailLabel>{tr("Crop Calendar")}</DetailLabel>
 
-            <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#203F2C]">{tr("From seed to harvest.")}</h2>
+            <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40]">{tr("From seed to harvest.")}</h2>
           </div>
         </div>
 
@@ -243,7 +254,7 @@ export const CropDetailPage: React.FC = () => {
           <div className="rounded-[18px] bg-white p-5 sm:p-6">
             <DetailLabel>{tr("Sowing Period")}</DetailLabel>
 
-            <p className="mt-3 font-serif text-xl leading-snug text-[#244532] sm:text-2xl">
+            <p className="mt-3 font-serif text-xl leading-snug text-[#234346] sm:text-2xl">
               {tr(crop.sowingAndHarvest.sowingPeriod)}
             </p>
           </div>
@@ -251,14 +262,14 @@ export const CropDetailPage: React.FC = () => {
           <div className="rounded-[18px] bg-white p-5 sm:p-6">
             <DetailLabel>{tr("Harvest Period")}</DetailLabel>
 
-            <p className="mt-3 font-serif text-xl leading-snug text-[#244532] sm:text-2xl">
+            <p className="mt-3 font-serif text-xl leading-snug text-[#234346] sm:text-2xl">
               {tr(crop.sowingAndHarvest.harvestPeriod)}
             </p>
           </div>
         </div>
 
         {crop.sowingAndHarvest.germinationDays && (
-          <div className="mt-4 text-xs font-medium text-[#61775D]">{tr("Germination:")}{tr(crop.sowingAndHarvest.germinationDays)}
+          <div className="mt-4 text-xs font-medium text-[#5C786B]">{tr("Germination:")}{tr(crop.sowingAndHarvest.germinationDays)}
           </div>
         )}
       </section>
@@ -269,12 +280,12 @@ export const CropDetailPage: React.FC = () => {
           <div>
             <DetailLabel>{tr("Soil Compatibility")}</DetailLabel>
 
-            <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#203F2C] sm:text-4xl">{tr("Suitable Soils.")}</h2>
+            <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("Suitable Soils.")}</h2>
           </div>
 
           <Link
             to="/knowledge/soils"
-            className="text-xs font-bold text-[#426E47] hover:underline"
+            className="text-xs font-bold text-[#407067] hover:underline"
           >{tr("Explore all soils ↗")}</Link>
         </div>
 
@@ -283,20 +294,20 @@ export const CropDetailPage: React.FC = () => {
             <Link
               key={soil.id}
               to={`/knowledge/soils/${soil.slug}`}
-              className="group flex items-center justify-between gap-4 rounded-[18px] border border-[#E1E7DC] bg-white px-5 py-5 transition hover:-translate-y-0.5 hover:border-[#A9C19F] hover:shadow-sm"
+              className="group flex items-center justify-between gap-4 rounded-[18px] border border-[#DCE7DE] bg-white px-5 py-5 transition hover:-translate-y-0.5 hover:border-[#9EC2AD] hover:shadow-sm"
             >
               <div className="min-w-0">
-                <h3 className="font-serif text-xl text-[#244532]">
+                <h3 className="font-serif text-xl text-[#234346]">
                   {tr(soil.name)}
                 </h3>
 
-                <p className="mt-1 text-[11px] text-[#84927E]">{tr("Drainage:")}{tr(soil.drainage)}
+                <p className="mt-1 text-[11px] text-[#7D9386]">{tr("Drainage:")}{tr(soil.drainage)}
                 </p>
               </div>
 
               <span
                 aria-hidden="true"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#EEF2E8] text-[#31563C] transition group-hover:bg-[#244B35] group-hover:text-white"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E8F2E9] text-[#305757] transition group-hover:bg-[#22484D] group-hover:text-white"
               >
                 ↗
               </span>
@@ -310,7 +321,7 @@ export const CropDetailPage: React.FC = () => {
         <div>
           <DetailLabel>{tr("Field Guide")}</DetailLabel>
 
-          <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#203F2C] sm:text-4xl">{tr("Grow with confidence.")}</h2>
+          <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("Grow with confidence.")}</h2>
         </div>
 
         <div className="space-y-3">
@@ -331,7 +342,7 @@ export const CropDetailPage: React.FC = () => {
                 >
                   <span
                     aria-hidden="true"
-                    className="mt-1 font-bold text-[#527C4D]"
+                    className="mt-1 font-bold text-[#4B7E69]"
                   >
                     ✓
                   </span>
@@ -347,7 +358,7 @@ export const CropDetailPage: React.FC = () => {
               {crop.commonChallenges.map((challenge, index) => (
                 <div
                   key={index}
-                  className="rounded-[14px] border border-[#E7E5DA] bg-[#FAF8F2] p-4"
+                  className="rounded-[14px] border border-[#E7E5DA] bg-[#F3F6F5] p-4"
                 >
                   <p className="text-xs leading-6 text-[#716F60]">
                     <LocalizedContent text={challenge} />
@@ -366,18 +377,18 @@ export const CropDetailPage: React.FC = () => {
                       href={source.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-semibold text-[#426E47] underline-offset-4 hover:underline"
+                      className="font-semibold text-[#407067] underline-offset-4 hover:underline"
                     >
                       {source.name} ↗
                     </a>
                   ) : (
-                    <span className="font-semibold text-[#244532]">
+                    <span className="font-semibold text-[#234346]">
                       {source.name}
                     </span>
                   )}
 
                   {source.organization && (
-                    <span className="ms-2 text-[#84927E]">
+                    <span className="ms-2 text-[#7D9386]">
                       — {source.organization}
                     </span>
                   )}
@@ -389,16 +400,16 @@ export const CropDetailPage: React.FC = () => {
       </section>
 
       {/* ADVISORY */}
-      <aside className="rounded-[18px] border border-[#E1E7DC] bg-[#EFF3E9] px-5 py-5 sm:px-7">
-        <p className="text-xs leading-7 text-[#687A62]">
-          <strong className="text-[#244532]">{tr("Agricultural Advisory:")}</strong>{' '}{tr("Growing conditions vary by region. Consult your local Krishi Vigyan Kendra (KVK) or State Agricultural University for farm-specific recommendations.")}</p>
+      <aside className="rounded-[18px] border border-[#DCE7DE] bg-[#E9F3EA] px-5 py-5 sm:px-7">
+        <p className="text-xs leading-7 text-[#617B6D]">
+          <strong className="text-[#234346]">{tr("Agricultural Advisory:")}</strong>{' '}{tr("Growing conditions vary by region. Consult your local Krishi Vigyan Kendra (KVK) or State Agricultural University for farm-specific recommendations.")}</p>
       </aside>
 
       {/* BACK NAVIGATION */}
       <div className="flex justify-center pt-2">
         <Link
           to="/knowledge/crops"
-          className="inline-flex items-center gap-3 rounded-full border border-[#CBD9C5] px-6 py-3 text-xs font-bold text-[#244B35] transition hover:bg-[#EAF0E5]"
+          className="inline-flex items-center gap-3 rounded-full border border-[#C4DACD] px-6 py-3 text-xs font-bold text-[#22484D] transition hover:bg-[#E5F0E7]"
         >{tr("← Back to Crop Library")}</Link>
       </div>
     </div>

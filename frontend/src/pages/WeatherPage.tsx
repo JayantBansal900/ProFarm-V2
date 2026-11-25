@@ -151,12 +151,12 @@ const Stat: React.FC<{
   detail?: string;
 }> = ({ label, value, detail }) => (
   <div className="min-w-0">
-    <p className="text-xs font-medium text-[#526658]">{tr(label)}</p>
-    <p className="mt-2 text-2xl font-bold tracking-tight text-[#183B29]">
+    <p className="text-xs font-medium text-[#516767]">{tr(label)}</p>
+    <p className="mt-2 text-2xl font-bold tracking-tight text-[#17393C]">
       <bdi dir="ltr">{value}</bdi>
     </p>
     {detail && (
-      <p className="mt-1 text-xs text-[#526658]">{tr(detail)}</p>
+      <p className="mt-1 text-xs text-[#516767]">{tr(detail)}</p>
     )}
   </div>
 );
@@ -169,11 +169,11 @@ const SectionHeading: React.FC<{
   <div className="flex flex-wrap items-center justify-between gap-3">
     <div>
       {eyebrow && (
-        <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.13em] text-[#47734D]">
+        <p className="mb-1 text-[11px] font-bold tracking-normal text-[#45756D]">
           {tr(eyebrow)}
         </p>
       )}
-      <h2 className="font-serif text-2xl font-semibold tracking-tight text-[#173D29]">
+      <h2 className="font-serif text-2xl font-semibold tracking-tight text-[#153A3F]">
         {tr(title)}
       </h2>
     </div>
@@ -258,16 +258,16 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[#334D3A]">
+        <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[#324E4D]">
           <span className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-[#D7894B]" />{tr("High")}</span>
           <span className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#3D805C]" />{tr("Low")}</span>
+            <span className="h-2.5 w-2.5 rounded-full bg-[#3A7B83]" />{tr("Low")}</span>
           <span className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-sm bg-[#82B8D4]" />{tr("Rainfall")}</span>
         </div>
 
-        <div className="flex gap-1 rounded-lg bg-[#F0F4ED] p-1">
+        <div className="flex gap-1 rounded-lg bg-[#EDF4EF] p-1">
           {(
             [
               ['all', 'All'],
@@ -282,8 +282,8 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
               aria-pressed={mode === value}
               className={`rounded-md px-3 py-2 text-xs font-semibold transition ${
                 mode === value
-                  ? 'bg-[#285C3D] text-white shadow-sm'
-                  : 'text-[#395A44] hover:bg-white'
+                  ? 'bg-[#26585E] text-white shadow-sm'
+                  : 'text-[#385A5B] hover:bg-white'
               }`}
             >
               {tr(label)}
@@ -292,7 +292,7 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
         </div>
       </div>
 
-      <div className="rounded-xl bg-[#F8FAF6] p-3 sm:p-5">
+      <div className="rounded-xl bg-[#F6FAF7] p-3 sm:p-5">
         <svg
           viewBox={`0 0 ${width} ${height}`}
           className="h-auto w-full"
@@ -311,7 +311,7 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
                   x2={width - right}
                   y1={y}
                   y2={y}
-                  stroke="#D8E2D7"
+                  stroke="#D7E2DE"
                   strokeDasharray="4 5"
                 />
                 <text
@@ -319,7 +319,7 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
                   y={y + 4}
                   textAnchor="end"
                   fontSize="11"
-                  fill="#48604E"
+                  fill="#476160"
                 >
                   {Math.round(temperature)}°
                 </text>
@@ -336,7 +336,7 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
                   width="74"
                   height={plotHeight + 24}
                   rx="9"
-                  fill="#E8F1E5"
+                  fill="#E5F1EA"
                 />
               )}
 
@@ -363,7 +363,7 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
                 fontSize="12"
                 fontWeight={index === activeDay ? 700 : 500}
                 fill={
-                  index === activeDay ? '#205338' : '#4F6454'
+                  index === activeDay ? '#1E5055' : '#4E6563'
                 }
               >
                 {dayName(day.date)}
@@ -384,7 +384,7 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
               <path
                 d={lowPath}
                 fill="none"
-                stroke="#3D805C"
+                stroke="#3A7B83"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -404,7 +404,7 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
                     cx={x(index)}
                     cy={temperatureY(day.tempMinC)}
                     r="5"
-                    fill="#3D805C"
+                    fill="#3A7B83"
                     stroke="white"
                     strokeWidth="2"
                   />
@@ -424,22 +424,22 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
             aria-pressed={activeDay === index}
             className={`rounded-xl border px-2 py-3 text-center transition ${
               activeDay === index
-                ? 'border-[#92B69A] bg-[#EBF4E9]'
-                : 'border-[#DFE7DD] bg-white hover:border-[#A6C5A9]'
+                ? 'border-[#91B7B4] bg-[#E9F4EF]'
+                : 'border-[#DDE7E2] bg-white hover:border-[#A5C6BF]'
             }`}
           >
-            <p className="text-xs font-bold text-[#254A33]">
+            <p className="text-xs font-bold text-[#24484B]">
               {index === 0 ? tr("Today") : dayName(day.date)}
             </p>
-            <p className="mt-0.5 text-[10px] text-[#536756]">
+            <p className="mt-0.5 text-[10px] text-[#526865]">
               {dateName(day.date)}
             </p>
             <div className="my-2 flex justify-center">
               <WeatherIcon condition={day.condition} size={40} />
             </div>
-            <p className="text-sm font-bold text-[#193B28]">
+            <p className="text-sm font-bold text-[#18393C]">
               {format(day.tempMaxC)}°
-              <span className="ms-1 font-medium text-[#536B58]">
+              <span className="ms-1 font-medium text-[#526C6A]">
                 {format(day.tempMinC)}°
               </span>
             </p>
@@ -450,12 +450,12 @@ const ForecastChart: React.FC<{ daily: Daily[] }> = ({ daily }) => {
       </div>
 
       {selected && (
-        <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl border border-[#D8E6D7] bg-[#F1F7EE] p-4 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl border border-[#D6E7E1] bg-[#EEF7F1] p-4 sm:grid-cols-4">
           <div>
-            <p className="text-xs font-bold text-[#21472E]">
+            <p className="text-xs font-bold text-[#1F4749]">
               {dayName(selected.date)}, {dateName(selected.date)}
             </p>
-            <p className="mt-1 text-xs text-[#465D4B]">
+            <p className="mt-1 text-xs text-[#455E5C]">
               {tr(selected.condition)}
             </p>
           </div>
@@ -668,30 +668,30 @@ export const WeatherPage: React.FC = () => {
   }, [daily]);
 
   return (
-    <div className="mx-auto w-full min-w-0 max-w-[1440px] space-y-6 pb-14 text-[#203B29]">
+    <div className="mx-auto w-full min-w-0 max-w-[1440px] space-y-6 pb-14 text-[#1F3B3C]">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <nav className="mb-3 flex items-center gap-2 text-xs font-medium text-[#536758]">
-            <Link to="/" className="hover:text-[#245F3C]">{tr("Home")}</Link>
+          <nav className="mb-3 flex items-center gap-2 text-xs font-medium text-[#526867]">
+            <Link to="/" className="hover:text-[#225B61]">{tr("Home")}</Link>
             <span>/</span>
-            <span className="text-[#285F3E]">{tr("Weather")}</span>
+            <span className="text-[#265B61]">{tr("Weather")}</span>
           </nav>
 
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#173C29] sm:text-4xl">{tr("Weather & Field Conditions")}</h1>
+          <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#16393D] sm:text-4xl">{tr("Weather & Field Conditions")}</h1>
 
-          <p className="mt-2 text-sm text-[#425B49]">{tr("Local forecasts for better farming decisions.")}</p>
+          <p className="mt-2 text-sm text-[#415C5B]">{tr("Local forecasts for better farming decisions.")}</p>
         </div>
 
-        <span className="text-xs font-medium text-[#526957]">{tr("Data by Open-Meteo")}</span>
+        <span className="text-xs font-medium text-[#516A68]">{tr("Data by Open-Meteo")}</span>
       </header>
 
-      <section className="relative z-20 flex flex-col gap-4 rounded-xl border border-[#DCE6DB] bg-white p-4 sm:flex-row sm:items-center sm:p-5">
+      <section className="relative z-20 flex flex-col gap-4 rounded-xl border border-[#DBE6E2] bg-white p-4 sm:flex-row sm:items-center sm:p-5">
         <div className="min-w-0 sm:w-56">
-          <p className="text-xs font-medium text-[#526858]">
+          <p className="text-xs font-medium text-[#516968]">
             {selectedLocation ? tr("Active location:") : tr("Forecast location")}
           </p>
 
-          <p className="mt-1 truncate text-sm font-bold text-[#1C462E]">
+          <p className="mt-1 truncate text-sm font-bold text-[#1A4348]">
             {selectedLocation ? locationName(selectedLocation) : tr("No Location Selected")}
           </p>
         </div>
@@ -707,22 +707,22 @@ export const WeatherPage: React.FC = () => {
             placeholder={tr("Search village, town or city...")}
             autoComplete="off"
             aria-expanded={results.length > 0}
-            className="w-full rounded-lg border border-[#D5E1D4] bg-[#F8FAF7] px-4 py-3 text-sm font-medium text-[#1F3D2A] placeholder:text-[#637567] outline-none focus:border-[#5D9470] focus:ring-2 focus:ring-[#5D9470]/15"
+            className="w-full rounded-lg border border-[#D3E2DC] bg-[#F7FAF8] px-4 py-3 text-sm font-medium text-[#1E3C3E] placeholder:text-[#627674] outline-none focus:border-[#5B9496] focus:ring-2 focus:ring-[#5B9496]/15"
           />
 
           {results.length > 0 && (
-            <div className="absolute inset-x-0 top-full z-40 mt-2 max-h-64 overflow-y-auto rounded-xl border border-[#D9E5D8] bg-white p-1 shadow-xl">
+            <div className="absolute inset-x-0 top-full z-40 mt-2 max-h-64 overflow-y-auto rounded-xl border border-[#D7E6E0] bg-white p-1 shadow-xl">
               {results.map((place) => (
                 <button
                   key={`${place.id}-${place.latitude}-${place.longitude}`}
                   type="button"
                   onClick={() => selectLocation(place)}
-                  className="w-full rounded-lg px-4 py-3 text-start hover:bg-[#EFF5EC]"
+                  className="w-full rounded-lg px-4 py-3 text-start hover:bg-[#ECF5EF]"
                 >
-                  <span className="block text-sm font-bold text-[#21452F]">
+                  <span className="block text-sm font-bold text-[#204346]">
                     {place.name}
                   </span>
-                  <span className="mt-0.5 block text-xs text-[#526858]">
+                  <span className="mt-0.5 block text-xs text-[#516968]">
                     {[place.district, place.state, place.country]
                       .filter(Boolean)
                       .join(', ')}
@@ -733,7 +733,7 @@ export const WeatherPage: React.FC = () => {
           )}
 
           {searching && (
-            <p className="mt-2 text-xs text-[#425C48]">{tr("Searching...")}</p>
+            <p className="mt-2 text-xs text-[#415D5B]">{tr("Searching...")}</p>
           )}
 
           {searchError && (
@@ -747,7 +747,7 @@ export const WeatherPage: React.FC = () => {
             !searchError &&
             results.length === 0 &&
             query.trim().length >= 2 && (
-              <p className="mt-2 text-xs text-[#425C48]">{tr("No matching locations.")}</p>
+              <p className="mt-2 text-xs text-[#415D5B]">{tr("No matching locations.")}</p>
             )}
         </div>
 
@@ -755,7 +755,7 @@ export const WeatherPage: React.FC = () => {
           <button
             type="button"
             onClick={clearLocation}
-            className="text-xs font-bold text-[#245F3C] hover:underline"
+            className="text-xs font-bold text-[#225B61] hover:underline"
           >{tr("Change")}</button>
         )}
       </section>
@@ -763,10 +763,10 @@ export const WeatherPage: React.FC = () => {
       {loading ? (
         <section
           role="status"
-          className="rounded-xl border border-[#DEE8DC] bg-white py-24 text-center"
+          className="rounded-xl border border-[#DCE8E2] bg-white py-24 text-center"
         >
-          <div className="mx-auto h-9 w-9 animate-spin rounded-full border-4 border-[#E0EBDD] border-t-[#32714B]" />
-          <p className="mt-4 text-sm font-medium text-[#2C583B]">{tr("Loading local forecast...")}</p>
+          <div className="mx-auto h-9 w-9 animate-spin rounded-full border-4 border-[#DCECE4] border-t-[#2F6D74]" />
+          <p className="mt-4 text-sm font-medium text-[#2A585A]">{tr("Loading local forecast...")}</p>
         </section>
       ) : error ? (
         <section
@@ -778,23 +778,23 @@ export const WeatherPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setRetry((value) => value + 1)}
-            className="mt-5 rounded-lg bg-[#285C3D] px-5 py-2.5 text-sm font-semibold text-white"
+            className="mt-5 rounded-lg bg-[#26585E] px-5 py-2.5 text-sm font-semibold text-white"
           >{tr("Try again")}</button>
         </section>
       ) : forecast ? (
         <>
-          <section className="relative isolate min-h-[330px] overflow-hidden rounded-2xl bg-[#1D4A31] text-white">
+          <section className="relative isolate min-h-[330px] overflow-hidden rounded-2xl bg-[#1B474C] text-white">
             <img
               src={IMAGES.hero}
               alt={tr("Green agricultural fields under an open sky")}
               className="absolute inset-0 h-full w-full object-cover"
               loading="eager"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#103D28]/95 via-[#16452E]/85 to-[#16452E]/30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0E3A3F]/95 via-[#144247]/85 to-[#144247]/30" />
 
             <div className="relative grid min-h-[330px] gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#E3F1DF]">{tr("Current weather")}</p>
+                <p className="text-xs font-semibold tracking-normal text-[#DEF2E8]">{tr("Current weather")}</p>
 
                 <h2 className="mt-2 font-serif text-xl font-semibold text-white">
                   {forecast.location.locationName}
@@ -820,7 +820,7 @@ export const WeatherPage: React.FC = () => {
                       {tr(forecast.current.condition)}
                     </p>
 
-                    <p className="mt-1 text-sm font-medium text-[#E3F0E2]">{tr("Feels Like")}{' '}
+                    <p className="mt-1 text-sm font-medium text-[#E1F1EB]">{tr("Feels Like")}{' '}
                       {isRtl() ? <bdi dir="ltr">{format(forecast.current.apparentTemperatureC)}°C</bdi> : `${format(forecast.current.apparentTemperatureC)}°C`}
                     </p>
                   </div>
@@ -857,7 +857,7 @@ export const WeatherPage: React.FC = () => {
                   },
                 ].map((item) => (
                   <div key={item.label}>
-                    <p className="text-xs font-medium text-[#E3F0E2]">
+                    <p className="text-xs font-medium text-[#E1F1EB]">
                       {tr(item.label)}
                     </p>
                     <p className="mt-2 text-xl font-bold text-white">
@@ -870,7 +870,7 @@ export const WeatherPage: React.FC = () => {
           </section>
 
           <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <div className="rounded-xl border border-[#DDE7DA] bg-white p-5">
+            <div className="rounded-xl border border-[#D9E8E0] bg-white p-5">
               <Stat
                 label={tr("7-day rainfall")}
                 value={`${format(
@@ -880,14 +880,14 @@ export const WeatherPage: React.FC = () => {
               />
             </div>
 
-            <div className="rounded-xl border border-[#DDE7DA] bg-white p-5">
+            <div className="rounded-xl border border-[#D9E8E0] bg-white p-5">
               <Stat
                 label={tr("Days with rain")}
                 value={`${stats?.rainyDays ?? 0} / ${daily.length}`}
               />
             </div>
 
-            <div className="rounded-xl border border-[#DDE7DA] bg-white p-5">
+            <div className="rounded-xl border border-[#D9E8E0] bg-white p-5">
               <Stat
                 label={tr("Temperature range")}
                 value={
@@ -900,7 +900,7 @@ export const WeatherPage: React.FC = () => {
               />
             </div>
 
-            <div className="rounded-xl border border-[#DDE7DA] bg-white p-5">
+            <div className="rounded-xl border border-[#D9E8E0] bg-white p-5">
               <Stat
                 label={tr("Maximum wind")}
                 value={
@@ -914,13 +914,13 @@ export const WeatherPage: React.FC = () => {
             </div>
           </section>
 
-          <section className="rounded-xl border border-[#DDE7DA] bg-white p-5 sm:p-7">
+          <section className="rounded-xl border border-[#D9E8E0] bg-white p-5 sm:p-7">
             <div className="mb-6">
               <SectionHeading
                 eyebrow={tr("Forecast")}
                 title={tr("7-Day Weather Outlook")}
                 right={
-                  <span className="text-xs font-semibold text-[#48624E]">
+                  <span className="text-xs font-semibold text-[#476361]">
                     {daily.length}{tr("days")}</span>
                 }
               />
@@ -929,74 +929,74 @@ export const WeatherPage: React.FC = () => {
           </section>
 
           <section className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="rounded-xl border border-[#DDE7DA] bg-white p-5 sm:p-6">
+            <div className="rounded-xl border border-[#D9E8E0] bg-white p-5 sm:p-6">
               <SectionHeading title={tr("Key Insights")} />
 
               <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
-                <div className="sm:border-r sm:border-[#E0E8DE]">
-                  <p className="text-xs font-medium text-[#4D6352]">{tr("Highest rainfall")}</p>
-                  <p className="mt-2 text-2xl font-bold text-[#1C432E]">
+                <div className="sm:border-r sm:border-[#DEE8E3]">
+                  <p className="text-xs font-medium text-[#4C6462]">{tr("Highest rainfall")}</p>
+                  <p className="mt-2 text-2xl font-bold text-[#1A4045]">
                     {stats ? tr("{{v0}} mm", { v0: format(
                           stats.wettest.precipitationSumMm,
                           1
                         ) }) : '—'}
                   </p>
-                  <p className="mt-1 text-xs text-[#526956]">
+                  <p className="mt-1 text-xs text-[#516A67]">
                     {stats ? dateName(stats.wettest.date) : '—'}
                   </p>
                 </div>
 
-                <div className="sm:border-r sm:border-[#E0E8DE]">
-                  <p className="text-xs font-medium text-[#4D6352]">{tr("Hottest day")}</p>
-                  <p className="mt-2 text-2xl font-bold text-[#1C432E]">
+                <div className="sm:border-r sm:border-[#DEE8E3]">
+                  <p className="text-xs font-medium text-[#4C6462]">{tr("Hottest day")}</p>
+                  <p className="mt-2 text-2xl font-bold text-[#1A4045]">
                     {stats
                       ? `${format(stats.hottest.tempMaxC)}°C`
                       : '—'}
                   </p>
-                  <p className="mt-1 text-xs text-[#526956]">
+                  <p className="mt-1 text-xs text-[#516A67]">
                     {stats ? dateName(stats.hottest.date) : '—'}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-xs font-medium text-[#4D6352]">{tr("Strongest wind")}</p>
-                  <p className="mt-2 text-2xl font-bold text-[#1C432E]">
+                  <p className="text-xs font-medium text-[#4C6462]">{tr("Strongest wind")}</p>
+                  <p className="mt-2 text-2xl font-bold text-[#1A4045]">
                     {stats ? tr("{{v0}} km/h", { v0: format(
                           stats.windiest.windSpeedMaxKmH
                         ) }) : '—'}
                   </p>
-                  <p className="mt-1 text-xs text-[#526956]">
+                  <p className="mt-1 text-xs text-[#516A67]">
                     {stats ? dateName(stats.windiest.date) : '—'}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="relative min-h-[205px] overflow-hidden rounded-xl bg-[#275A39]">
+            <div className="relative min-h-[205px] overflow-hidden rounded-xl bg-[#25595C]">
               <img
                 src={IMAGES.field}
                 alt={tr("Natural green landscape")}
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#103E29]/85 to-[#103E29]/10" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0E3B40]/85 to-[#0E3B40]/10" />
               <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#E0F0DD]">{tr("ProFarm")}</p>
+                <p className="text-xs font-semibold tracking-widest text-[#DCF1E7]">{tr("ProFarm")}</p>
                 <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight">{tr("Plan smart. Farm better.")}</h2>
               </div>
             </div>
           </section>
 
           <section className="grid items-start gap-5 xl:grid-cols-[1.2fr_0.8fr]">
-            <div className="overflow-hidden rounded-xl border border-[#DDE7DA] bg-white">
+            <div className="overflow-hidden rounded-xl border border-[#D9E8E0] bg-white">
               <div className="p-5 sm:p-6">
                 <SectionHeading title={tr("Daily Forecast")} />
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[650px] text-start">
-                  <thead className="bg-[#F1F6EF]">
-                    <tr className="text-xs font-bold text-[#31533B]">
+                  <thead className="bg-[#EFF6F2]">
+                    <tr className="text-xs font-bold text-[#305454]">
                       <th className="px-4 py-3 sm:ps-6">{tr("Day")}</th>
                       <th className="px-3 py-3">{tr("Weather")}</th>
                       <th className="px-3 py-3">{tr("High / Low")}</th>
@@ -1010,13 +1010,13 @@ export const WeatherPage: React.FC = () => {
                     {daily.map((day, index) => (
                       <tr
                         key={day.date}
-                        className="border-t border-[#E5ECE2] text-xs hover:bg-[#F8FAF7]"
+                        className="border-t border-[#E2ECE6] text-xs hover:bg-[#F7FAF8]"
                       >
                         <td className="whitespace-nowrap px-4 py-3 sm:ps-6">
-                          <p className="font-bold text-[#20442F]">
+                          <p className="font-bold text-[#1F4245]">
                             {index === 0 ? tr("Today") : dayName(day.date)}
                           </p>
-                          <p className="mt-1 text-[#526858]">
+                          <p className="mt-1 text-[#516968]">
                             {dateName(day.date)}
                           </p>
                         </td>
@@ -1027,13 +1027,13 @@ export const WeatherPage: React.FC = () => {
                               condition={day.condition}
                               size={30}
                             />
-                            <span className="font-medium text-[#344D3A]">
+                            <span className="font-medium text-[#334E4C]">
                               {tr(day.condition)}
                             </span>
                           </div>
                         </td>
 
-                        <td className="whitespace-nowrap px-3 py-3 font-bold text-[#1F432D]">
+                        <td className="whitespace-nowrap px-3 py-3 font-bold text-[#1E4144]">
                           {format(day.tempMaxC)}° /{' '}
                           {format(day.tempMinC)}°
                         </td>
@@ -1045,10 +1045,10 @@ export const WeatherPage: React.FC = () => {
                           %
                         </td>
 
-                        <td className="whitespace-nowrap px-3 py-3 font-medium text-[#344E3A]">
+                        <td className="whitespace-nowrap px-3 py-3 font-medium text-[#334F4D]">
                           {format(day.precipitationSumMm, 1)}{tr("mm")}</td>
 
-                        <td className="whitespace-nowrap px-3 py-3 font-medium text-[#344E3A]">
+                        <td className="whitespace-nowrap px-3 py-3 font-medium text-[#334F4D]">
                           {format(day.windSpeedMaxKmH)}{tr("km/h")}</td>
                       </tr>
                     ))}
@@ -1058,11 +1058,11 @@ export const WeatherPage: React.FC = () => {
             </div>
 
             <div className="space-y-5">
-              <div className="rounded-xl border border-[#DDE7DA] bg-white p-5 sm:p-6">
+              <div className="rounded-xl border border-[#D9E8E0] bg-white p-5 sm:p-6">
                 <SectionHeading
                   title={tr("Farming Advisory")}
                   right={
-                    <span className="rounded-full bg-[#EAF3E7] px-3 py-1 text-[11px] font-bold text-[#326143]">{tr("Rule-based")}</span>
+                    <span className="rounded-full bg-[#E7F3EC] px-3 py-1 text-[11px] font-bold text-[#306063]">{tr("Rule-based")}</span>
                   }
                 />
 
@@ -1071,45 +1071,45 @@ export const WeatherPage: React.FC = () => {
                     forecast.guidance.map((item) => (
                       <article
                         key={item.id}
-                        className="rounded-lg border border-[#E1E9DF] bg-[#FAFCF9] p-4"
+                        className="rounded-lg border border-[#DFE9E4] bg-[#F9FCFA] p-4"
                       >
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <h3 className="text-sm font-bold text-[#1E422D]">
+                          <h3 className="text-sm font-bold text-[#1D4043]">
                             <LocalizedContent text={item.title} />
                           </h3>
 
                           <span
-                            className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ${
+                            className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${
                               item.severity === 'caution'
                                 ? 'bg-[#FFF0E2] text-[#9B5726]'
                                 : item.severity === 'advisory'
                                   ? 'bg-[#FFF5D9] text-[#86641C]'
-                                  : 'bg-[#E5F3E7] text-[#306B42]'
+                                  : 'bg-[#E4F4F1] text-[#2E6D6D]'
                             }`}
                           >
                             {tr(item.severity)}
                           </span>
                         </div>
 
-                        <p className="mt-2 text-xs leading-5 text-[#3D5542]">
+                        <p className="mt-2 text-xs leading-5 text-[#3C5654]">
                           <LocalizedContent text={item.message} />
                         </p>
                       </article>
                     ))
                   ) : (
-                    <p className="text-sm font-medium text-[#425C49]">{tr("No specific advisories for this forecast.")}</p>
+                    <p className="text-sm font-medium text-[#415D5C]">{tr("No specific advisories for this forecast.")}</p>
                   )}
                 </div>
               </div>
 
-              <div className="relative min-h-[185px] overflow-hidden rounded-xl bg-[#1B482F]">
+              <div className="relative min-h-[185px] overflow-hidden rounded-xl bg-[#19454A]">
                 <img
                   src={IMAGES.rain}
                   alt={tr("Water flowing through a natural green landscape")}
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#103B28]/95 to-[#103B28]/30" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0E383D]/95 to-[#0E383D]/30" />
 
                 <div className="relative flex min-h-[185px] flex-col justify-end p-6 text-white">
                   <p className="text-sm font-semibold">{tr("Rainfall Outlook")}</p>
@@ -1122,17 +1122,17 @@ export const WeatherPage: React.FC = () => {
                     <span className="text-xl">{tr("mm")}</span>
                   </p>
 
-                  <p className="mt-1 text-xs font-medium text-[#E3F0E3]">{tr("Expected over the next 7 days")}</p>
+                  <p className="mt-1 text-xs font-medium text-[#E2F1EC]">{tr("Expected over the next 7 days")}</p>
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="rounded-xl border border-[#DDE7DA] bg-white p-5 sm:p-6">
+          <section className="rounded-xl border border-[#D9E8E0] bg-white p-5 sm:p-6">
             <SectionHeading
               title={tr("Rainfall Distribution")}
               right={
-                <span className="text-xs font-semibold text-[#3E5A45]">{tr("Daily accumulation (mm)")}</span>
+                <span className="text-xs font-semibold text-[#3D5B5A]">{tr("Daily accumulation (mm)")}</span>
               }
             />
 
@@ -1153,11 +1153,11 @@ export const WeatherPage: React.FC = () => {
                     key={day.date}
                     className="min-w-0 text-center"
                   >
-                    <p className="mb-2 text-[10px] font-bold text-[#2C5138] sm:text-xs">
+                    <p className="mb-2 text-[10px] font-bold text-[#2B5252] sm:text-xs">
                       {format(day.precipitationSumMm, 1)}
                     </p>
 
-                    <div className="flex h-32 items-end justify-center rounded-md bg-[#F2F7F0] px-2 pt-3">
+                    <div className="flex h-32 items-end justify-center rounded-md bg-[#F0F7F3] px-2 pt-3">
                       <div
                         className="w-full max-w-12 rounded-t-md bg-[#77AEB8]"
                         style={{
@@ -1170,7 +1170,7 @@ export const WeatherPage: React.FC = () => {
                       />
                     </div>
 
-                    <p className="mt-2 text-[11px] font-bold text-[#2B5037]">
+                    <p className="mt-2 text-[11px] font-bold text-[#2A5151]">
                       {dayName(day.date)}
                     </p>
                   </div>
@@ -1179,28 +1179,28 @@ export const WeatherPage: React.FC = () => {
             </div>
           </section>
 
-          <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[#DDE7DA] pt-5 text-xs font-medium text-[#48614E]">
+          <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[#D9E8E0] pt-5 text-xs font-medium text-[#476260]">
             <p>{tr("Forecasts are estimates. Farming advice is rule-based.")}</p>
 
             <a
               href={forecast.attribution.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-[#276440] hover:underline"
+              className="font-bold text-[#256066] hover:underline"
             >
               {forecast.attribution.notice || tr("Weather data source")}
             </a>
           </footer>
         </>
       ) : (
-        <section className="overflow-hidden rounded-2xl border border-[#DDE7DA] bg-white">
+        <section className="overflow-hidden rounded-2xl border border-[#D9E8E0] bg-white">
           <div className="grid lg:grid-cols-2">
             <div className="flex flex-col justify-center p-8 sm:p-12">
-              <p className="text-xs font-bold uppercase tracking-widest text-[#46784E]">{tr("ProFarm Weather")}</p>
+              <p className="text-xs font-bold tracking-widest text-[#447A72]">{tr("ProFarm Weather")}</p>
 
-              <h2 className="mt-3 font-serif text-3xl font-semibold text-[#173C29]">{tr("Your local forecast starts here.")}</h2>
+              <h2 className="mt-3 font-serif text-3xl font-semibold text-[#16393D]">{tr("Your local forecast starts here.")}</h2>
 
-              <p className="mt-3 text-sm font-medium text-[#425A48]">{tr("Select a location to view weather, rainfall and farming advisories.")}</p>
+              <p className="mt-3 text-sm font-medium text-[#415B5A]">{tr("Select a location to view weather, rainfall and farming advisories.")}</p>
 
               <div className="mt-7 flex flex-wrap gap-2">
                 {QUICK_LOCATIONS.map((location) => (
@@ -1208,7 +1208,7 @@ export const WeatherPage: React.FC = () => {
                     key={location.name}
                     type="button"
                     onClick={() => selectLocation(location)}
-                    className="rounded-lg border border-[#BED4BE] bg-[#F0F6ED] px-4 py-2.5 text-xs font-bold text-[#285C3D] hover:bg-[#E4F0DF]"
+                    className="rounded-lg border border-[#BDD5CE] bg-[#EDF6F0] px-4 py-2.5 text-xs font-bold text-[#26585E] hover:bg-[#DEF1E6]"
                   >
                     {location.name}
                   </button>
@@ -1216,7 +1216,7 @@ export const WeatherPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="relative min-h-[280px] bg-[#2C6240]">
+            <div className="relative min-h-[280px] bg-[#2A6064]">
               <img
                 src={IMAGES.hero}
                 alt={tr("Open farmland landscape")}

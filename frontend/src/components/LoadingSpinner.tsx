@@ -21,26 +21,26 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         {/* Soft background ring */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 rounded-full border-[3px] border-[#DDEADD]"
+          className="absolute inset-0 rounded-full border-[3px] border-[#DCEBE6]"
         />
 
         {/* Rotating foreground ring */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 animate-spin rounded-full border-[3px] border-transparent border-t-[#285D3D] border-r-[#6B9971] motion-reduce:animate-none"
+          className="absolute inset-0 animate-spin rounded-full border-[3px] border-transparent border-t-[#265A5F] border-r-[#699B92] motion-reduce:animate-none"
         />
 
         {/* Inner decorative circle */}
         <div
           aria-hidden="true"
-          className="flex h-5 w-5 items-center justify-center rounded-full bg-[#E8F1E4]"
+          className="flex h-5 w-5 items-center justify-center rounded-full bg-[#E3F2E9]"
         >
-          <div className="h-2 w-2 rounded-full bg-[#4C8057]" />
+          <div className="h-2 w-2 rounded-full bg-[#4A827D]" />
         </div>
       </div>
 
       {/* Loading label */}
-      <p className="text-center text-sm font-medium tracking-wide text-[#64806A]">
+      <p className="text-center text-sm font-medium tracking-wide text-[#63817F]">
         {tr(label)}
       </p>
 

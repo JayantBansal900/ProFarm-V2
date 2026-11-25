@@ -30,7 +30,7 @@ void i18n.use(initReactI18next).init({
 });
 export const currentLanguage = (): LanguageCode => supportedLanguage(i18n.resolvedLanguage || i18n.language) || 'en';
 export const locale = () => `${currentLanguage()}-IN`;
-export const isRtl = () => languages.find(language => language.code === currentLanguage())?.direction === 'rtl';
+export const isRtl = () => (languages.find(language => language.code === currentLanguage())?.direction as string | undefined) === 'rtl';
 export const preferenceRevision = () => selectionRevision;
 export async function selectLanguage(value: string): Promise<void> {
   const code = supportedLanguage(value);

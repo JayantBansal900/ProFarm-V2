@@ -27,6 +27,7 @@ import { CalendarPage } from './pages/CalendarPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { CreditsPage } from './pages/CreditsPage';
 
 export const routes: RouteObject[] = [
   {
@@ -123,6 +124,11 @@ export const routes: RouteObject[] = [
       {
         path: 'signup',
         element: <SignupPage />,
+      },
+
+      {
+        path: 'credits',
+        element: <CreditsPage />,
       },
 
       // Fallback

@@ -1,6 +1,7 @@
 import { LocalizedContent } from '../i18n/LocalizedContent';
 import { tr, useLocale, localizedMatches } from '../i18n';
 
+import { soilImage } from '../data/media';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SOILS_DATA } from '../data/soils';
@@ -48,37 +49,37 @@ export const SoilCatalogPage: React.FC = () => {
       {/* BREADCRUMB */}
       <nav
         aria-label={tr("Breadcrumb")}
-        className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#8B9786]"
+        className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#85988D]"
       >
         <Link
           to="/"
-          className="transition hover:text-[#244B35]"
+          className="transition hover:text-[#22484D]"
         >{tr("Home")}</Link>
 
         <span>/</span>
 
         <Link
           to="/knowledge"
-          className="transition hover:text-[#244B35]"
+          className="transition hover:text-[#22484D]"
         >{tr("Knowledge")}</Link>
 
         <span>/</span>
 
-        <span className="font-bold text-[#244B35]">{tr("Soils")}</span>
+        <span className="font-bold text-[#22484D]">{tr("Soils")}</span>
       </nav>
 
       {/* HEADER */}
       <section className="flex flex-wrap items-end justify-between gap-5">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#849579]">{tr("The Soil Library")}</span>
+          <span className="text-[10px] font-bold tracking-normal text-[#789681]">{tr("The Soil Library")}</span>
 
-          <h1 className="mt-2 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[1.05] tracking-[-0.055em] text-[#203F2C]">{tr("Explore Soils")}<span className="text-[#9BB18C]">.</span>
+          <h1 className="mt-2 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[1.05] tracking-[-0.055em] text-[#1F3D40]">{tr("Explore Soils")}<span className="text-[#8BB296]">.</span>
           </h1>
         </div>
 
         <Link
           to="/knowledge/crops"
-          className="inline-flex items-center gap-3 rounded-full border border-[#D4E0CE] px-5 py-3 text-[12px] font-bold text-[#244B35] transition hover:bg-[#EAF0E5]"
+          className="inline-flex items-center gap-3 rounded-full border border-[#CDE1D4] px-5 py-3 text-[12px] font-bold text-[#22484D] transition hover:bg-[#E5F0E7]"
         >{tr("Explore Crops")}<span aria-hidden="true">↗</span>
         </Link>
       </section>
@@ -86,13 +87,13 @@ export const SoilCatalogPage: React.FC = () => {
       <label className="block text-sm font-semibold">
         {tr('Search soils')}
         <input type="search" value={search} onChange={event => setSearch(event.target.value)}
-          placeholder={tr('Search soils')} className="mt-2 block min-h-11 w-full rounded-xl border border-[#D4E0CE] bg-white px-4" />
+          placeholder={tr('Search soils')} className="mt-2 block min-h-11 w-full rounded-xl border border-[#CDE1D4] bg-white px-4" />
       </label>
       {/* SUMMARY */}
-      <section className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E2E8DC] pb-5">
-        <p className="text-[12px] font-medium text-[#7D8D77]">{tr("Discover the foundation of healthy farming.")}</p>
+      <section className="flex flex-wrap items-center justify-between gap-4 border-b border-[#DCE8DE] pb-5">
+        <p className="text-[12px] font-medium text-[#768E80]">{tr("Discover the foundation of healthy farming.")}</p>
 
-        <span className="rounded-full bg-[#EAF0E5] px-4 py-2 text-[11px] font-bold text-[#426A42]">
+        <span className="rounded-full bg-[#E5F0E7] px-4 py-2 text-[11px] font-bold text-[#406C5F]">
           {tr('{{count}} Soil Types', { count: SOILS_DATA.length })}</span>
       </section>
 
@@ -115,7 +116,7 @@ export const SoilCatalogPage: React.FC = () => {
           return (
             <article
               key={soil.id}
-              className="group overflow-hidden rounded-[22px] border border-[#E0E6DA] bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#B9CDAF] hover:shadow-[0_18px_40px_rgba(26,58,39,0.08)]"
+              className="group overflow-hidden rounded-[22px] border border-[#DAE6DC] bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#AECEBA] hover:shadow-[0_18px_40px_rgba(26,58,39,0.08)]"
             >
               {/* VISUAL */}
               <Link
@@ -123,33 +124,23 @@ export const SoilCatalogPage: React.FC = () => {
                 aria-label={tr("Explore {{v0}}", { v0: soil.name })}
                 className={`relative block h-[215px] overflow-hidden bg-gradient-to-br ${visual.background} sm:h-[245px]`}
               >
-                <div
-                  className="absolute inset-0 opacity-75 transition-transform duration-700 group-hover:scale-110"
-                  style={{
-                    backgroundImage: visual.pattern,
-                  }}
-                />
-
-                {/* Abstract soil strata */}
-                <div className="absolute inset-x-0 bottom-0 h-[60%] overflow-hidden">
-                  <div
-                    className="absolute bottom-[-45%] left-[-15%] h-[120%] w-[140%] rotate-[-9deg] rounded-[50%] opacity-40"
-                    style={{
-                      backgroundColor: visual.surface,
-                    }}
+                {soilImage(soil.slug) && (
+                  <img
+                    src={soilImage(soil.slug)!.src}
+                    alt={tr("{{v0}} sample", { v0: tr(soil.name) })}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-
-                  <div className="absolute bottom-[-70%] right-[-25%] h-[130%] w-[110%] rotate-[12deg] rounded-[50%] bg-[#2D241E]/25" />
-                </div>
+                )}
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
 
-                <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-white/90 px-3 py-1.5 text-[10px] font-bold text-[#244B35] backdrop-blur-sm">{tr("Soil Profile")}{String(index + 1).padStart(2, '0')}
+                <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-white/90 px-3 py-1.5 text-[10px] font-bold text-[#22484D] backdrop-blur-sm">{tr("Soil Profile")}{String(index + 1).padStart(2, '0')}
                 </span>
 
                 <span
                   aria-hidden="true"
-                  className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-xl text-[#244B35] transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+                  className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-xl text-[#22484D] transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
                 >
                   ↗
                 </span>
@@ -161,40 +152,40 @@ export const SoilCatalogPage: React.FC = () => {
                   to={`/knowledge/soils/${soil.slug}`}
                   className="block"
                 >
-                  <h2 className="font-serif text-[30px] leading-tight tracking-[-0.04em] text-[#203F2C] transition group-hover:text-[#4F7951]">
+                  <h2 className="font-serif text-[30px] leading-tight tracking-[-0.04em] text-[#1F3D40] transition group-hover:text-[#4D7B6F]">
                     {tr(soil.name)}
                   </h2>
                 </Link>
 
-                <p className="mt-2 line-clamp-2 min-h-[42px] text-[12px] leading-[1.8] text-[#83917D]">
+                <p className="mt-2 line-clamp-2 min-h-[42px] text-[12px] leading-[1.8] text-[#7C9285]">
                   {<LocalizedContent text={soil.shortDescription} />}
                 </p>
 
                 {/* SOIL METRICS */}
-                <div className="mt-5 grid grid-cols-2 gap-3 border-t border-[#EDF0E9] pt-5">
+                <div className="mt-5 grid grid-cols-2 gap-3 border-t border-[#E9F0EA] pt-5">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#9BA696]">{tr("Drainage")}</span>
+                    <span className="text-[10px] font-bold tracking-normal text-[#95A79C]">{tr("Drainage")}</span>
 
-                    <p className="mt-2 text-[12px] font-bold text-[#31533C]">
+                    <p className="mt-2 text-[12px] font-bold text-[#305354]">
                       {tr(soil.drainage)}
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#9BA696]">{tr("Water Retention")}</span>
+                    <span className="text-[10px] font-bold tracking-normal text-[#95A79C]">{tr("Water Retention")}</span>
 
-                    <p className="mt-2 text-[12px] font-bold text-[#31533C]">
+                    <p className="mt-2 text-[12px] font-bold text-[#305354]">
                       {tr(soil.waterRetention)}
                     </p>
                   </div>
                 </div>
 
                 {/* COMPATIBLE CROPS */}
-                <div className="mt-5 border-t border-[#EDF0E9] pt-4">
+                <div className="mt-5 border-t border-[#E9F0EA] pt-4">
                   <div className="mb-3 flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#9BA696]">{tr("Compatible Crops")}</span>
+                    <span className="text-[10px] font-bold tracking-normal text-[#95A79C]">{tr("Compatible Crops")}</span>
 
-                    <span className="text-[11px] font-bold text-[#5B7955]">
+                    <span className="text-[11px] font-bold text-[#547A68]">
                       {soil.suitableCropIds.length}
                     </span>
                   </div>
@@ -204,14 +195,14 @@ export const SoilCatalogPage: React.FC = () => {
                       <Link
                         key={crop.id}
                         to={`/knowledge/crops/${crop.slug}`}
-                        className="rounded-full bg-[#EEF2E8] px-3 py-1.5 text-[10px] font-semibold text-[#587651] transition hover:bg-[#DCE8D5]"
+                        className="rounded-full bg-[#E8F2E9] px-3 py-1.5 text-[10px] font-semibold text-[#507764] transition hover:bg-[#D4E9DB]"
                       >
                         {tr(crop.name)}
                       </Link>
                     ))}
 
                     {suitableCrops.length > 3 && (
-                      <span className="rounded-full bg-[#F3F5F0] px-3 py-1.5 text-[10px] font-semibold text-[#83917D]">
+                      <span className="rounded-full bg-[#F0F5F0] px-3 py-1.5 text-[10px] font-semibold text-[#7C9285]">
                         +{suitableCrops.length - 3}
                       </span>
                     )}
@@ -221,7 +212,7 @@ export const SoilCatalogPage: React.FC = () => {
                 {/* LINK */}
                 <Link
                   to={`/knowledge/soils/${soil.slug}`}
-                  className="mt-6 flex items-center justify-between border-t border-[#EDF0E9] pt-4 text-[12px] font-bold text-[#315A3A] transition hover:text-[#6B9360]"
+                  className="mt-6 flex items-center justify-between border-t border-[#E9F0EA] pt-4 text-[12px] font-bold text-[#2F5C58] transition hover:text-[#5E9579]"
                 >{tr("Explore Soil")}<span
                     aria-hidden="true"
                     className="text-lg transition-transform group-hover:translate-x-1"
@@ -236,21 +227,21 @@ export const SoilCatalogPage: React.FC = () => {
       </section>
 
       {/* SOIL HEALTH NOTE */}
-      <aside className="rounded-[22px] border border-[#DCE5D5] bg-[#EFF3E9] p-6 sm:p-8">
+      <aside className="rounded-[22px] border border-[#D4E6D9] bg-[#E9F3EA] p-6 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#809476]">{tr("Soil Health")}</span>
+            <span className="text-[10px] font-bold tracking-normal text-[#759581]">{tr("Soil Health")}</span>
 
-            <h2 className="mt-2 font-serif text-2xl tracking-[-0.03em] text-[#244532] sm:text-3xl">{tr("Healthy soil. Better harvests.")}</h2>
+            <h2 className="mt-2 font-serif text-2xl tracking-[-0.03em] text-[#234346] sm:text-3xl">{tr("Healthy soil. Better harvests.")}</h2>
 
-            <p className="mt-3 text-[12px] leading-7 text-[#6D8068]">{tr("Soil texture is only one factor. Organic carbon, pH, salinity and biological activity also affect crop growth. Regular soil testing helps guide better decisions.")}</p>
+            <p className="mt-3 text-[12px] leading-7 text-[#678174]">{tr("Soil texture is only one factor. Organic carbon, pH, salinity and biological activity also affect crop growth. Regular soil testing helps guide better decisions.")}</p>
           </div>
 
           <a
             href="https://soilhealth.dac.gov.in/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 rounded-full bg-[#244B35] px-5 py-3 text-[11px] font-bold text-white transition hover:bg-[#345D42]"
+            className="inline-flex items-center gap-3 rounded-full bg-[#22484D] px-5 py-3 text-[11px] font-bold text-white transition hover:bg-[#325D5F]"
           >{tr("Soil Health Card")}<span aria-hidden="true">↗</span>
           </a>
         </div>

@@ -132,12 +132,12 @@ export const DashboardPage: React.FC = () => {
         {
           label: 'Active Farms',
           value: overview.activeFarmsCount,
-          color: '#447553',
+          color: '#427777',
         },
         {
           label: 'Crop Cycles',
           value: overview.activeCropCyclesCount,
-          color: '#8C9F65',
+          color: '#63A164',
         },
         {
           label: 'Pending Tasks',
@@ -157,13 +157,13 @@ export const DashboardPage: React.FC = () => {
       {/* PAGE HEADING */}
       <div className="flex flex-wrap items-end justify-between gap-5">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#839478]">{tr("Your workspace")}</span>
+          <span className="text-[10px] font-bold tracking-normal text-[#779580]">{tr("Your workspace")}</span>
 
-          <h1 className="mt-2 font-serif text-[clamp(2.7rem,5vw,4.5rem)] leading-tight tracking-[-0.05em] text-[#203F2C]">{tr("Dashboard")}<span className="text-[#9AB28A]">.</span>
+          <h1 className="mt-2 font-serif text-[clamp(2.7rem,5vw,4.5rem)] leading-tight tracking-[-0.05em] text-[#1F3D40]">{tr("Dashboard")}<span className="text-[#88B495]">.</span>
           </h1>
 
-          <p className="mt-1 text-[13px] text-[#778475]">{tr("Welcome back,")}{' '}
-            <span className="font-bold text-[#244B35]">
+          <p className="mt-1 text-[13px] text-[#74857E]">{tr("Welcome back,")}{' '}
+            <span className="font-bold text-[#22484D]">
               {user?.name || tr("Farmer")}
             </span>
           </p>
@@ -171,13 +171,13 @@ export const DashboardPage: React.FC = () => {
 
         <Link
           to="/my-farms"
-          className="inline-flex items-center gap-3 rounded-full bg-[#244B35] px-6 py-3 text-[12px] font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#345D42]"
+          className="inline-flex items-center gap-3 rounded-full bg-[#22484D] px-6 py-3 text-[12px] font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#325D5F]"
         >{tr("My Farms")}<span aria-hidden="true">↗</span>
         </Link>
       </div>
 
       {/* CINEMATIC HERO */}
-      <section className="relative isolate min-h-[250px] overflow-hidden rounded-[24px] bg-[#193B29] sm:min-h-[320px]">
+      <section className="relative isolate min-h-[250px] overflow-hidden rounded-[24px] bg-[#18393C] sm:min-h-[320px]">
         <img
           src={heroImage}
           alt={tr("Green farmland at sunset")}
@@ -185,12 +185,12 @@ export const DashboardPage: React.FC = () => {
           className="absolute inset-0 h-full w-full object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#10291D]/85 via-[#10291D]/45 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F272A]/85 via-[#0F272A]/45 to-transparent" />
 
         <div className="relative flex min-h-[250px] flex-col justify-end p-7 sm:min-h-[320px] sm:p-12">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D0E3B7]">{tr("ProFarm")}</span>
+          <span className="text-[10px] font-bold tracking-normal text-[#B5E5BC]">{tr("ProFarm")}</span>
 
-          <h2 className="mt-3 max-w-[550px] font-serif text-[clamp(2.3rem,5vw,4.5rem)] leading-[1.05] tracking-[-0.045em] text-white">{tr("Grow smarter.")}<span className="block italic text-[#D0E3B7]">{tr("Every season.")}</span>
+          <h2 className="mt-3 max-w-[550px] font-serif text-[clamp(2.3rem,5vw,4.5rem)] leading-[1.05] tracking-[-0.045em] text-white">{tr("Grow smarter.")}<span className="block italic text-[#B5E5BC]">{tr("Every season.")}</span>
           </h2>
         </div>
       </section>
@@ -200,7 +200,7 @@ export const DashboardPage: React.FC = () => {
         <div className="mb-5 flex items-center justify-between gap-4">
           <h2
             id="farm-stats-heading"
-            className="font-serif text-[29px] tracking-[-0.035em] text-[#203F2C]"
+            className="font-serif text-[29px] tracking-[-0.035em] text-[#1F3D40]"
           >{tr("Farm Overview")}</h2>
 
           <button
@@ -208,7 +208,7 @@ export const DashboardPage: React.FC = () => {
             onClick={refresh}
             disabled={loading}
             aria-label={tr("Refresh farm overview")}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#D8E1D3] bg-white text-[#244B35] transition-colors hover:bg-[#EAF0E4] disabled:opacity-50"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#D2E2D8] bg-white text-[#22484D] transition-colors hover:bg-[#E4F0E6] disabled:opacity-50"
           >
             <svg
               viewBox="0 0 24 24"
@@ -235,7 +235,7 @@ export const DashboardPage: React.FC = () => {
             {Array.from({ length: 4 }, (_, index) => (
               <div
                 key={index}
-                className="h-[150px] animate-pulse rounded-[20px] bg-[#E7EBE2]"
+                className="h-[150px] animate-pulse rounded-[20px] bg-[#E2EBE3]"
               />
             ))}
 
@@ -251,7 +251,7 @@ export const DashboardPage: React.FC = () => {
             <button
               type="button"
               onClick={refresh}
-              className="mt-3 text-sm font-bold text-[#244B35] underline"
+              className="mt-3 text-sm font-bold text-[#22484D] underline"
             >{tr("Retry")}</button>
           </div>
         ) : overview ? (
@@ -259,7 +259,7 @@ export const DashboardPage: React.FC = () => {
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="group relative overflow-hidden rounded-[20px] border border-[#E1E7DC] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(26,58,39,0.07)] sm:p-7"
+                className="group relative overflow-hidden rounded-[20px] border border-[#DCE7DE] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(26,58,39,0.07)] sm:p-7"
               >
                 <span
                   aria-hidden="true"
@@ -267,18 +267,18 @@ export const DashboardPage: React.FC = () => {
                   style={{ backgroundColor: stat.color }}
                 />
 
-                <p className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-none tracking-[-0.05em] text-[#203F2C]">
+                <p className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-none tracking-[-0.05em] text-[#1F3D40]">
                   {stat.value}
                 </p>
 
-                <p className="mt-4 text-[12px] font-semibold text-[#758273]">
+                <p className="mt-4 text-[12px] font-semibold text-[#72837C]">
                   {tr(stat.label)}
                 </p>
               </div>
             ))}
           </div>
         ) : (
-          <div className="rounded-[20px] border border-[#E1E7DC] bg-white p-6 text-sm text-[#758273]">{tr("No farm data available.")}</div>
+          <div className="rounded-[20px] border border-[#DCE7DE] bg-white p-6 text-sm text-[#72837C]">{tr("No farm data available.")}</div>
         )}
       </section>
 
@@ -286,7 +286,7 @@ export const DashboardPage: React.FC = () => {
       <section aria-labelledby="quick-access-heading">
         <h2
           id="quick-access-heading"
-          className="mb-5 font-serif text-[29px] tracking-[-0.035em] text-[#203F2C]"
+          className="mb-5 font-serif text-[29px] tracking-[-0.035em] text-[#1F3D40]"
         >{tr("Quick Access")}</h2>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -294,9 +294,9 @@ export const DashboardPage: React.FC = () => {
             <Link
               key={item.path}
               to={item.path}
-              className="group flex min-h-[145px] flex-col items-start justify-between rounded-[20px] border border-[#E1E7DC] bg-white p-5 text-[#244B35] transition-all duration-300 hover:-translate-y-1 hover:border-[#B6C9AA] hover:bg-[#EFF3E9] hover:shadow-[0_12px_30px_rgba(26,58,39,0.06)]"
+              className="group flex min-h-[145px] flex-col items-start justify-between rounded-[20px] border border-[#DCE7DE] bg-white p-5 text-[#22484D] transition-all duration-300 hover:-translate-y-1 hover:border-[#A9CAB3] hover:bg-[#E9F3EA] hover:shadow-[0_12px_30px_rgba(26,58,39,0.06)]"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[#EDF2E7] transition-colors group-hover:bg-white">
+              <span className="flex h-11 w-11 items-center justify-center rounded-[13px] bg-[#E7F2E8] transition-colors group-hover:bg-white">
                 <ShortcutIcon name={item.icon} />
               </span>
 
@@ -316,25 +316,25 @@ export const DashboardPage: React.FC = () => {
       </section>
 
       {/* ACCOUNT */}
-      <section className="flex flex-wrap items-center justify-between gap-4 rounded-[20px] border border-[#DDE6D5] bg-[#EBF0E5] px-6 py-5">
+      <section className="flex flex-wrap items-center justify-between gap-4 rounded-[20px] border border-[#D4E7D9] bg-[#E5F0E6] px-6 py-5">
         <div className="flex min-w-0 items-center gap-4">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#244B35] text-lg font-bold text-white">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#22484D] text-lg font-bold text-white">
             {(user?.name || 'F').charAt(0).toUpperCase()}
           </span>
 
           <div className="min-w-0">
-            <p className="truncate text-[13px] font-bold text-[#244B35]">
+            <p className="truncate text-[13px] font-bold text-[#22484D]">
               {user?.name || tr("Farmer")}
             </p>
 
-            <p className="truncate text-[11px] text-[#758273]">
+            <p className="truncate text-[11px] text-[#72837C]">
               {user?.email || tr("ProFarm Account")}
             </p>
           </div>
         </div>
 
-        <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[11px] font-semibold text-[#537C51]">
-          <span className="h-2 w-2 rounded-full bg-[#72A36A]" />{tr("Active")}</span>
+        <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[11px] font-semibold text-[#4F7E6E]">
+          <span className="h-2 w-2 rounded-full bg-[#68A58A]" />{tr("Active")}</span>
       </section>
     </div>
   );

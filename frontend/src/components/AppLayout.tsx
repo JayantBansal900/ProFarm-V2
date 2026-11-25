@@ -19,11 +19,11 @@ export const AppLayout: React.FC = () => {
 
   return (
     <AuthProvider>
-      <div className="flex min-h-screen flex-col bg-[#F8F7F2] font-sans text-[#203B2D] antialiased">
+      <div className="flex min-h-screen flex-col bg-[#F2F6F4] font-sans text-[#1F393C] antialiased">
         {/* Accessibility: skip navigation */}
         <a
           href="#main-content"
-          className="sr-only z-[100] rounded-md bg-[#203B2D] px-5 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="sr-only z-[100] rounded-md bg-[#1F393C] px-5 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >{tr("Skip to main content")}</a>
 
         {/* Shared navigation */}

@@ -52,7 +52,7 @@ const ArrowIcon = () => (
 );
 
 const inputClass =
-  'w-full rounded-xl border border-[#D5E2D1] bg-white px-4 py-3.5 text-sm text-[#244A32] outline-none transition placeholder:text-[#9AAE9B] focus:border-[#3E7950] focus:ring-4 focus:ring-[#3E7950]/10 disabled:cursor-not-allowed disabled:opacity-60';
+  'w-full rounded-xl border border-[#D0E3D9] bg-white px-4 py-3.5 text-sm text-[#22494C] outline-none transition placeholder:text-[#99AFA9] focus:border-[#3C7B7B] focus:ring-4 focus:ring-[#3C7B7B]/10 disabled:cursor-not-allowed disabled:opacity-60';
 
 export const LoginPage: React.FC = () => {
   useLocale();
@@ -140,17 +140,17 @@ export const LoginPage: React.FC = () => {
       {/* Subtle overlay, preserves landscape colors */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[#102E1C]/10"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[#0F2C2F]/10"
       />
 
       {/* Centered login card */}
-      <section className="relative z-10 w-full max-w-[460px] rounded-[26px] border border-[#E0E8DC] bg-[#FCFDF9]/95 px-6 py-9 shadow-[0_24px_75px_rgba(13,38,23,0.28)] backdrop-blur-md sm:px-10 sm:py-11">
+      <section className="relative z-10 w-full max-w-[460px] rounded-[26px] border border-[#DCE8E0] bg-[#F9FDF9]/95 px-6 py-9 shadow-[0_24px_75px_rgba(13,38,23,0.28)] backdrop-blur-md sm:px-10 sm:py-11">
         <div className="text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#5E8565]">{tr("PROFARM")}</p>
+          <p className="text-[11px] font-bold tracking-normal text-[#5C8781]">{tr("PROFARM")}</p>
 
-          <h1 className="mt-5 font-serif text-4xl font-semibold tracking-tight text-[#193E2A]">{tr("Welcome Back")}</h1>
+          <h1 className="mt-5 font-serif text-4xl font-semibold tracking-tight text-[#183B3F]">{tr("Welcome Back")}</h1>
 
-          <p className="mx-auto mt-3 max-w-xs text-sm leading-6 text-[#728775]">{tr("Sign in to manage your farm and continue your farming journey.")}</p>
+          <p className="mx-auto mt-3 max-w-xs text-sm leading-6 text-[#718884]">{tr("Sign in to manage your farm and continue your farming journey.")}</p>
         </div>
 
         {errorMessage && (
@@ -167,7 +167,7 @@ export const LoginPage: React.FC = () => {
           <div>
             <label
               htmlFor="login-email"
-              className="mb-2 block text-xs font-bold text-[#36583F]"
+              className="mb-2 block text-xs font-bold text-[#355958]"
             >{tr("Email Address")}</label>
 
             <input
@@ -191,7 +191,7 @@ export const LoginPage: React.FC = () => {
           <div>
             <label
               htmlFor="login-password"
-              className="mb-2 block text-xs font-bold text-[#36583F]"
+              className="mb-2 block text-xs font-bold text-[#355958]"
             >{tr("Password")}</label>
 
             <div className="relative">
@@ -218,7 +218,7 @@ export const LoginPage: React.FC = () => {
                   showPassword ? tr("Hide password") : tr("Show password")
                 }
                 aria-pressed={showPassword}
-                className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-xl text-[#839685] transition hover:text-[#285D3D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#285D3D] disabled:opacity-50"
+                className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-xl text-[#829793] transition hover:text-[#265A5F] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#265A5F] disabled:opacity-50"
               >
                 <EyeIcon visible={showPassword} />
               </button>
@@ -228,7 +228,7 @@ export const LoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-3 rounded-xl bg-[#285D3D] px-6 py-4 text-sm font-bold text-white shadow-[0_8px_20px_rgba(40,93,61,0.16)] transition hover:bg-[#19482E] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#285D3D] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-3 rounded-xl bg-[#265A5F] px-6 py-4 text-sm font-bold text-white shadow-[0_8px_20px_rgba(40,93,61,0.16)] transition hover:bg-[#17454A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#265A5F] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting ? (
               <>
@@ -243,11 +243,11 @@ export const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        <div className="mt-8 border-t border-[#E3EBDD] pt-6 text-center">
-          <p className="text-sm text-[#728775]">{tr("Don't have an account?")}{' '}
+        <div className="mt-8 border-t border-[#DCECE1] pt-6 text-center">
+          <p className="text-sm text-[#718884]">{tr("Don't have an account?")}{' '}
             <Link
               to="/signup"
-              className="font-bold text-[#285D3D] underline-offset-4 transition hover:underline"
+              className="font-bold text-[#265A5F] underline-offset-4 transition hover:underline"
             >{tr("Create an account")}</Link>
           </p>
         </div>
@@ -255,7 +255,7 @@ export const LoginPage: React.FC = () => {
         <div className="mt-7 text-center">
           <Link
             to="/"
-            className="text-xs font-semibold text-[#7D927F] transition hover:text-[#285D3D]"
+            className="text-xs font-semibold text-[#7C938E] transition hover:text-[#265A5F]"
           >{tr("← Back to Home")}</Link>
         </div>
       </section>
