@@ -1,4 +1,5 @@
 import { tr, useLocale } from '../i18n';
+import { LogoMark, Wordmark } from './Logo';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -33,40 +34,8 @@ export const Footer: React.FC = () => {
               aria-label={tr("ProFarm — Home")}
               className="inline-flex items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9BD3A4]"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#DBEEDB] text-[#22484D]">
-                <svg
-                  width="27"
-                  height="27"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12 20V10"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M12 14C7.5 14 5 11.4 5 7c4.6 0 7 2.5 7 7Z"
-                    fill="currentColor"
-                    opacity="0.9"
-                  />
-                  <path
-                    d="M12 11c0-4.4 2.4-7 7-7 0 4.4-2.5 7-7 7Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    d="M5 20h14"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-
-              <span className="text-[29px] font-extrabold tracking-tight">{tr("ProFarm")}<span className="text-[#8BC798]">.</span>
-              </span>
+              <LogoMark size={46} />
+              <Wordmark className="text-[28px] text-white" />
             </Link>
 
             <p className="mt-6 max-w-[350px] text-[14px] leading-[1.9] text-[#C4D5D2]">{tr("Making sustainable agriculture more accessible through practical knowledge, thoughtful technology, and smarter farming decisions.")}</p>

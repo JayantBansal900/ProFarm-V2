@@ -23,7 +23,7 @@ export const soilImage = (slug: string) => lookup('soils', slug);
 
 /** Wide photos of Indian farm scenes used as page banners. */
 export type SceneName = 'monsoon-paddy' | 'onion-market' | 'tractor-punjab' | 'farmer-fertilizer'
-  | 'sprinkler-irrigation' | 'wheat-punjab' | 'mustard-field';
+  | 'sprinkler-irrigation' | 'wheat-punjab' | 'mustard-field' | 'sunrise-paddy';
 export const sceneImage = (name: SceneName): string => `/images/scenes/${name}.webp`;
 
 /** All credited photos, for the image credits page. */

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { LanguageSelector } from '../i18n/LanguageSelector';
+import { LogoMark, Wordmark } from './Logo';
 
 const publicNav = [
   { label: 'Home', path: '/' },
@@ -20,16 +21,6 @@ const memberNav = [
 
 const initials = (name: string) =>
   name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join('') || 'P';
-
-const Logo: React.FC = () => (
-  <span className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-profarm-forest text-white">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M12 20V10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M12 14C7.5 14 5 11.4 5 7c4.6 0 7 2.5 7 7Z" fill="currentColor" opacity="0.85" />
-      <path d="M12 11c0-4.4 2.4-7 7-7 0 4.4-2.5 7-7 7Z" fill="#E9A400" />
-    </svg>
-  </span>
-);
 
 export const Header: React.FC = () => {
   useLocale();
@@ -98,8 +89,8 @@ export const Header: React.FC = () => {
     <header className="sticky top-0 z-50 border-b border-profarm-border/70 bg-white/85 backdrop-blur-xl">
       <div className="mx-auto flex h-[72px] w-full max-w-[1440px] items-center gap-4 px-4 sm:px-8 lg:px-12">
         <Link to="/" aria-label={tr('ProFarm — Home')} className="flex shrink-0 items-center gap-2.5">
-          <Logo />
-          <span className="font-display text-[22px] font-bold leading-none text-profarm-ink">{tr('ProFarm')}</span>
+          <LogoMark size={40} />
+          <Wordmark className="text-[23px] text-profarm-ink" />
         </Link>
 
         <nav aria-label={tr('Main navigation')} className="mx-auto hidden items-center gap-1 lg:flex">

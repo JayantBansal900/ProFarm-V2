@@ -150,6 +150,23 @@ function dateInputValue(value: string | null | undefined): string {
   return value ? value.slice(0, 10) : '';
 }
 
+const HARVEST_BEFORE_SOWING =
+  'Expected harvest date cannot be earlier than the sowing date.';
+
+/** Typical harvest window from the crop guide, to help farmers pick a date. */
+const HarvestHint: React.FC<{ cropId: string }> = ({ cropId }) => {
+  const period = CROPS_DATA.find((crop) => crop.id === cropId)
+    ?.sowingAndHarvest.harvestPeriod;
+
+  return (
+    <span className="block text-xs text-[#6F8681]">
+      {period
+        ? tr('Usually harvested: {{v0}}. You can add or change this later.', { v0: tr(period) })
+        : tr('You can add or change this later.')}
+    </span>
+  );
+};
+
 function readableDate(value: string | null | undefined): string {
   if (!value) return 'Not set';
 
@@ -395,6 +412,7 @@ export const FarmDetailPage: React.FC = () => {
   const [newCycle, setNewCycle] = useState({
     cropId: '',
     sowingDate: '',
+    expectedHarvestDate: '',
   });
 
   const [editCycleId, setEditCycleId] = useState<string | null>(null);
@@ -402,6 +420,7 @@ export const FarmDetailPage: React.FC = () => {
   const [editCycleData, setEditCycleData] = useState({
     cropId: '',
     sowingDate: '',
+    expectedHarvestDate: '',
   });
 
   const [cropOptions, setCropOptions] = useState<CropOption[]>([]);
@@ -750,9 +769,20 @@ export const FarmDetailPage: React.FC = () => {
       return;
     }
 
+    if (
+      newCycle.expectedHarvestDate &&
+      newCycle.expectedHarvestDate < newCycle.sowingDate
+    ) {
+      setCycleFieldErrors({ expectedHarvestDate: HARVEST_BEFORE_SOWING });
+      return;
+    }
+
     const body: CreateCropCycleRequest = {
       cropId: newCycle.cropId,
       sowingDate: newCycle.sowingDate,
+      ...(newCycle.expectedHarvestDate
+        ? { expectedHarvestDate: newCycle.expectedHarvestDate }
+        : {}),
       status: 'planned',
     };
 
@@ -768,6 +798,7 @@ export const FarmDetailPage: React.FC = () => {
         setNewCycle({
           cropId: '',
           sowingDate: '',
+          expectedHarvestDate: '',
         });
 
         setShowCycleForm(false);
@@ -801,6 +832,18 @@ export const FarmDetailPage: React.FC = () => {
       dateInputValue(original.sowingDate)
     ) {
       body.sowingDate = editCycleData.sowingDate;
+    }
+
+    const harvest = editCycleData.expectedHarvestDate;
+
+    if (harvest && harvest < editCycleData.sowingDate) {
+      setCycleFieldErrors({ expectedHarvestDate: HARVEST_BEFORE_SOWING });
+      return;
+    }
+
+    // An emptied field clears a previously saved date.
+    if (harvest !== dateInputValue(original.expectedHarvestDate)) {
+      body.expectedHarvestDate = harvest || null;
     }
 
     if (Object.keys(body).length === 0) {
@@ -1280,6 +1323,27 @@ export const FarmDetailPage: React.FC = () => {
 
                 {showCycleError('sowingDate')}
               </label>
+
+              <label className="space-y-2 sm:col-span-2">
+                <span className="text-xs font-bold">{tr("Expected Harvest Date (optional)")}</span>
+
+                <input
+                  type="date"
+                  value={newCycle.expectedHarvestDate}
+                  min={newCycle.sowingDate || undefined}
+                  onChange={(event) =>
+                    setNewCycle((value) => ({
+                      ...value,
+                      expectedHarvestDate: event.target.value,
+                    }))
+                  }
+                  className={inputClass}
+                />
+
+                <HarvestHint cropId={newCycle.cropId} />
+
+                {showCycleError('expectedHarvestDate')}
+              </label>
             </div>
 
             <FormActions
@@ -1357,6 +1421,27 @@ export const FarmDetailPage: React.FC = () => {
                       {showCycleError('sowingDate')}
                     </label>
 
+                    <label className="block space-y-2">
+                      <span className="text-xs font-bold">{tr("Expected Harvest Date (optional)")}</span>
+
+                      <input
+                        type="date"
+                        value={editCycleData.expectedHarvestDate}
+                        min={editCycleData.sowingDate || undefined}
+                        onChange={(event) =>
+                          setEditCycleData((value) => ({
+                            ...value,
+                            expectedHarvestDate: event.target.value,
+                          }))
+                        }
+                        className={inputClass}
+                      />
+
+                      <HarvestHint cropId={editCycleData.cropId} />
+
+                      {showCycleError('expectedHarvestDate')}
+                    </label>
+
                     <p className="text-xs text-[#6F8681]">{tr("Only changed fields will be saved. The cycle status remains unchanged.")}</p>
 
                     <FormActions
@@ -1415,6 +1500,9 @@ export const FarmDetailPage: React.FC = () => {
                           cropId: cycle.cropId,
                           sowingDate: dateInputValue(
                             cycle.sowingDate
+                          ),
+                          expectedHarvestDate: dateInputValue(
+                            cycle.expectedHarvestDate
                           ),
                         });
                       }}

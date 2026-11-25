@@ -8,6 +8,7 @@ import { SOILS_DATA } from '../src/data/soils';
 import { cropImage, soilImage, allImageCredits } from '../src/data/media';
 import { sowingSeason } from '../src/data/seasons';
 import { selectLanguage, currentLanguage } from '../src/i18n';
+import { LogoMark, Wordmark } from '../src/components/Logo';
 
 afterEach(async () => { cleanup(); await selectLanguage('en'); localStorage.clear(); });
 
@@ -57,5 +58,28 @@ describe('photo credits page', () => {
     render(<MemoryRouter><CreditsPage /></MemoryRouter>);
     expect(screen.getAllByRole('listitem')).toHaveLength(allImageCredits.length);
     expect(screen.getAllByRole('link', { name: 'View source' })).toHaveLength(allImageCredits.length);
+  });
+});
+
+describe('landing hero and logo', () => {
+  it('opens with the sunrise paddy photograph, credited', () => {
+    const { container } = render(<MemoryRouter><HomePage /></MemoryRouter>);
+    expect(container.querySelector('img[src="/images/scenes/sunrise-paddy.webp"]')).not.toBeNull();
+    expect(allImageCredits.find((credit) => credit.key === 'scenes/sunrise-paddy')).toMatchObject({
+      license: 'CC0', source: expect.stringContaining('commons.wikimedia.org'),
+    });
+  });
+
+  it('gives every logo instance its own gradient ids so two logos on a page do not clash', () => {
+    const { container } = render(<><LogoMark /><LogoMark size={46} /></>);
+    const ids = Array.from(container.querySelectorAll('linearGradient, radialGradient, clipPath')).map((node) => node.id);
+    expect(ids.length).toBeGreaterThan(4);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(container.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(2);
+  });
+
+  it('reads ProFarm as a single word', () => {
+    const { container } = render(<Wordmark />);
+    expect(container).toHaveTextContent(/^ProFarm$/);
   });
 });

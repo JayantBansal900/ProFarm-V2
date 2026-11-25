@@ -26,15 +26,15 @@ export const HomePage: React.FC = () => {
       {/* Hero: a real Indian field, with language choice up front */}
       <section className="relative isolate overflow-hidden bg-profarm-deep text-white">
         <img
-          src={sceneImage('mustard-field')}
+          src={sceneImage('sunrise-paddy')}
           alt=""
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-[center_35%] saturate-[1.18] contrast-[1.04]"
           {...{ fetchpriority: 'high' }}
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-profarm-deep via-profarm-deep/60 to-profarm-deep/5" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#06292C]/90 from-0% via-[#06292C]/40 via-45% to-transparent to-75%" />
 
-        <div className="pf-container flex min-h-[78vh] flex-col justify-end pb-12 pt-28 sm:pb-16">
-          <h1 className="max-w-3xl font-display text-[clamp(2.6rem,6.4vw,5.2rem)] font-bold leading-[1.02]">
+        <div className="pf-container flex min-h-[max(84vh,680px)] flex-col justify-end pb-12 pt-28 sm:pb-16">
+          <h1 className="max-w-3xl font-display text-[clamp(2.6rem,6.4vw,5.2rem)] font-bold leading-[1.02] [text-shadow:0_2px_28px_rgba(6,41,44,0.45)]">
             {tr('Better decisions for every season on your farm.')}
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/85">
