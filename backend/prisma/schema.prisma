@@ -17,7 +17,43 @@ model User {
   farms        Farm[]
   sessions     Session[]
 
+  // Two-step verification (TOTP authenticator app). Secrets are AES-256-GCM encrypted.
+  mfaEnabled       Boolean         @default(false)
+  mfaSecret        String?
+  mfaPendingSecret String?
+  mfaLastUsedStep  Int?
+  mfaEnabledAt     DateTime?
+  mfaBackupCodes   MfaBackupCode[]
+  mfaChallenges    MfaChallenge[]
+
   @@map("users")
+}
+
+model MfaBackupCode {
+  id        String    @id @default(uuid())
+  userId    String
+  codeHash  String    @unique
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("mfa_backup_codes")
+}
+
+/// Short-lived proof that a password was correct, waiting for the second factor.
+model MfaChallenge {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  attempts  Int      @default(0)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("mfa_challenges")
 }
 
 model Farm {

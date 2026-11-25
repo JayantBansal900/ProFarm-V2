@@ -22,6 +22,15 @@ const envSchema = z.object({
   OPENWEATHER_API_KEY: z.string().optional().default(''),
   NASA_POWER_BASE_URL: z.string().url().default('https://power.larc.nasa.gov'),
   DATA_GOV_IN_API_KEY: z.string().optional().default(''),
+  // Encrypts two-step verification secrets at rest. Required (32+ chars) in production.
+  MFA_ENCRYPTION_KEY: z.string().optional().default(''),
+}).transform((value, context) => {
+  if (value.MFA_ENCRYPTION_KEY.length >= 32) return value;
+  if (value.NODE_ENV === 'production') {
+    context.addIssue({ code: 'custom', path: ['MFA_ENCRYPTION_KEY'], message: 'MFA_ENCRYPTION_KEY must be at least 32 characters in production' });
+    return z.NEVER;
+  }
+  return { ...value, MFA_ENCRYPTION_KEY: 'profarm-development-only-mfa-encryption-key' };
 });
 
 const parsed = envSchema.safeParse(process.env);

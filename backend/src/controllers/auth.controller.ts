@@ -12,6 +12,16 @@ import {
 import { RegisterInput, LoginInput } from '../validators/auth.validator';
 import { COOKIE_NAME } from '../middleware/requireAuth';
 import { Prisma } from '@prisma/client';
+import {
+  MfaError,
+  completeMfaChallenge,
+  createMfaChallenge,
+  disableMfa,
+  enableMfa,
+  getMfaStatus,
+  regenerateBackupCodes,
+  startMfaSetup,
+} from '../services/mfa.service';
 
 // ---------------------------------------------------------------------------
 // Cookie options
@@ -90,6 +100,19 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
       return;
     }
 
+    const security = await prisma.user.findUnique({ where: { id: user.id }, select: { mfaEnabled: true } });
+    if (security?.mfaEnabled) {
+      // Password was right; no session until the second factor is checked.
+      const challengeToken = await createMfaChallenge(user.id, prisma);
+      res.status(200).json({
+        status: 'mfa_required',
+        message: 'Enter the code from your authenticator app',
+        mfaRequired: true,
+        challengeToken,
+      });
+      return;
+    }
+
     const rawToken = await createSession(user.id, prisma);
     res.cookie(COOKIE_NAME, rawToken, { ...cookieOptions(), maxAge: SEVEN_DAYS_MS });
 
@@ -127,5 +150,83 @@ export async function logout(req: Request, res: Response, next: NextFunction): P
     res.status(200).json({ status: 'success', message: 'Logged out successfully' });
   } catch {
     next(new AuthenticationUnavailableError());
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Two-step verification
+// ---------------------------------------------------------------------------
+
+function mfaFailure(error: unknown, res: Response, next: NextFunction): void {
+  if (error instanceof MfaError) {
+    res.status(error.statusCode).json({ status: 'error', message: error.message });
+    return;
+  }
+  next(new AuthenticationUnavailableError());
+}
+
+// POST /api/auth/login/mfa — second step of sign-in.
+export async function loginWithMfa(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { challengeToken, code } = req.body as { challengeToken: string; code: string };
+    const user = await completeMfaChallenge(challengeToken, code, prisma);
+    const rawToken = await createSession(user.id, prisma);
+    res.cookie(COOKIE_NAME, rawToken, { ...cookieOptions(), maxAge: SEVEN_DAYS_MS });
+    res.status(200).json({ status: 'success', message: 'Logged in successfully', user });
+  } catch (error) {
+    mfaFailure(error, res, next);
+  }
+}
+
+// GET /api/auth/mfa
+export async function mfaStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    res.status(200).json({ status: 'success', mfa: await getMfaStatus(req.user!.id, prisma) });
+  } catch (error) {
+    mfaFailure(error, res, next);
+  }
+}
+
+// POST /api/auth/mfa/setup
+export async function mfaSetup(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const setup = await startMfaSetup(req.user!.id, req.user!.email, prisma);
+    res.set('Cache-Control', 'no-store');
+    res.status(200).json({ status: 'success', ...setup });
+  } catch (error) {
+    mfaFailure(error, res, next);
+  }
+}
+
+// POST /api/auth/mfa/enable
+export async function mfaEnable(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const result = await enableMfa(req.user!.id, (req.body as { code: string }).code, prisma);
+    res.set('Cache-Control', 'no-store');
+    res.status(200).json({ status: 'success', message: 'Two-step verification is on', ...result });
+  } catch (error) {
+    mfaFailure(error, res, next);
+  }
+}
+
+// POST /api/auth/mfa/disable
+export async function mfaDisable(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { password, code } = req.body as { password: string; code: string };
+    await disableMfa(req.user!.id, password, code, prisma);
+    res.status(200).json({ status: 'success', message: 'Two-step verification is off' });
+  } catch (error) {
+    mfaFailure(error, res, next);
+  }
+}
+
+// POST /api/auth/mfa/backup-codes
+export async function mfaBackupCodes(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const result = await regenerateBackupCodes(req.user!.id, (req.body as { code: string }).code, prisma);
+    res.set('Cache-Control', 'no-store');
+    res.status(200).json({ status: 'success', ...result });
+  } catch (error) {
+    mfaFailure(error, res, next);
   }
 }

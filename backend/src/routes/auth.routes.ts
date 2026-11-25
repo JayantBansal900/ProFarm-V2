@@ -2,8 +2,11 @@ import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { env } from '../config/env';
 import { validateRequest } from '../middleware/validate';
-import { registerSchema, loginSchema } from '../validators/auth.validator';
-import { register, login, me, logout } from '../controllers/auth.controller';
+import { registerSchema, loginSchema, mfaLoginSchema, mfaCodeSchema, mfaDisableSchema } from '../validators/auth.validator';
+import {
+  register, login, me, logout,
+  loginWithMfa, mfaStatus, mfaSetup, mfaEnable, mfaDisable, mfaBackupCodes,
+} from '../controllers/auth.controller';
 import { requireAuth } from '../middleware/requireAuth';
 
 export function createAuthRouter(options: { credentialLimit?: number } = {}) {
@@ -22,6 +25,14 @@ export function createAuthRouter(options: { credentialLimit?: number } = {}) {
   router.post('/login', authRateLimiter, validateRequest(loginSchema), login);
   router.get('/me', requireAuth, me);
   router.post('/logout', logout);
+
+  // Two-step verification. Code-checking routes share the credential quota against brute force.
+  router.post('/login/mfa', authRateLimiter, validateRequest(mfaLoginSchema), loginWithMfa);
+  router.get('/mfa', requireAuth, mfaStatus);
+  router.post('/mfa/setup', requireAuth, mfaSetup);
+  router.post('/mfa/enable', authRateLimiter, requireAuth, validateRequest(mfaCodeSchema), mfaEnable);
+  router.post('/mfa/disable', authRateLimiter, requireAuth, validateRequest(mfaDisableSchema), mfaDisable);
+  router.post('/mfa/backup-codes', authRateLimiter, requireAuth, validateRequest(mfaCodeSchema), mfaBackupCodes);
 
   return router;
 }
