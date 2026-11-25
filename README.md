@@ -152,10 +152,6 @@ ProFarm-V2/
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vite.config.ts
-├── docs/
-│   ├── architecture/              # System architecture documentation
-│   ├── migration/                 # Legacy feature mapping and migration plan
-│   └── reports/                   # Phase audit and completion reports
 ├── .env.example                   # Monorepo environment variable template
 ├── .gitignore                     # Git ignore rules for databases, node_modules, secrets
 └── package.json                   # Monorepo workspace configuration
