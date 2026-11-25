@@ -1,4 +1,5 @@
 import { tr, useLocale, locale } from '../i18n';
+import { sceneImage } from '../data/media';
 
 import React, {
   useCallback,
@@ -14,7 +15,7 @@ import type { FarmCalendarData } from '../types/farm';
 const weekdayLabels = () => Array.from({ length: 7 }, (_, day) => new Intl.DateTimeFormat(locale(), { weekday: 'short' }).format(new Date(2024, 0, 7 + day)));
 
 const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=85';
+  sceneImage('tractor-punjab');
 
 const buttonBase =
   'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#265A5F] disabled:cursor-not-allowed disabled:opacity-40';
@@ -478,7 +479,7 @@ export const CalendarPage: React.FC = () => {
             return (
               <div
                 key={event.id}
-                className={`truncate rounded-md px-2 py-1.5 text-[10px] font-semibold ${style.background}`}
+                className={`truncate rounded-md px-2 py-1.5 text-xs font-semibold ${style.background}`}
                 title={`${tr(event.label)}: ${event.title}`}
               >
                 <span className="me-1">{style.symbol}</span>
@@ -488,7 +489,7 @@ export const CalendarPage: React.FC = () => {
           })}
 
           {additionalCount > 0 && (
-            <span className="block px-1 text-[10px] font-semibold text-[#6F8883]">
+            <span className="block px-1 text-xs font-semibold text-[#6F8883]">
               +{additionalCount}{tr("more")}</span>
           )}
         </div>
@@ -523,7 +524,7 @@ export const CalendarPage: React.FC = () => {
             <span className="font-semibold text-[#265A5F]">{tr("Calendar")}</span>
           </nav>
 
-          <p className="text-[11px] font-bold tracking-normal text-[#52837E]">{tr("Farm Planning")}</p>
+          <p className="text-[13px] font-bold tracking-normal text-[#52837E]">{tr("Farm Planning")}</p>
 
           <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-[#153A3F] sm:text-4xl">{tr("Farm Calendar")}</h1>
 
@@ -549,7 +550,7 @@ export const CalendarPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#10353A]/95 via-[#164348]/85 to-[#164348]/25" />
 
         <div className="relative flex min-h-[220px] flex-col justify-center p-7 text-white sm:p-10">
-          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-normal backdrop-blur-sm">
+          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-bold tracking-normal backdrop-blur-sm">
             {farmId ? tr("Selected Farm Calendar") : tr("All Farms Calendar")}
           </span>
 
@@ -595,7 +596,7 @@ export const CalendarPage: React.FC = () => {
               {loading || error ? '—' : metric.value}
             </p>
 
-            <p className="mt-2 text-[11px] text-[#889B96]">
+            <p className="mt-2 text-[13px] text-[#889B96]">
               {tr(metric.detail)}
             </p>
           </div>
@@ -619,7 +620,7 @@ export const CalendarPage: React.FC = () => {
       <section className="overflow-hidden rounded-2xl border border-[#D7E7DE] bg-white shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#DCEBE1] p-5 sm:p-7">
           <div>
-            <p className="text-[11px] font-bold tracking-normal text-[#6A8C87]">{tr("Monthly Overview")}</p>
+            <p className="text-[13px] font-bold tracking-normal text-[#6A8C87]">{tr("Monthly Overview")}</p>
 
             <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045] sm:text-3xl">
               {monthLabel}
@@ -696,7 +697,7 @@ export const CalendarPage: React.FC = () => {
           {weekdayLabels().map((weekday) => (
             <div
               key={weekday}
-              className="py-3 text-center text-[10px] font-bold tracking-normal text-[#637F7B] sm:py-4 sm:text-xs"
+              className="py-3 text-center text-xs font-bold tracking-normal text-[#637F7B] sm:py-4 sm:text-xs"
             >
               {weekday}
             </div>
@@ -736,7 +737,7 @@ export const CalendarPage: React.FC = () => {
             </span>
 
             <div>
-              <p className="text-[11px] font-bold tracking-normal text-[#6F918C]">{tr("Upcoming")}</p>
+              <p className="text-[13px] font-bold tracking-normal text-[#6F918C]">{tr("Upcoming")}</p>
 
               <h2 className="font-serif text-xl font-semibold text-[#1F474A]">{tr("Scheduled Work")}</h2>
             </div>
@@ -774,7 +775,7 @@ export const CalendarPage: React.FC = () => {
 
         <div className="flex flex-col justify-between rounded-2xl bg-[#1B464B] p-7 text-white">
           <div>
-            <p className="text-[11px] font-bold tracking-normal text-[#B7D9CF]">{tr("Farm Workspace")}</p>
+            <p className="text-[13px] font-bold tracking-normal text-[#B7D9CF]">{tr("Farm Workspace")}</p>
 
             <h2 className="mt-4 font-serif text-3xl font-semibold">{tr("Organize your")}<br />{tr("next field activity.")}</h2>
 
@@ -814,7 +815,7 @@ export const CalendarPage: React.FC = () => {
           >
             <div className="flex items-start justify-between gap-4 border-b border-[#DAEAE0] bg-white p-6">
               <div>
-                <p className="text-[11px] font-bold tracking-normal text-[#578580]">{tr("Daily Schedule")}</p>
+                <p className="text-[13px] font-bold tracking-normal text-[#578580]">{tr("Daily Schedule")}</p>
 
                 <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045]">
                   {formatDate(selectedDate)}
@@ -852,7 +853,7 @@ export const CalendarPage: React.FC = () => {
                       className="rounded-xl border border-[#DAEAE1] bg-white p-4"
                     >
                       <span
-                        className={`inline-flex rounded-full px-3 py-1 text-[10px] font-bold tracking-normal ${style.background}`}
+                        className={`inline-flex rounded-full px-3 py-1 text-xs font-bold tracking-normal ${style.background}`}
                       >
                         {tr(event.label)}
                       </span>

@@ -65,7 +65,7 @@ export const Footer: React.FC = () => {
                 </svg>
               </span>
 
-              <span className="text-[29px] font-extrabold tracking-[-0.065em]">{tr("ProFarm")}<span className="text-[#8BC798]">.</span>
+              <span className="text-[29px] font-extrabold tracking-tight">{tr("ProFarm")}<span className="text-[#8BC798]">.</span>
               </span>
             </Link>
 
@@ -76,13 +76,13 @@ export const Footer: React.FC = () => {
                 aria-hidden="true"
                 className="h-2 w-2 rounded-full bg-[#8BC798]"
               />
-              <span className="text-[11px] font-semibold tracking-normal text-[#D8ECDC]">{tr("Rooted in knowledge. Growing for tomorrow.")}</span>
+              <span className="text-[13px] font-semibold tracking-normal text-[#D8ECDC]">{tr("Rooted in knowledge. Growing for tomorrow.")}</span>
             </div>
           </div>
 
           {/* Explore */}
           <div className="lg:col-span-3">
-            <h2 className="text-[12px] font-bold tracking-normal text-[#A5CCB1]">{tr("Explore")}</h2>
+            <h2 className="text-sm font-bold tracking-normal text-[#A5CCB1]">{tr("Explore")}</h2>
 
             <nav aria-label={tr("Footer explore navigation")} className="mt-6">
               <ul className="space-y-4">
@@ -102,7 +102,7 @@ export const Footer: React.FC = () => {
 
           {/* Tools */}
           <div className="lg:col-span-4">
-            <h2 className="text-[12px] font-bold tracking-normal text-[#A5CCB1]">{tr("Farming Tools")}</h2>
+            <h2 className="text-sm font-bold tracking-normal text-[#A5CCB1]">{tr("Farming Tools")}</h2>
 
             <nav aria-label={tr("Footer farming tools navigation")} className="mt-6">
               <ul className="space-y-4">
@@ -129,10 +129,10 @@ export const Footer: React.FC = () => {
 
       {/* Bottom footer */}
       <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-5 py-7 text-center sm:px-8 md:flex-row md:items-center md:justify-between md:text-start lg:px-12">
-        <p className="text-[11px] leading-relaxed text-[#B5CAC6]">
+        <p className="text-[13px] leading-relaxed text-[#B5CAC6]">
           © {new Date().getFullYear()}{tr("ProFarm. All rights reserved.")}</p>
 
-        <p className="text-[11px] leading-relaxed text-[#B5CAC6]">{tr("Thoughtfully built for a more sustainable agricultural future.")}</p>
+        <p className="text-[13px] leading-relaxed text-[#B5CAC6]">{tr("Thoughtfully built for a more sustainable agricultural future.")}</p>
       </div>
     </footer>
   );

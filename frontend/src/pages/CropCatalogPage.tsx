@@ -113,7 +113,7 @@ export const CropCatalogPage: React.FC = () => {
       {/* BREADCRUMB */}
       <nav
         aria-label={tr("Breadcrumb")}
-        className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#85988D]"
+        className="flex flex-wrap items-center gap-2 text-[13px] font-medium text-[#85988D]"
       >
         <Link to="/" className="hover:text-[#22484D]">{tr("Home")}</Link>
         <span>/</span>
@@ -128,15 +128,15 @@ export const CropCatalogPage: React.FC = () => {
       {/* HEADER */}
       <section className="flex flex-wrap items-end justify-between gap-5">
         <div>
-          <span className="text-[10px] font-bold tracking-normal text-[#789681]">{tr("Crop Library")}</span>
+          <span className="text-xs font-bold tracking-normal text-[#789681]">{tr("Crop Library")}</span>
 
-          <h1 className="mt-2 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[1.05] tracking-[-0.055em] text-[#1F3D40]">{tr("Explore Crops")}<span className="text-[#8BB296]">.</span>
+          <h1 className="mt-2 font-serif text-[clamp(3rem,6vw,5.5rem)] leading-[1.05] tracking-tight text-[#1F3D40]">{tr("Explore Crops")}
           </h1>
         </div>
 
         <Link
           to="/knowledge/soils"
-          className="inline-flex items-center gap-3 rounded-full border border-[#CDE1D4] px-5 py-3 text-[12px] font-bold text-[#22484D] transition hover:bg-[#E5F0E7]"
+          className="inline-flex items-center gap-3 rounded-full border border-[#CDE1D4] px-5 py-3 text-sm font-bold text-[#22484D] transition hover:bg-[#E5F0E7]"
         >{tr("Explore Soils")}<span aria-hidden="true">↗</span>
         </Link>
       </section>
@@ -241,7 +241,7 @@ export const CropCatalogPage: React.FC = () => {
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-[#E9F0EA] pt-4">
           <span
             aria-live="polite"
-            className="text-[12px] font-medium text-[#74887F]"
+            className="text-sm font-medium text-[#74887F]"
           >
             <strong className="text-[#22484D]">
               {filteredCrops.length}
@@ -251,7 +251,7 @@ export const CropCatalogPage: React.FC = () => {
             <button
               type="button"
               onClick={clearFilters}
-              className="text-[12px] font-bold text-[#407067] hover:underline"
+              className="text-sm font-bold text-[#407067] hover:underline"
             >{tr("Clear filters ×")}</button>
           )}
         </div>
@@ -277,7 +277,7 @@ export const CropCatalogPage: React.FC = () => {
                   icon={crop.icon}
                 />
 
-                <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1.5 text-[10px] font-bold text-[#22484D]">
+                <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-[#22484D]">
                   {tr(crop.category)}
                 </span>
               </div>
@@ -285,11 +285,11 @@ export const CropCatalogPage: React.FC = () => {
               <div className="p-5 sm:p-6">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <h2 className="font-serif text-[32px] leading-tight tracking-[-0.04em] text-[#1F3D40]">
+                    <h2 className="font-serif text-[32px] leading-tight tracking-tight text-[#1F3D40]">
                       {tr(crop.name)}
                     </h2>
 
-                    <p className="mt-1 text-[12px] text-[#85988D]">
+                    <p className="mt-1 text-sm text-[#85988D]">
                       {crop.hindiName || crop.scientificName}
                     </p>
                   </div>
@@ -306,14 +306,14 @@ export const CropCatalogPage: React.FC = () => {
                   {crop.seasons.map((season) => (
                     <span
                       key={season}
-                      className="rounded-full bg-[#E8F2E9] px-3 py-1.5 text-[10px] font-bold text-[#507764]"
+                      className="rounded-full bg-[#E8F2E9] px-3 py-1.5 text-xs font-bold text-[#507764]"
                     >
                       {tr(season)}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#E9F0EA] pt-4 text-[11px] text-[#72837C]">
+                <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#E9F0EA] pt-4 text-[13px] text-[#72837C]">
                   <span>
                     <strong className="text-[#22484D]">
                       {crop.temperatureRange.minC}–
@@ -345,7 +345,7 @@ export const CropCatalogPage: React.FC = () => {
           <button
             type="button"
             onClick={clearFilters}
-            className="mt-5 rounded-full bg-[#22484D] px-6 py-3 text-[12px] font-bold text-white hover:bg-[#325D5F]"
+            className="mt-5 rounded-full bg-[#22484D] px-6 py-3 text-sm font-bold text-white hover:bg-[#325D5F]"
           >{tr("Reset filters")}</button>
         </div>
       )}

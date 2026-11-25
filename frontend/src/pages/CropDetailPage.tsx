@@ -55,7 +55,7 @@ const Accordion: React.FC<AccordionProps> = ({
 const DetailLabel: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => (
-  <span className="text-[10px] font-bold tracking-normal text-[#809B89]">
+  <span className="text-xs font-bold tracking-normal text-[#809B89]">
     {children}
   </span>
 );
@@ -68,7 +68,6 @@ export const CropDetailPage: React.FC = () => {
   if (!crop) {
     return (
       <div className="mx-auto my-16 max-w-lg rounded-[26px] border border-[#DAE6DC] bg-white px-8 py-16 text-center">
-        <span className="text-[11px] font-bold tracking-normal text-[#789681]">{tr("ProFarm Knowledge")}</span>
 
         <h1 className="mt-4 font-serif text-4xl text-[#1F3D40]">{tr("Crop not found.")}</h1>
 
@@ -91,7 +90,7 @@ export const CropDetailPage: React.FC = () => {
       {/* BREADCRUMB */}
       <nav
         aria-label={tr("Breadcrumb")}
-        className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#85988D]"
+        className="flex flex-wrap items-center gap-2 text-[13px] font-medium text-[#85988D]"
       >
         <Link to="/" className="hover:text-[#22484D]">{tr("Home")}</Link>
         <span>/</span>
@@ -126,23 +125,22 @@ export const CropDetailPage: React.FC = () => {
 
         <div className="relative flex min-h-[350px] flex-col justify-between gap-12 p-7 sm:min-h-[410px] sm:p-12 lg:p-14">
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <span className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[10px] font-bold tracking-normal text-white backdrop-blur-sm">
+            <span className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold tracking-normal text-white backdrop-blur-sm">
               {tr(crop.category)}
             </span>
 
             <Link
               to="/knowledge/crops"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-[11px] font-semibold text-white transition hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-white/10"
             >
               <span aria-hidden="true">←</span>{tr("All Crops")}</Link>
           </div>
 
           <div>
-            <span className="text-[11px] font-bold tracking-normal text-[#ACD2BB]">{tr("Crop Profile")}</span>
 
-            <h1 className="mt-4 font-serif text-[clamp(4rem,10vw,8rem)] leading-[0.95] tracking-[-0.065em] text-white">
+            <h1 className="mt-4 font-serif text-[clamp(4rem,10vw,8rem)] leading-[0.95] tracking-tight text-white">
               {tr(crop.name)}
-              <span className="text-[#98C6A9]">.</span>
+              
             </h1>
             <ReadAloud
               className="mt-5"
@@ -163,7 +161,7 @@ export const CropDetailPage: React.FC = () => {
               {crop.seasons.map((season) => (
                 <span
                   key={season}
-                  className="rounded-full border border-white/25 bg-white/15 px-4 py-2 text-[11px] font-semibold text-white"
+                  className="rounded-full border border-white/25 bg-white/15 px-4 py-2 text-[13px] font-semibold text-white"
                 >
                   {tr(season)}
                 </span>
@@ -178,7 +176,7 @@ export const CropDetailPage: React.FC = () => {
         <div>
           <DetailLabel>{tr("Overview")}</DetailLabel>
 
-          <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("At a glance.")}</h2>
+          <h2 className="mt-2 font-serif text-3xl tracking-tight text-[#1F3D40] sm:text-4xl">{tr("At a glance.")}</h2>
         </div>
 
         <p className="max-w-2xl text-sm leading-8 text-[#61776C] sm:text-base">
@@ -191,7 +189,7 @@ export const CropDetailPage: React.FC = () => {
         <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <DetailLabel>{tr("Temperature")}</DetailLabel>
 
-          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#234346]">
+          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-tight text-[#234346]">
             {crop.temperatureRange.minC}–
             {crop.temperatureRange.maxC}
             <span className="text-2xl">°C</span>
@@ -205,7 +203,7 @@ export const CropDetailPage: React.FC = () => {
         <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <DetailLabel>{tr("Water Demand")}</DetailLabel>
 
-          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#234346]">
+          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-tight text-[#234346]">
             {tr(crop.waterRequirement.level)}
           </p>
 
@@ -223,7 +221,7 @@ export const CropDetailPage: React.FC = () => {
         <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <DetailLabel>{tr("Growing Seasons")}</DetailLabel>
 
-          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-[-0.05em] text-[#234346]">
+          <p className="mt-5 font-serif text-[clamp(2rem,3vw,3rem)] leading-tight tracking-tight text-[#234346]">
             {crop.seasons.length}
           </p>
 
@@ -231,7 +229,7 @@ export const CropDetailPage: React.FC = () => {
             {crop.seasons.map((season) => (
               <span
                 key={season}
-                className="rounded-full bg-[#E8F2E9] px-3 py-1.5 text-[10px] font-bold text-[#507764]"
+                className="rounded-full bg-[#E8F2E9] px-3 py-1.5 text-xs font-bold text-[#507764]"
               >
                 {tr(season)}
               </span>
@@ -246,7 +244,7 @@ export const CropDetailPage: React.FC = () => {
           <div>
             <DetailLabel>{tr("Crop Calendar")}</DetailLabel>
 
-            <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40]">{tr("From seed to harvest.")}</h2>
+            <h2 className="mt-2 font-serif text-3xl tracking-tight text-[#1F3D40]">{tr("From seed to harvest.")}</h2>
           </div>
         </div>
 
@@ -280,7 +278,7 @@ export const CropDetailPage: React.FC = () => {
           <div>
             <DetailLabel>{tr("Soil Compatibility")}</DetailLabel>
 
-            <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("Suitable Soils.")}</h2>
+            <h2 className="mt-2 font-serif text-3xl tracking-tight text-[#1F3D40] sm:text-4xl">{tr("Suitable Soils.")}</h2>
           </div>
 
           <Link
@@ -301,7 +299,7 @@ export const CropDetailPage: React.FC = () => {
                   {tr(soil.name)}
                 </h3>
 
-                <p className="mt-1 text-[11px] text-[#7D9386]">{tr("Drainage:")}{tr(soil.drainage)}
+                <p className="mt-1 text-[13px] text-[#7D9386]">{tr("Drainage:")}{tr(soil.drainage)}
                 </p>
               </div>
 
@@ -321,7 +319,7 @@ export const CropDetailPage: React.FC = () => {
         <div>
           <DetailLabel>{tr("Field Guide")}</DetailLabel>
 
-          <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("Grow with confidence.")}</h2>
+          <h2 className="mt-2 font-serif text-3xl tracking-tight text-[#1F3D40] sm:text-4xl">{tr("Grow with confidence.")}</h2>
         </div>
 
         <div className="space-y-3">

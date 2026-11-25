@@ -1,4 +1,6 @@
 import { tr, useLocale, formatAreaUnit, formatNumber } from '../i18n';
+import { cropImage, sceneImage, soilImage } from '../data/media';
+import { SOILS_DATA } from '../data/soils';
 import React, {
   useCallback,
   useEffect,
@@ -12,12 +14,19 @@ import { FarmRecord, FarmPagination } from '../types/farm';
 
 const FARM_PAGE_SIZE = 20;
 
+/** Show the farm's own soil when it is known; otherwise a field photo. */
+function farmPhoto(soilType: string | null | undefined, index: number): string {
+  const soil = SOILS_DATA.find((item) => item.name === soilType);
+  const photo = soil ? soilImage(soil.slug) : undefined;
+  return photo ? photo.src : IMAGES.fields[index % IMAGES.fields.length];
+}
+
 const IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85',
+  hero: sceneImage('tractor-punjab'),
   fields: [
-    'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=900&q=80',
-    'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=900&q=80',
-    'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80',
+    cropImage('wheat')!.src,
+    cropImage('rice')!.src,
+    cropImage('sugarcane')!.src,
   ],
 };
 
@@ -461,7 +470,7 @@ export const MyFarmsPage: React.FC = () => {
             <span className="font-semibold text-[#265A5F]">{tr("My Farms")}</span>
           </nav>
 
-          <p className="text-[11px] font-bold tracking-normal text-[#52837E]">{tr("Your agricultural workspace")}</p>
+          <p className="text-[13px] font-bold tracking-normal text-[#52837E]">{tr("Your agricultural workspace")}</p>
 
           <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-[#153A3F] sm:text-4xl">{tr("My Farms")}</h1>
 
@@ -496,7 +505,7 @@ export const MyFarmsPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0E3338]/95 via-[#154348]/85 to-[#154348]/20" />
 
         <div className="relative flex min-h-[270px] flex-col justify-center p-7 text-white sm:p-10 lg:min-h-[310px] lg:p-12">
-          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-normal backdrop-blur-sm">{tr("Farm Management")}</span>
+          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-bold tracking-normal backdrop-blur-sm">{tr("Farm Management")}</span>
 
           <h2 className="mt-5 max-w-lg font-serif text-4xl font-semibold leading-tight sm:text-5xl">{tr("Every field.")}<br />{tr("One clear view.")}</h2>
 
@@ -530,7 +539,7 @@ export const MyFarmsPage: React.FC = () => {
                 </span>
               </div>
 
-              <p className="mt-2 text-[11px] font-medium text-[#839691]">
+              <p className="mt-2 text-[13px] font-medium text-[#839691]">
                 {tr(item.unit)}
               </p>
             </div>
@@ -542,7 +551,7 @@ export const MyFarmsPage: React.FC = () => {
       <section>
         <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-[11px] font-bold tracking-normal text-[#57847F]">{tr("Your collection")}</p>
+            <p className="text-[13px] font-bold tracking-normal text-[#57847F]">{tr("Your collection")}</p>
 
             <h2 className="mt-2 font-serif text-[28px] font-semibold text-[#183B3F]">{tr("Registered Farms")}</h2>
           </div>
@@ -673,8 +682,8 @@ export const MyFarmsPage: React.FC = () => {
                   >
                     <div className="relative h-[200px] overflow-hidden bg-[#D6E9DE]">
                       <img
-                        src={IMAGES.fields[index % IMAGES.fields.length]}
-                        alt={tr("Illustrative agricultural landscape")}
+                        src={farmPhoto(farm.soilType, index)}
+                        alt={farm.soilType ? tr("{{v0}} sample", { v0: tr(farm.soilType) }) : tr("Illustrative agricultural landscape")}
                         loading="lazy"
                         className={`h-full w-full object-cover transition-transform duration-700 ${
                           archived
@@ -686,7 +695,7 @@ export const MyFarmsPage: React.FC = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#10373C]/60 via-transparent to-transparent" />
 
                       <span
-                        className={`absolute left-4 top-4 rounded-full px-3 py-1.5 text-[10px] font-bold tracking-normal backdrop-blur-sm ${
+                        className={`absolute left-4 top-4 rounded-full px-3 py-1.5 text-xs font-bold tracking-normal backdrop-blur-sm ${
                           archived
                             ? 'bg-white/90 text-[#657876]'
                             : 'bg-[#E3F5EB]/95 text-[#235F64]'
@@ -744,7 +753,7 @@ export const MyFarmsPage: React.FC = () => {
                               {metric.value}
                             </p>
 
-                            <p className="mt-1 text-[10px] font-semibold text-[#6F8582]">
+                            <p className="mt-1 text-xs font-semibold text-[#6F8582]">
                               {tr(metric.label)}
                             </p>
                           </div>
@@ -873,7 +882,7 @@ export const MyFarmsPage: React.FC = () => {
           >
             <div className="flex shrink-0 items-start justify-between gap-4 border-b border-[#DAEAE0] bg-white px-6 py-5 sm:px-8">
               <div>
-                <p className="text-[10px] font-bold tracking-normal text-[#5E8D87]">{tr("Farm Management")}</p>
+                <p className="text-xs font-bold tracking-normal text-[#5E8D87]">{tr("Farm Management")}</p>
 
                 <h2
                   id={modalTitleId}

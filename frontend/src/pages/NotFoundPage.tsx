@@ -70,12 +70,12 @@ export const NotFoundPage: React.FC = () => {
 
       <div className="relative mx-auto flex min-h-[650px] max-w-5xl flex-col items-center justify-center px-5 py-16 text-center sm:px-8">
         {/* Small section label */}
-        <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#D0E7D8] bg-white/80 px-4 py-2 text-[11px] font-bold tracking-normal text-[#4F7A77]">
+        <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#D0E7D8] bg-white/80 px-4 py-2 text-[13px] font-bold tracking-normal text-[#4F7A77]">
           <LeafIcon />{tr("A Little Detour")}</div>
 
         {/* Large 404 typography */}
         <div className="relative">
-          <span className="block select-none font-serif text-[120px] font-semibold leading-none tracking-[-0.09em] text-[#215156] sm:text-[170px] md:text-[205px]">
+          <span className="block select-none font-serif text-[120px] font-semibold leading-none tracking-tight text-[#215156] sm:text-[170px] md:text-[205px]">
             404
           </span>
 

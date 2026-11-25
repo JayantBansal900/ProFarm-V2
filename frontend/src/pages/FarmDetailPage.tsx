@@ -1,4 +1,6 @@
 import { tr, useLocale, locale, formatAreaUnit } from '../i18n';
+import { cropImage, sceneImage } from '../data/media';
+import { CROPS_DATA } from '../data/crops';
 
 import React, {
   useCallback,
@@ -22,7 +24,7 @@ import type {
 const PAGE_SIZE = 20;
 
 const HERO =
-  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85';
+  sceneImage('tractor-punjab');
 
 const inputClass =
   'w-full rounded-xl border border-[#D1E4DA] bg-white px-4 py-3 text-sm text-[#234444] outline-none focus:border-[#407F7E] focus:ring-2 focus:ring-[#407F7E]/15';
@@ -226,7 +228,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
 }) => (
   <div className="flex flex-wrap items-end justify-between gap-4">
     <div>
-      <p className="text-[11px] font-bold tracking-normal text-[#578580]">
+      <p className="text-[13px] font-bold tracking-normal text-[#578580]">
         {tr(eyebrow)}
       </p>
 
@@ -1006,6 +1008,11 @@ export const FarmDetailPage: React.FC = () => {
   const pendingTasks = farm.pendingTasksCount ?? 0;
   const totalActivities = farm.totalActivitiesCount ?? 0;
 
+  // Show the crop being grown (latest active cycle) in the banner; fall back to a field scene.
+  const growing = cropCycles.find((cycle) => cycle.status === 'active');
+  const growingCrop = growing ? CROPS_DATA.find((crop) => crop.id === growing.cropId) : undefined;
+  const heroPhoto = (growingCrop && cropImage(growingCrop.slug)?.src) || HERO;
+
   return (
     <div className="mx-auto max-w-[1440px] space-y-8 pb-16 text-[#234444]">
       {/* Breadcrumb */}
@@ -1028,7 +1035,7 @@ export const FarmDetailPage: React.FC = () => {
       {/* Hero */}
       <section className="relative isolate overflow-hidden rounded-2xl bg-[#13393E]">
         <img
-          src={HERO}
+          src={heroPhoto}
           alt={tr("Illustrative green agricultural landscape")}
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -1036,7 +1043,7 @@ export const FarmDetailPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0E3338]/95 via-[#154348]/85 to-[#154348]/20" />
 
         <div className="relative flex min-h-[280px] flex-col justify-center p-7 text-white sm:p-10 lg:p-12">
-          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-normal">
+          <span className="w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-bold tracking-normal">
             {farm.isArchived ? tr("Archived Farm") : tr("Farm Workspace")}
           </span>
 
@@ -1365,21 +1372,21 @@ export const FarmDetailPage: React.FC = () => {
                   <>
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-[11px] font-bold tracking-normal text-[#72918A]">{tr("Cultivation Record")}</p>
+                        <p className="text-[13px] font-bold tracking-normal text-[#72918A]">{tr("Cultivation Record")}</p>
 
                         <h3 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045]">
                           {cycle.cropName}
                         </h3>
                       </div>
 
-                      <span className="rounded-full bg-[#E5F4EB] px-3 py-1.5 text-[11px] font-bold capitalize text-[#37726F]">
+                      <span className="rounded-full bg-[#E5F4EB] px-3 py-1.5 text-[13px] font-bold capitalize text-[#37726F]">
                         {tr(cycle.status)}
                       </span>
                     </div>
 
                     <div className="mt-5 grid gap-3 rounded-xl bg-[#F1F8F3] p-4 sm:grid-cols-2">
                       <div>
-                        <p className="text-[11px] text-[#80938F]">{tr("Sowing")}</p>
+                        <p className="text-[13px] text-[#80938F]">{tr("Sowing")}</p>
 
                         <p className="mt-1 text-sm font-bold text-[#335D59]">
                           {readableDate(cycle.sowingDate)}
@@ -1387,7 +1394,7 @@ export const FarmDetailPage: React.FC = () => {
                       </div>
 
                       <div>
-                        <p className="text-[11px] text-[#80938F]">{tr("Expected Harvest")}</p>
+                        <p className="text-[13px] text-[#80938F]">{tr("Expected Harvest")}</p>
 
                         <p className="mt-1 text-sm font-bold text-[#335D59]">
                           {readableDate(
@@ -1624,7 +1631,7 @@ export const FarmDetailPage: React.FC = () => {
                 ) : (
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="min-w-0">
-                      <span className="rounded-full bg-[#E5F4EB] px-3 py-1 text-[10px] font-bold text-[#447570]">
+                      <span className="rounded-full bg-[#E5F4EB] px-3 py-1 text-xs font-bold text-[#447570]">
                         {categoryLabel(activity.category)}
                       </span>
 
@@ -1838,7 +1845,7 @@ export const FarmDetailPage: React.FC = () => {
                       </p>
 
                       <span
-                        className={`mt-3 inline-flex rounded-full px-3 py-1 text-[10px] font-bold capitalize ${
+                        className={`mt-3 inline-flex rounded-full px-3 py-1 text-xs font-bold capitalize ${
                           task.status === 'pending'
                             ? 'bg-[#FFF4DE] text-[#946D28]'
                             : 'bg-[#E4F4EC] text-[#377575]'
@@ -1899,7 +1906,7 @@ export const FarmDetailPage: React.FC = () => {
       {/* Calendar shortcut */}
       <section className="flex flex-wrap items-center justify-between gap-5 rounded-2xl border border-[#D7E7DE] bg-[#EEF7F1] p-6 sm:p-8">
         <div>
-          <p className="text-[11px] font-bold tracking-normal text-[#578580]">{tr("Farm Planning")}</p>
+          <p className="text-[13px] font-bold tracking-normal text-[#578580]">{tr("Farm Planning")}</p>
 
           <h2 className="mt-2 font-serif text-2xl font-semibold text-[#1B4045]">{tr("Keep your schedule on track")}</h2>
 

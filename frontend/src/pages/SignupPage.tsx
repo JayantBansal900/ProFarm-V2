@@ -1,4 +1,5 @@
 import { tr, useLocale } from '../i18n';
+import { sceneImage } from '../data/media';
 
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,7 +7,7 @@ import { useAuth } from '../context/useAuth';
 import { ApiError } from '../api/api';
 
 const BACKGROUND_IMAGE =
-  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2400&q=90';
+  sceneImage('mustard-field');
 
 type PasswordFieldProps = {
   id: string;
@@ -214,7 +215,7 @@ export const SignupPage: React.FC = () => {
       <section className="relative z-10 w-full max-w-[470px] rounded-[26px] border border-[#DCE8E0] bg-[#F9FDF9]/95 px-6 py-8 shadow-[0_24px_75px_rgba(13,38,23,0.28)] backdrop-blur-md sm:px-10 sm:py-10">
         {/* No duplicate logo; the shared header has the ProFarm logo */}
         <div className="text-center">
-          <p className="text-[11px] font-bold tracking-normal text-[#5C8781]">{tr("PROFARM")}</p>
+          <p className="text-[13px] font-bold tracking-normal text-[#5C8781]">{tr("PROFARM")}</p>
 
           <h1 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-[#183B3F] sm:text-4xl">{tr("Create Your Account")}</h1>
 

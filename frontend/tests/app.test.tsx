@@ -179,6 +179,33 @@ describe('Frontend Routes & Authentication Protection', () => {
     expect(api.getMe).toHaveBeenCalled();
   });
 
+  it('shows the next tasks with overdue flags on the dashboard', async () => {
+    vi.mocked(api.getMe).mockResolvedValue({
+      status: 'success',
+      user: { id: 'farmer-123', name: 'Ramesh Patel', email: 'ramesh@example.com' },
+    });
+    vi.mocked(api.getFarmsOverview).mockResolvedValue({
+      status: 'success',
+      data: {
+        activeFarmsCount: 1, activeCropCyclesCount: 1, pendingTasksCount: 2, overdueTasksCount: 1,
+        recentActivities: [],
+        upcomingTasks: [
+          { id: 't1', farmId: 'f1', category: 'fertilizer', title: 'Apply zinc sulphate', dueDate: '2000-01-01',
+            status: 'pending', isOverdue: true, createdAt: '', updatedAt: '', farm: { id: 'f1', name: 'Riverside Plot' } },
+          { id: 't2', farmId: 'f1', category: 'irrigation', title: 'First irrigation', dueDate: '2999-01-01',
+            status: 'pending', isOverdue: false, createdAt: '', updatedAt: '', farm: { id: 'f1', name: 'Riverside Plot' } },
+        ],
+      },
+    } as never);
+
+    renderRoute('/dashboard');
+
+    const overdueLink = await screen.findByRole('link', { name: /Apply zinc sulphate.*Overdue/ });
+    expect(overdueLink).toHaveAttribute('href', '/my-farms/f1#tasks');
+    expect(screen.getByRole('link', { name: /First irrigation/ })).not.toHaveTextContent('Overdue');
+    expect(screen.getByRole('heading', { name: 'Today on your farms' })).toBeInTheDocument();
+  });
+
   it('renders KnowledgePage on "/knowledge"', async () => {
     const router = renderRoute('/knowledge');
 

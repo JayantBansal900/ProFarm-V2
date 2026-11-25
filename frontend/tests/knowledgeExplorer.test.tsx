@@ -315,7 +315,7 @@ describe('Knowledge Explorer Components & User Interactions', () => {
       expect(
         screen.getByRole('heading', {
           level: 1,
-          name: /^Wheat\s*\.$/i,
+          name: /^Wheat$/i,
         })
       ).toBeInTheDocument();
 
@@ -464,7 +464,7 @@ describe('Knowledge Explorer Components & User Interactions', () => {
       expect(
         screen.getByRole('heading', {
           level: 1,
-          name: /^Clay Soil\s*\.$/i,
+          name: /^Clay Soil$/i,
         })
       ).toBeInTheDocument();
 

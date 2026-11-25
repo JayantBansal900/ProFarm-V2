@@ -1,4 +1,5 @@
 import { tr, useLocale, locale, formatReportedDate } from '../i18n';
+import { cropImage, sceneImage } from '../data/media';
 import { LocalizedLabel } from '../i18n/LocalizedLabel';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -26,8 +27,8 @@ const PRESET_COMMODITIES = [
 ];
 
 const IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=85',
-  crops: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1000&q=85',
+  hero: sceneImage('onion-market'),
+  crops: cropImage('wheat')!.src,
 };
 
 const formatPrice = (value: number | null | undefined) =>
@@ -124,7 +125,7 @@ const SectionTitle: React.FC<{
   <div className="flex flex-wrap items-end justify-between gap-3">
     <div>
       {eyebrow && (
-        <p className="mb-1.5 text-[11px] font-bold tracking-normal text-[#487A74]">
+        <p className="mb-1.5 text-[13px] font-bold tracking-normal text-[#487A74]">
           {tr(eyebrow)}
         </p>
       )}
@@ -238,7 +239,7 @@ const MarketPriceChart: React.FC<{
                     >
                       {tr(record.market)}
                     </p>
-                    <p className="mt-0.5 truncate text-[11px] text-[#617471]">
+                    <p className="mt-0.5 truncate text-[13px] text-[#617471]">
                       {tr(record.district)}
                     </p>
                   </div>
@@ -262,7 +263,7 @@ const MarketPriceChart: React.FC<{
         )}
       </div>
 
-      <p className="mt-7 border-t border-[#E1EBE5] pt-4 text-[11px] font-medium text-[#607370]">{tr("Modal prices in ₹/quintal. Varieties, grades and arrival dates may differ between markets.")}</p>
+      <p className="mt-7 border-t border-[#E1EBE5] pt-4 text-[13px] font-medium text-[#607370]">{tr("Modal prices in ₹/quintal. Varieties, grades and arrival dates may differ between markets.")}</p>
     </section>
   );
 };
@@ -317,7 +318,7 @@ const PriceRangeChart: React.FC<{ records: MandiRecord[] }> = ({ records }) => {
                     >
                       {tr(record.market)}
                     </p>
-                    <p className="shrink-0 text-[11px] font-semibold tabular-nums text-[#4F6865]">
+                    <p className="shrink-0 text-[13px] font-semibold tabular-nums text-[#4F6865]">
                       {formatPrice(low)} – {formatPrice(high)}
                     </p>
                   </div>
@@ -343,7 +344,7 @@ const PriceRangeChart: React.FC<{ records: MandiRecord[] }> = ({ records }) => {
         )}
       </div>
 
-      <div className="mt-6 flex items-center gap-5 border-t border-[#E1EBE5] pt-4 text-[11px] font-semibold text-[#526A67]">
+      <div className="mt-6 flex items-center gap-5 border-t border-[#E1EBE5] pt-4 text-[13px] font-semibold text-[#526A67]">
         <span className="flex items-center gap-2">
           <span className="h-2.5 w-5 rounded-full bg-[#83B0B5]" />{tr("Min–max range")}</span>
         <span className="flex items-center gap-2">
@@ -569,7 +570,6 @@ export const MandiPage: React.FC = () => {
 
         <div className="relative grid min-h-[265px] gap-8 p-6 sm:p-9 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
           <div className="max-w-xl text-white">
-            <p className="text-xs font-bold tracking-normal text-[#D6EFE5]">{tr("Agricultural market intelligence")}</p>
 
             <h2 className="mt-4 font-serif text-3xl font-semibold leading-tight sm:text-4xl">{tr("Know the market.")}<br />{tr("Compare the price.")}</h2>
 
@@ -824,7 +824,7 @@ export const MandiPage: React.FC = () => {
             <section className="overflow-hidden rounded-xl border border-[#D2E6DD] bg-[#ECF6EF]">
               <div className="grid gap-6 p-5 sm:p-7 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
                 <div>
-                  <p className="text-[11px] font-bold tracking-normal text-[#457C74]">{tr("Visible market comparison")}</p>
+                  <p className="text-[13px] font-bold tracking-normal text-[#457C74]">{tr("Visible market comparison")}</p>
 
                   <h2 className="mt-2 font-serif text-2xl font-semibold text-[#194146]">{tr("Price Difference")}</h2>
 
@@ -847,7 +847,7 @@ export const MandiPage: React.FC = () => {
                     <p className="mt-1 text-xs text-[#5A6E6B]">
                       {tr(highestRecord.district)}, {tr(highestRecord.state)}
                     </p>
-                    <p className="mt-1 text-[11px] text-[#60736E]">
+                    <p className="mt-1 text-[13px] text-[#60736E]">
                       {highestRecord.variety} · {highestRecord.grade}
                     </p>
                   </div>
@@ -863,7 +863,7 @@ export const MandiPage: React.FC = () => {
                     <p className="mt-1 text-xs text-[#5A6E6B]">
                       {tr(lowestRecord.district)}, {tr(lowestRecord.state)}
                     </p>
-                    <p className="mt-1 text-[11px] text-[#60736E]">
+                    <p className="mt-1 text-[13px] text-[#60736E]">
                       {lowestRecord.variety} · {lowestRecord.grade}
                     </p>
                   </div>
@@ -892,7 +892,7 @@ export const MandiPage: React.FC = () => {
             <div className="hidden overflow-x-auto md:block">
               <table className="w-full min-w-[920px] border-collapse text-start">
                 <thead className="bg-[#EFF6F2]">
-                  <tr className="text-[11px] font-bold tracking-normal text-[#3B5E5D]">
+                  <tr className="text-[13px] font-bold tracking-normal text-[#3B5E5D]">
                     <th className="px-5 py-4 sm:ps-7">{tr("Mandi / Market")}</th>
                     <th className="px-4 py-4">{tr("Commodity")}</th>
                     <th className="px-4 py-4">{tr("Grade")}</th>
@@ -936,7 +936,7 @@ export const MandiPage: React.FC = () => {
                         <p className="text-base font-bold tabular-nums text-[#205F66]">
                           {formatPrice(record.modalPrice)}
                         </p>
-                        <p className="mt-1 text-[11px] text-[#607572]">{tr("/ quintal")}</p>
+                        <p className="mt-1 text-[13px] text-[#607572]">{tr("/ quintal")}</p>
                       </td>
 
                       <td className="px-4 py-4 text-end text-xs font-semibold tabular-nums text-[#415D5B]">
@@ -975,7 +975,7 @@ export const MandiPage: React.FC = () => {
                       <p className="text-lg font-bold text-[#226269]">
                         {formatPrice(record.modalPrice)}
                       </p>
-                      <p className="text-[10px] text-[#647875]">{tr("/ quintal")}</p>
+                      <p className="text-xs text-[#647875]">{tr("/ quintal")}</p>
                     </div>
                   </div>
 
@@ -1094,7 +1094,6 @@ export const MandiPage: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0E383D]/90 via-[#0E383D]/55 to-[#0E383D]/15" />
 
           <div className="relative flex h-full min-h-[290px] flex-col justify-end p-7 text-white">
-            <p className="text-xs font-bold tracking-normal text-[#D5EDE3]">{tr("ProFarm Market Intelligence")}</p>
 
             <h2 className="mt-3 max-w-sm font-serif text-3xl font-semibold leading-tight">{tr("Better prices begin with better information.")}</h2>
 

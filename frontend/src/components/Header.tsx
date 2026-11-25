@@ -135,9 +135,9 @@ export const Header: React.FC = () => {
           </span>
 
           <span className="flex flex-col leading-none">
-            <span className="text-[22px] font-extrabold tracking-[-0.065em] text-[#22484D]">{tr("ProFarm")}<span className="text-[#6DA473]">.</span>
+            <span className="text-[22px] font-extrabold tracking-tight text-[#22484D]">{tr("ProFarm")}<span className="text-[#6DA473]">.</span>
             </span>
-            <span className="mt-1 text-[9px] font-bold tracking-normal text-[#73897C]">{tr("Grow with clarity")}</span>
+            <span className="mt-1 text-xs font-bold tracking-normal text-[#73897C]">{tr("Grow with clarity")}</span>
           </span>
         </Link>
 
@@ -155,7 +155,7 @@ export const Header: React.FC = () => {
           {user ? (
             <>
               <div className="hidden max-w-[150px] flex-col items-end xl:flex">
-                <span className="text-[10px] font-medium text-[#86958E]">{tr("Welcome back")}</span>
+                <span className="text-xs font-medium text-[#86958E]">{tr("Welcome back")}</span>
                 <span className="max-w-full truncate text-[13px] font-bold text-[#22484D]">
                   {user.name}
                 </span>
@@ -165,7 +165,7 @@ export const Header: React.FC = () => {
                 type="button"
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="rounded-full border border-[#C8D9CE] px-5 py-2.5 text-[12px] font-bold text-[#22484D] transition-all duration-200 hover:border-[#22484D] hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C] disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-full border border-[#C8D9CE] px-5 py-2.5 text-sm font-bold text-[#22484D] transition-all duration-200 hover:border-[#22484D] hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isLoggingOut ? tr("Signing out...") : tr("Sign Out")}
               </button>
@@ -174,12 +174,12 @@ export const Header: React.FC = () => {
             <>
               <Link
                 to="/login"
-                className="rounded-full px-4 py-2.5 text-[12px] font-bold text-[#22484D] transition-colors hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
+                className="rounded-full px-4 py-2.5 text-sm font-bold text-[#22484D] transition-colors hover:bg-[#E6F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
               >{tr("Sign In")}</Link>
 
               <Link
                 to="/signup"
-                className="inline-flex items-center gap-2 rounded-full bg-[#22484D] px-5 py-3 text-[12px] font-bold text-white shadow-[0_5px_14px_rgba(36,75,53,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#325D5F] hover:shadow-[0_8px_20px_rgba(36,75,53,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#22484D] px-5 py-3 text-sm font-bold text-white shadow-[0_5px_14px_rgba(36,75,53,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#325D5F] hover:shadow-[0_8px_20px_rgba(36,75,53,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#48765C]"
               >{tr("Get Started")}<span aria-hidden="true">↗</span>
               </Link>
             </>

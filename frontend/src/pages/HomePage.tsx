@@ -5,10 +5,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CROPS_DATA } from '../data/crops';
 import { SOILS_DATA } from '../data/soils';
-import { cropImage, soilImage } from '../data/media';
+import { cropImage, soilImage, sceneImage } from '../data/media';
 import { sowingSeason, seasonMonths } from '../data/seasons';
 
-const heroPhoto = cropImage('wheat');
 
 const tools = [
   { path: '/tools/weather', icon: '🌦️', title: 'Weather', description: 'Rain, heat and wind for the next 7 days, with advice for field work.' },
@@ -26,14 +25,13 @@ export const HomePage: React.FC = () => {
     <div className="-mt-px">
       {/* Hero: a real Indian field, with language choice up front */}
       <section className="relative isolate overflow-hidden bg-profarm-deep text-white">
-        {heroPhoto && (
-          <img
-            src={heroPhoto.src}
-            alt=""
-            className="absolute inset-0 -z-10 h-full w-full object-cover opacity-70"
-          />
-        )}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-profarm-deep via-profarm-deep/55 to-profarm-deep/10" />
+        <img
+          src={sceneImage('mustard-field')}
+          alt=""
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          {...{ fetchpriority: 'high' }}
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-profarm-deep via-profarm-deep/60 to-profarm-deep/5" />
 
         <div className="pf-container flex min-h-[78vh] flex-col justify-end pb-12 pt-28 sm:pb-16">
           <h1 className="max-w-3xl font-display text-[clamp(2.6rem,6.4vw,5.2rem)] font-bold leading-[1.02]">

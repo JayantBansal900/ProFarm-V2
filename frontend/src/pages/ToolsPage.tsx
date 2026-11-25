@@ -1,14 +1,15 @@
 import { tr, useLocale } from '../i18n';
+import { sceneImage } from '../data/media';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85',
-  weather: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=85',
-  mandi: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1100&q=85',
-  advisor: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1100&q=85',
-  planner: 'https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=1100&q=85',
+  hero: sceneImage('sprinkler-irrigation'),
+  weather: sceneImage('monsoon-paddy'),
+  mandi: sceneImage('onion-market'),
+  advisor: sceneImage('farmer-fertilizer'),
+  planner: sceneImage('tractor-punjab'),
 };
 
 const ArrowIcon: React.FC<{ size?: number }> = ({ size = 18 }) => (
@@ -86,7 +87,7 @@ const ToolCard: React.FC<ToolCardProps> = ({
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[#0D3034]/50 via-transparent to-transparent" />
 
-      <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-[#153C41]/85 px-3 py-1.5 text-[10px] font-bold tracking-normal text-white backdrop-blur-sm">{tr("Available")}</span>
+      <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-[#153C41]/85 px-3 py-1.5 text-xs font-bold tracking-normal text-white backdrop-blur-sm">{tr("Available")}</span>
 
       <span className="absolute bottom-5 right-5 text-3xl font-semibold text-white/85">
         {number}
@@ -110,7 +111,7 @@ const ToolCard: React.FC<ToolCardProps> = ({
         {features.map((feature) => (
           <span
             key={feature}
-            className="rounded-full border border-[#D6E8DE] bg-[#F1F8F3] px-3 py-1.5 text-[11px] font-semibold text-[#3A6564]"
+            className="rounded-full border border-[#D6E8DE] bg-[#F1F8F3] px-3 py-1.5 text-[13px] font-semibold text-[#3A6564]"
           >
             {feature}
           </span>
@@ -168,7 +169,6 @@ export const ToolsPage: React.FC = () => {
 
         <div className="relative grid min-h-[325px] gap-8 p-6 sm:p-9 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:p-11">
           <div className="max-w-xl text-white">
-            <p className="text-[11px] font-bold tracking-normal text-[#CEEADE]">{tr("ProFarm · Smart Agriculture")}</p>
 
             <h2 className="mt-5 font-serif text-4xl font-semibold leading-[1.15] sm:text-5xl">{tr("Better tools.")}<br />{tr("Better decisions.")}</h2>
 
@@ -183,7 +183,7 @@ export const ToolsPage: React.FC = () => {
 
           <div className="hidden justify-end lg:flex">
             <div className="w-full max-w-[305px] rounded-2xl border border-white/25 bg-[#10383D]/70 p-6 text-white backdrop-blur-md">
-              <p className="text-[11px] font-bold tracking-normal text-[#CDE9DD]">{tr("Your farming toolkit")}</p>
+              <p className="text-[13px] font-bold tracking-normal text-[#CDE9DD]">{tr("Your farming toolkit")}</p>
 
               <div className="mt-6 space-y-5">
                 <div className="flex items-center gap-4">
@@ -229,7 +229,6 @@ export const ToolsPage: React.FC = () => {
       <section>
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[11px] font-bold tracking-normal text-[#4D827C]">{tr("Explore the platform")}</p>
 
             <h2 className="mt-2 font-serif text-[27px] font-semibold text-[#183B3F] sm:text-[30px]">{tr("Tools for Every Decision")}</h2>
           </div>
@@ -288,7 +287,7 @@ export const ToolsPage: React.FC = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#133B40]/30 to-transparent" />
 
-            <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-[#153C41]/85 px-3 py-2 text-[11px] font-bold text-white backdrop-blur-sm">{tr("In development")}</span>
+            <span className="absolute left-5 top-5 rounded-full border border-white/30 bg-[#153C41]/85 px-3 py-2 text-[13px] font-bold text-white backdrop-blur-sm">{tr("In development")}</span>
           </div>
 
           <div className="flex flex-col justify-center p-6 sm:p-9 lg:p-11">
@@ -296,7 +295,7 @@ export const ToolsPage: React.FC = () => {
               <ChartIcon />
             </div>
 
-            <p className="mt-5 text-[11px] font-bold tracking-normal text-[#54827C]">{tr("Upcoming tool")}</p>
+            <p className="mt-5 text-[13px] font-bold tracking-normal text-[#54827C]">{tr("Upcoming tool")}</p>
 
             <h2 className="mt-2 font-serif text-3xl font-semibold leading-tight text-[#183B3F]">{tr("Farm Economic Planner")}</h2>
 
@@ -307,7 +306,7 @@ export const ToolsPage: React.FC = () => {
                 (feature) => (
                   <span
                     key={feature}
-                    className="rounded-full border border-[#CFE5D9] bg-white px-3 py-1.5 text-[11px] font-semibold text-[#446B68]"
+                    className="rounded-full border border-[#CFE5D9] bg-white px-3 py-1.5 text-[13px] font-semibold text-[#446B68]"
                   >
                     {feature}
                   </span>

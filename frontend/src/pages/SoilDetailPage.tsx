@@ -55,7 +55,7 @@ const DetailSection: React.FC<DetailSectionProps> = ({
 const Eyebrow: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => (
-  <span className="text-[10px] font-bold tracking-normal text-[#7C9885]">
+  <span className="text-xs font-bold tracking-normal text-[#7C9885]">
     {children}
   </span>
 );
@@ -68,9 +68,8 @@ export const SoilDetailPage: React.FC = () => {
   if (!soil) {
     return (
       <div className="mx-auto my-16 max-w-lg rounded-[26px] border border-[#DAE6DC] bg-white px-8 py-16 text-center">
-        <Eyebrow>{tr("ProFarm Knowledge")}</Eyebrow>
 
-        <h1 className="mt-4 font-serif text-4xl tracking-[-0.04em] text-[#1F3D40]">{tr("Soil not found.")}</h1>
+        <h1 className="mt-4 font-serif text-4xl tracking-tight text-[#1F3D40]">{tr("Soil not found.")}</h1>
 
         <p className="mt-3 text-sm text-[#768A80]">{tr("This soil profile is not available in our catalog.")}</p>
 
@@ -91,7 +90,7 @@ export const SoilDetailPage: React.FC = () => {
       {/* BREADCRUMB */}
       <nav
         aria-label={tr("Breadcrumb")}
-        className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-[#85988D]"
+        className="flex flex-wrap items-center gap-2 text-[13px] font-medium text-[#85988D]"
       >
         <Link to="/" className="hover:text-[#22484D]">{tr("Home")}</Link>
 
@@ -123,21 +122,21 @@ export const SoilDetailPage: React.FC = () => {
 
         <div className="relative flex min-h-[350px] flex-col justify-between gap-12 p-7 sm:min-h-[410px] sm:p-12 lg:p-14">
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <span className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[10px] font-bold tracking-normal text-white backdrop-blur-sm">{tr("Soil Profile")}</span>
+            <span className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold tracking-normal text-white backdrop-blur-sm">{tr("Soil Profile")}</span>
 
             <Link
               to="/knowledge/soils"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-[11px] font-semibold text-white transition hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-white/10"
             >
               <span aria-hidden="true">←</span>{tr("All Soils")}</Link>
           </div>
 
           <div>
-            <span className="text-[11px] font-bold tracking-normal text-[#ACD2BB]">{tr("The Soil Library")}</span>
+            <span className="text-[13px] font-bold tracking-normal text-[#ACD2BB]">{tr("The Soil Library")}</span>
 
-            <h1 className="mt-4 font-serif text-[clamp(3.5rem,9vw,7.5rem)] leading-[0.98] tracking-[-0.06em] text-white">
+            <h1 className="mt-4 font-serif text-[clamp(3.5rem,9vw,7.5rem)] leading-[0.98] tracking-tight text-white">
               {tr(soil.name)}
-              <span className="text-[#98C6A9]">.</span>
+              
             </h1>
             <ReadAloud
               className="mt-5"
@@ -149,10 +148,10 @@ export const SoilDetailPage: React.FC = () => {
             </p>
 
             <div className="mt-7 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/25 bg-white/15 px-4 py-2 text-[11px] font-semibold text-white">{tr("Drainage:")}{tr(soil.drainage)}
+              <span className="rounded-full border border-white/25 bg-white/15 px-4 py-2 text-[13px] font-semibold text-white">{tr("Drainage:")}{tr(soil.drainage)}
               </span>
 
-              <span className="rounded-full border border-white/25 bg-white/15 px-4 py-2 text-[11px] font-semibold text-white">{tr("Water Retention:")}{tr(soil.waterRetention)}
+              <span className="rounded-full border border-white/25 bg-white/15 px-4 py-2 text-[13px] font-semibold text-white">{tr("Water Retention:")}{tr(soil.waterRetention)}
               </span>
             </div>
           </div>
@@ -164,7 +163,7 @@ export const SoilDetailPage: React.FC = () => {
         <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <Eyebrow>{tr("Drainage")}</Eyebrow>
 
-          <p className="mt-5 font-serif text-[clamp(1.8rem,3vw,2.7rem)] leading-tight tracking-[-0.04em] text-[#234346]">
+          <p className="mt-5 font-serif text-[clamp(1.8rem,3vw,2.7rem)] leading-tight tracking-tight text-[#234346]">
             {tr(soil.drainage)}
           </p>
 
@@ -174,7 +173,7 @@ export const SoilDetailPage: React.FC = () => {
         <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <Eyebrow>{tr("Water Retention")}</Eyebrow>
 
-          <p className="mt-5 font-serif text-[clamp(1.8rem,3vw,2.7rem)] leading-tight tracking-[-0.04em] text-[#234346]">
+          <p className="mt-5 font-serif text-[clamp(1.8rem,3vw,2.7rem)] leading-tight tracking-tight text-[#234346]">
             {tr(soil.waterRetention)}
           </p>
 
@@ -184,7 +183,7 @@ export const SoilDetailPage: React.FC = () => {
         <div className="rounded-[22px] border border-[#DCE7DE] bg-white p-6">
           <Eyebrow>{tr("Compatible Crops")}</Eyebrow>
 
-          <p className="mt-5 font-serif text-[clamp(2.5rem,4vw,3.5rem)] leading-tight tracking-[-0.04em] text-[#234346]">
+          <p className="mt-5 font-serif text-[clamp(2.5rem,4vw,3.5rem)] leading-tight tracking-tight text-[#234346]">
             {compatibleCrops.length}
           </p>
 
@@ -197,7 +196,7 @@ export const SoilDetailPage: React.FC = () => {
         <div className="rounded-[24px] border border-[#DCE7DE] bg-[#E9F3EA] p-6 sm:p-8">
           <Eyebrow>{tr("Physical Profile")}</Eyebrow>
 
-          <h2 className="mt-3 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40]">{tr("Texture & Structure.")}</h2>
+          <h2 className="mt-3 font-serif text-3xl tracking-tight text-[#1F3D40]">{tr("Texture & Structure.")}</h2>
 
           <p className="mt-5 text-sm leading-8 text-[#5D7669]">
             {<LocalizedContent text={soil.textureCharacteristics} />}
@@ -225,7 +224,7 @@ export const SoilDetailPage: React.FC = () => {
         <div className="rounded-[24px] border border-[#DCE7DE] bg-white p-6 sm:p-8">
           <Eyebrow>{tr("Soil Chemistry")}</Eyebrow>
 
-          <h2 className="mt-3 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40]">{tr("Nutrient Dynamics.")}</h2>
+          <h2 className="mt-3 font-serif text-3xl tracking-tight text-[#1F3D40]">{tr("Nutrient Dynamics.")}</h2>
 
           <p className="mt-5 text-sm leading-8 text-[#5D7669]">
             {<LocalizedContent text={soil.nutrientRetention} />}
@@ -238,7 +237,7 @@ export const SoilDetailPage: React.FC = () => {
         <div>
           <Eyebrow>{tr("Field Knowledge")}</Eyebrow>
 
-          <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("Manage your soil.")}</h2>
+          <h2 className="mt-2 font-serif text-3xl tracking-tight text-[#1F3D40] sm:text-4xl">{tr("Manage your soil.")}</h2>
         </div>
 
         <div className="space-y-3">
@@ -283,7 +282,7 @@ export const SoilDetailPage: React.FC = () => {
                   key={index}
                   className="rounded-[15px] border border-[#DAE9DE] bg-[#F4F9F4] p-4"
                 >
-                  <span className="text-[10px] font-bold tracking-normal text-[#799885]">{tr("Practice")}{String(index + 1).padStart(2, '0')}
+                  <span className="text-xs font-bold tracking-normal text-[#799885]">{tr("Practice")}{String(index + 1).padStart(2, '0')}
                   </span>
 
                   <p className="mt-2 text-xs leading-7 text-[#5D7669]">
@@ -331,7 +330,7 @@ export const SoilDetailPage: React.FC = () => {
           <div>
             <Eyebrow>{tr("Crop Compatibility")}</Eyebrow>
 
-            <h2 className="mt-2 font-serif text-3xl tracking-[-0.04em] text-[#1F3D40] sm:text-4xl">{tr("Suitable Crops.")}</h2>
+            <h2 className="mt-2 font-serif text-3xl tracking-tight text-[#1F3D40] sm:text-4xl">{tr("Suitable Crops.")}</h2>
           </div>
 
           <Link
@@ -352,7 +351,7 @@ export const SoilDetailPage: React.FC = () => {
                   {tr(crop.name)}
                 </h3>
 
-                <p className="mt-1 text-[11px] text-[#7D9386]">
+                <p className="mt-1 text-[13px] text-[#7D9386]">
                   {crop.seasons.map(season => tr(season)).join(', ')}
                 </p>
               </div>

@@ -1,13 +1,15 @@
-import { tr, useLocale } from '../i18n';
+import { locale, tr, useLocale } from '../i18n';
+import { sceneImage } from '../data/media';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import { sowingSeason, seasonMonths } from '../data/seasons';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { api } from '../api/api';
 import type { FarmOverview } from '../types/farm';
 
 const heroImage =
-  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85';
+  sceneImage('tractor-punjab');
 
 const shortcuts = [
   { label: 'My Farms', path: '/my-farms', icon: 'farm' },
@@ -152,14 +154,16 @@ export const DashboardPage: React.FC = () => {
       ]
     : [];
 
+  const season = sowingSeason();
+  const todayIso = new Date().toLocaleDateString('en-CA');
+
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-9 pb-8 sm:space-y-11">
       {/* PAGE HEADING */}
       <div className="flex flex-wrap items-end justify-between gap-5">
         <div>
-          <span className="text-[10px] font-bold tracking-normal text-[#779580]">{tr("Your workspace")}</span>
 
-          <h1 className="mt-2 font-serif text-[clamp(2.7rem,5vw,4.5rem)] leading-tight tracking-[-0.05em] text-[#1F3D40]">{tr("Dashboard")}<span className="text-[#88B495]">.</span>
+          <h1 className="mt-2 font-serif text-[clamp(2.7rem,5vw,4.5rem)] leading-tight tracking-tight text-[#1F3D40]">{tr("Dashboard")}
           </h1>
 
           <p className="mt-1 text-[13px] text-[#74857E]">{tr("Welcome back,")}{' '}
@@ -171,27 +175,67 @@ export const DashboardPage: React.FC = () => {
 
         <Link
           to="/my-farms"
-          className="inline-flex items-center gap-3 rounded-full bg-[#22484D] px-6 py-3 text-[12px] font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#325D5F]"
+          className="inline-flex items-center gap-3 rounded-full bg-[#22484D] px-6 py-3 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#325D5F]"
         >{tr("My Farms")}<span aria-hidden="true">↗</span>
         </Link>
       </div>
 
-      {/* CINEMATIC HERO */}
-      <section className="relative isolate min-h-[250px] overflow-hidden rounded-[24px] bg-[#18393C] sm:min-h-[320px]">
-        <img
-          src={heroImage}
-          alt={tr("Green farmland at sunset")}
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+      {/* TODAY: season and the next tasks, instead of a decorative banner */}
+      <section
+        aria-labelledby="today-heading"
+        className="grid overflow-hidden rounded-3xl border border-profarm-border bg-white lg:grid-cols-[0.9fr_1.1fr]"
+      >
+        <div className="relative isolate min-h-[220px] bg-profarm-deep p-6 text-white sm:p-8">
+          <img
+            src={heroImage}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 -z-10 h-full w-full object-cover opacity-60"
+          />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-profarm-deep via-profarm-deep/50 to-transparent" />
+          <div className="flex h-full flex-col justify-end">
+            <p className="inline-flex w-fit rounded-full bg-profarm-turmeric px-3 py-1 text-sm font-bold text-profarm-ink">
+              {tr(season)} · {tr(seasonMonths[season])}
+            </p>
+            <h2 id="today-heading" className="mt-3 font-display text-3xl font-bold sm:text-4xl">
+              {tr('Today on your farms')}
+            </h2>
+          </div>
+        </div>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0F272A]/85 via-[#0F272A]/45 to-transparent" />
-
-        <div className="relative flex min-h-[250px] flex-col justify-end p-7 sm:min-h-[320px] sm:p-12">
-          <span className="text-[10px] font-bold tracking-normal text-[#B5E5BC]">{tr("ProFarm")}</span>
-
-          <h2 className="mt-3 max-w-[550px] font-serif text-[clamp(2.3rem,5vw,4.5rem)] leading-[1.05] tracking-[-0.045em] text-white">{tr("Grow smarter.")}<span className="block italic text-[#B5E5BC]">{tr("Every season.")}</span>
-          </h2>
+        <div className="p-6 sm:p-8">
+          <h3 className="font-display text-xl font-bold text-profarm-ink">{tr('Next tasks')}</h3>
+          {overview && overview.upcomingTasks.length > 0 ? (
+            <ul className="mt-4 divide-y divide-profarm-border">
+              {overview.upcomingTasks.slice(0, 4).map((task) => {
+                const overdue = task.isOverdue ?? task.dueDate < todayIso;
+                return (
+                  <li key={task.id}>
+                    <Link
+                      to={`/my-farms/${task.farmId}#tasks`}
+                      className="flex items-center justify-between gap-4 py-3 hover:text-profarm-forest"
+                    >
+                      <span className="min-w-0">
+                        <span className="block break-words font-semibold text-profarm-ink">{task.title}</span>
+                        {task.farm && <span className="block text-sm text-profarm-muted">{task.farm.name}</span>}
+                      </span>
+                      <span
+                        className={`shrink-0 rounded-full px-3 py-1 text-sm font-bold ${
+                          overdue ? 'bg-red-50 text-red-700' : 'bg-profarm-mist text-profarm-forest'
+                        }`}
+                      >
+                        {overdue ? tr('Overdue') : tr('Due {{v0}}', { v0: new Intl.DateTimeFormat(locale(), { day: 'numeric', month: 'short' }).format(new Date(`${task.dueDate}T00:00:00`)) })}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="mt-4 text-profarm-muted">
+              {tr('No tasks are due. Add tasks from My Farms to see them here.')}
+            </p>
+          )}
         </div>
       </section>
 
@@ -200,7 +244,7 @@ export const DashboardPage: React.FC = () => {
         <div className="mb-5 flex items-center justify-between gap-4">
           <h2
             id="farm-stats-heading"
-            className="font-serif text-[29px] tracking-[-0.035em] text-[#1F3D40]"
+            className="font-serif text-[29px] tracking-tight text-[#1F3D40]"
           >{tr("Farm Overview")}</h2>
 
           <button
@@ -267,11 +311,11 @@ export const DashboardPage: React.FC = () => {
                   style={{ backgroundColor: stat.color }}
                 />
 
-                <p className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-none tracking-[-0.05em] text-[#1F3D40]">
+                <p className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-none tracking-tight text-[#1F3D40]">
                   {stat.value}
                 </p>
 
-                <p className="mt-4 text-[12px] font-semibold text-[#72837C]">
+                <p className="mt-4 text-sm font-semibold text-[#72837C]">
                   {tr(stat.label)}
                 </p>
               </div>
@@ -286,7 +330,7 @@ export const DashboardPage: React.FC = () => {
       <section aria-labelledby="quick-access-heading">
         <h2
           id="quick-access-heading"
-          className="mb-5 font-serif text-[29px] tracking-[-0.035em] text-[#1F3D40]"
+          className="mb-5 font-serif text-[29px] tracking-tight text-[#1F3D40]"
         >{tr("Quick Access")}</h2>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -300,7 +344,7 @@ export const DashboardPage: React.FC = () => {
                 <ShortcutIcon name={item.icon} />
               </span>
 
-              <span className="flex w-full items-center justify-between gap-2 text-[12px] font-bold">
+              <span className="flex w-full items-center justify-between gap-2 text-sm font-bold">
                 {tr(item.label)}
 
                 <span
@@ -327,13 +371,13 @@ export const DashboardPage: React.FC = () => {
               {user?.name || tr("Farmer")}
             </p>
 
-            <p className="truncate text-[11px] text-[#72837C]">
+            <p className="truncate text-[13px] text-[#72837C]">
               {user?.email || tr("ProFarm Account")}
             </p>
           </div>
         </div>
 
-        <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[11px] font-semibold text-[#4F7E6E]">
+        <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-[#4F7E6E]">
           <span className="h-2 w-2 rounded-full bg-[#68A58A]" />{tr("Active")}</span>
       </section>
     </div>

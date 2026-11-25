@@ -160,5 +160,68 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "width": 960,
     "height": 960
+  },
+  "scenes/monsoon-paddy": {
+    "title": "File:Flooded paddy field Raichur Karnataka India monsoon irrigation July 2025.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Flooded_paddy_field_Raichur_Karnataka_India_monsoon_irrigation_July_2025.jpg",
+    "author": "Vraj Acharya, WELL Labs",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1067
+  },
+  "scenes/onion-market": {
+    "title": "File:Onions on a trolley in India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Onions_on_a_trolley_in_India.jpg",
+    "author": "Ravi Dwivedi",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1200
+  },
+  "scenes/tractor-punjab": {
+    "title": "File:Agriculture in India tractor farming Punjab preparing field for a wheat crop without burning previous crop stalk.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Agriculture_in_India_tractor_farming_Punjab_preparing_field_for_a_wheat_crop_without_burning_previous_crop_stalk.jpg",
+    "author": "CIAT",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 1600,
+    "height": 1060
+  },
+  "scenes/farmer-fertilizer": {
+    "title": "File:An Indian farmer spreading fertilizer over a crop.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:An_Indian_farmer_spreading_fertilizer_over_a_crop.jpg",
+    "author": "kiran kumar from Bangalore, India",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 1600,
+    "height": 1642
+  },
+  "scenes/sprinkler-irrigation": {
+    "title": "File:NRBC distributary 10 sprinkler irrigation fields Raichur Karnataka India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:NRBC_distributary_10_sprinkler_irrigation_fields_Raichur_Karnataka_India.jpg",
+    "author": "Vraj Acharya, WELL Labs",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1067
+  },
+  "scenes/wheat-punjab": {
+    "title": "File:Wheat field in Phagwara Punjab India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Wheat_field_in_Phagwara_Punjab_India.jpg",
+    "author": "Sixtybolts",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 1600,
+    "height": 1066
+  },
+  "scenes/mustard-field": {
+    "title": "File:Mustard field near Chandigarh.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mustard_field_near_Chandigarh.jpg",
+    "author": "UnpetitproleX",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1200
   }
 }

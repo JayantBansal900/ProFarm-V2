@@ -13,8 +13,8 @@ afterEach(async () => { cleanup(); await selectLanguage('en'); localStorage.clea
 
 describe('crop and soil photos', () => {
   it('every crop and soil has a credited local photo', () => {
-    for (const crop of CROPS_DATA) expect(cropImage(crop.slug)).toMatchObject({ src: `/images/crops/${crop.slug}.jpg` });
-    for (const soil of SOILS_DATA) expect(soilImage(soil.slug)).toMatchObject({ src: `/images/soils/${soil.slug}.jpg` });
+    for (const crop of CROPS_DATA) expect(cropImage(crop.slug)).toMatchObject({ src: `/images/crops/${crop.slug}.webp` });
+    for (const soil of SOILS_DATA) expect(soilImage(soil.slug)).toMatchObject({ src: `/images/soils/${soil.slug}.webp` });
     for (const credit of allImageCredits) {
       expect(credit.author).toBeTruthy();
       expect(credit.license).toBeTruthy();
@@ -37,7 +37,7 @@ describe('home page', () => {
     render(<MemoryRouter><HomePage /></MemoryRouter>);
     const season = sowingSeason();
     const expected = CROPS_DATA.filter((crop) => crop.seasons.includes(season));
-    for (const crop of expected) expect(screen.getByRole('img', { name: `${crop.name} crop` })).toHaveAttribute('src', `/images/crops/${crop.slug}.jpg`);
+    for (const crop of expected) expect(screen.getByRole('img', { name: `${crop.name} crop` })).toHaveAttribute('src', `/images/crops/${crop.slug}.webp`);
 
     fireEvent.click(screen.getByRole('button', { name: 'ਪੰਜਾਬੀ' }));
     await waitFor(() => expect(currentLanguage()).toBe('pa'));

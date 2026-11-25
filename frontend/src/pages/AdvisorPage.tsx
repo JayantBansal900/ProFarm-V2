@@ -1,4 +1,5 @@
 import { tr, useLocale, locale } from '../i18n';
+import { sceneImage } from '../data/media';
 import { LocalizedContent } from '../i18n/LocalizedContent';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -14,10 +15,10 @@ import { advisorCrops as STATIC_CROPS, advisorSoils as STATIC_SOILS } from '../d
 import type { AdvisorCropSummary, AdvisorSoilSummary } from '../types/advisor';
 
 const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85';
+  sceneImage('farmer-fertilizer');
 
 const FIELD_IMAGE =
-  'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1000&q=85';
+  sceneImage('sprinkler-irrigation');
 
 type CategoryKey =
   | 'all'
@@ -128,11 +129,11 @@ const RecommendationItem: React.FC<{
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <span className="text-[10px] font-extrabold tracking-normal text-[#4A7873]">
+            <span className="text-xs font-extrabold tracking-normal text-[#4A7873]">
               {tr(CATEGORY_LABELS[rec.category]) || rec.category.replace(/_/g, ' ')}
             </span>
 
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#556B68]">
+            <span className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#556B68]">
               <PriorityDot priority={rec.priority} />
               {rec.priority === 'high' ? tr("High priority") : rec.priority === 'medium' ? tr("Important") : tr("General")}
             </span>
@@ -494,7 +495,6 @@ export const AdvisorPage: React.FC = () => {
 
         <div className="relative grid min-h-[265px] gap-6 p-6 sm:p-9 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div className="max-w-xl text-white">
-            <p className="text-[11px] font-bold tracking-normal text-[#CBE8DC]">{tr("ProFarm · Field Intelligence")}</p>
             <h2 className="mt-4 max-w-lg font-serif text-3xl font-semibold leading-tight sm:text-4xl">{tr("Smarter decisions,")}<br />{tr("healthier harvests.")}</h2>
             <p className="mt-4 max-w-md text-sm leading-6 text-[#DEF1E7]">{tr("Select your crop and field conditions to build a focused farming plan.")}</p>
           </div>
@@ -528,7 +528,7 @@ export const AdvisorPage: React.FC = () => {
       <section className="overflow-hidden rounded-xl border border-[#D4E6DC] bg-white">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E0ECE5] px-5 py-5 sm:px-7">
           <div>
-            <p className="text-[11px] font-bold tracking-normal text-[#54827B]">{tr("Field configuration")}</p>
+            <p className="text-[13px] font-bold tracking-normal text-[#54827B]">{tr("Field configuration")}</p>
             <h2 className="mt-1 font-serif text-2xl font-semibold text-[#193F44]">{tr("Tell us about your field")}</h2>
           </div>
           <span className="rounded-full bg-[#ECF6F0] px-3 py-1.5 text-xs font-bold text-[#3C7270]">{tr("3 simple inputs")}</span>
@@ -762,7 +762,7 @@ export const AdvisorPage: React.FC = () => {
           <section className="overflow-hidden rounded-xl border border-[#D4E6DC] bg-[#ECF6EF]">
             <div className="grid lg:grid-cols-[1fr_300px]">
               <div className="p-6 sm:p-8">
-                <p className="text-[11px] font-bold tracking-normal text-[#4B827A]">{tr("Your field assessment")}</p>
+                <p className="text-[13px] font-bold tracking-normal text-[#4B827A]">{tr("Your field assessment")}</p>
 
                 <h2 className="mt-3 font-serif text-3xl font-semibold leading-tight text-[#184045]">
                   {tr(advisorData.crop.name)}
@@ -813,9 +813,9 @@ export const AdvisorPage: React.FC = () => {
               {compatibility && (
                 <section className="rounded-xl border border-[#D4E6DC] bg-white p-6">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-[11px] font-bold tracking-normal text-[#517D76]">{tr("Crop–soil compatibility")}</p>
+                    <p className="text-[13px] font-bold tracking-normal text-[#517D76]">{tr("Crop–soil compatibility")}</p>
                     <span
-                      className={`rounded-full px-3 py-1 text-[11px] font-bold ${
+                      className={`rounded-full px-3 py-1 text-[13px] font-bold ${
                         compatibility.status === 'recommended'
                           ? 'bg-[#E3F4EC] text-[#276C6D]'
                           : compatibility.status === 'acceptable'
@@ -840,7 +840,7 @@ export const AdvisorPage: React.FC = () => {
               {weather && (
                 <section className="rounded-xl border border-[#D4E6DC] bg-white p-6">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-[11px] font-bold tracking-normal text-[#517D76]">{tr("Weather outlook")}</p>
+                    <p className="text-[13px] font-bold tracking-normal text-[#517D76]">{tr("Weather outlook")}</p>
                     <span className="text-xs font-bold text-[#486B6A]">
                       {weather.locationName}
                     </span>
@@ -851,24 +851,24 @@ export const AdvisorPage: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-end">
                       <div>
-                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Temperature")}</p>
+                        <p className="text-[13px] font-semibold text-[#637C78]">{tr("Temperature")}</p>
                         <p className="mt-1 text-lg font-bold text-[#1F474C]">
                           {weather.temperatureC}°C
                         </p>
                       </div>
                       <div>
-                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Rain chance")}</p>
+                        <p className="text-[13px] font-semibold text-[#637C78]">{tr("Rain chance")}</p>
                         <p className="mt-1 text-lg font-bold text-[#1F474C]">
                           {weather.maxDailyPrecipProb}%
                         </p>
                       </div>
                       <div>
-                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Today's rain")}</p>
+                        <p className="text-[13px] font-semibold text-[#637C78]">{tr("Today's rain")}</p>
                         <p className="mt-1 text-sm font-bold text-[#1F474C]">
                           {weather.todayRainMm}{tr("mm")}</p>
                       </div>
                       <div>
-                        <p className="text-[11px] font-semibold text-[#637C78]">{tr("Max wind")}</p>
+                        <p className="text-[13px] font-semibold text-[#637C78]">{tr("Max wind")}</p>
                         <p className="mt-1 text-sm font-bold text-[#1F474C]">
                           {weather.maxWindSpeedKmH}{tr("km/h")}</p>
                       </div>
@@ -890,7 +890,7 @@ export const AdvisorPage: React.FC = () => {
             <div className="border-b border-[#DFEAE4] px-5 py-6 sm:px-8">
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <p className="text-[11px] font-bold tracking-normal text-[#4D7D77]">{tr("Your action plan")}</p>
+                  <p className="text-[13px] font-bold tracking-normal text-[#4D7D77]">{tr("Your action plan")}</p>
                   <h2 className="mt-2 font-serif text-2xl font-semibold text-[#173C41] sm:text-3xl">{tr("Farming Recommendations")}</h2>
                 </div>
 

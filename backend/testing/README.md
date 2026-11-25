@@ -88,3 +88,10 @@ issues do not justify changes to agricultural logic or frontend files.
 Keep `testing/database-safety.cjs` alongside the backend when packaging it: compiled
 configuration imports the guard from that project-local location. No frontend
 authentication contract or visual change is required.
+
+## Local demo account (development database only)
+
+Created for manual UI checks against `backend/prisma/dev.db`; it does not exist in any other environment.
+
+- Email: `demo.farmer@profarm.test`
+- Password: `Demo-Field-6b7072be`
