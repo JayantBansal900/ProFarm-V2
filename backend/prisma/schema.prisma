@@ -8,28 +8,178 @@ generator client {
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   name         String
-  email        String   @unique
+  email        String    @unique
   passwordHash String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   farms        Farm[]
+  sessions     Session[]
+
+  // "user" (farmer) or "admin". Admins are granted with `npm run admin:grant`, never by sign-up.
+  role         String    @default("user")
+  // Turned-off accounts cannot sign in; their sessions are removed.
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  adminActions AdminAuditEntry[] @relation("AuditActor")
+  adminTargets AdminAuditEntry[] @relation("AuditTarget")
+
+  // Two-step verification (TOTP authenticator app). Secrets are AES-256-GCM encrypted.
+  mfaEnabled       Boolean         @default(false)
+  mfaSecret        String?
+  mfaPendingSecret String?
+  mfaLastUsedStep  Int?
+  mfaEnabledAt     DateTime?
+  mfaBackupCodes   MfaBackupCode[]
+  mfaChallenges    MfaChallenge[]
 
   @@map("users")
 }
 
-model Farm {
+model MfaBackupCode {
+  id        String    @id @default(uuid())
+  userId    String
+  codeHash  String    @unique
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("mfa_backup_codes")
+}
+
+/// Short-lived proof that a password was correct, waiting for the second factor.
+model MfaChallenge {
   id        String   @id @default(uuid())
   userId    String
-  name      String
-  state     String
-  district  String
-  pincode   String?
-  soilType  String?
+  tokenHash String   @unique
+  attempts  Int      @default(0)
+  expiresAt DateTime
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("mfa_challenges")
+}
+
+model Farm {
+  id          String         @id @default(uuid())
+  userId      String
+  name        String
+  state       String?
+  district    String?
+  village     String?
+  pincode     String?
+  area        Float?
+  areaUnit    String?        @default("acres")
+  soilType    String?
+  notes       String?
+  isArchived  Boolean        @default(false)
+  archivedAt  DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cropCycles  CropCycle[]
+  activities  FarmActivity[]
+  tasks       FarmTask[]
+
+  @@index([userId])
+  @@index([userId, isArchived])
   @@map("farms")
+}
+
+model CropCycle {
+  id                  String         @id @default(uuid())
+  farmId              String
+  cropId              String
+  cropName            String
+  variety             String?
+  sowingDate          String
+  expectedHarvestDate String?
+  actualHarvestDate   String?
+  status              String         @default("active") // planned, active, completed, cancelled
+  cultivatedArea      Float?
+  areaUnit            String?        @default("acres")
+  notes               String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  farm                Farm           @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  activities          FarmActivity[]
+  tasks               FarmTask[]
+
+  @@index([farmId])
+  @@index([farmId, status])
+  @@map("crop_cycles")
+}
+
+model FarmActivity {
+  id           String     @id @default(uuid())
+  farmId       String
+  cropCycleId  String?
+  category     String     // sowing, irrigation, fertilizer, weeding, pest_disease, soil_preparation, harvesting, general
+  activityDate String     // YYYY-MM-DD
+  title        String
+  notes        String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  farm         Farm       @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropCycle    CropCycle? @relation(fields: [cropCycleId], references: [id], onDelete: SetNull)
+
+  @@index([farmId])
+  @@index([farmId, category])
+  @@index([cropCycleId])
+  @@map("farm_activities")
+}
+
+model FarmTask {
+  id          String     @id @default(uuid())
+  farmId      String
+  cropCycleId String?
+  category    String     // sowing, irrigation, fertilizer, weeding, pest_disease, soil_preparation, harvesting, general
+  title       String
+  description String?
+  dueDate     String     // YYYY-MM-DD
+  status      String     @default("pending") // pending, completed
+  completedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  farm        Farm       @relation(fields: [farmId], references: [id], onDelete: Cascade)
+  cropCycle   CropCycle? @relation(fields: [cropCycleId], references: [id], onDelete: SetNull)
+
+  @@index([farmId])
+  @@index([farmId, status])
+  @@index([dueDate])
+  @@index([cropCycleId])
+  @@map("farm_tasks")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+/// Every change an admin makes to an account, for accountability.
+model AdminAuditEntry {
+  id           String   @id @default(uuid())
+  actorId      String?  // null when done from the command line
+  targetUserId String?
+  action       String   // grant_admin, revoke_admin, deactivate, reactivate, reset_mfa
+  detail       String?
+  createdAt    DateTime @default(now())
+  actor        User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  target       User?    @relation("AuditTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([targetUserId])
+  @@map("admin_audit_log")
 }

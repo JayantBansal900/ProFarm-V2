@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Typecheck, lint, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        working-directory: backend
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Typecheck backend tests
+        run: npm --workspace=backend run typecheck:tests
+
+      - name: Lint
+        run: npm run lint
+
+      # Runs against a disposable SQLite database created per run; no secrets needed.
+      - name: Backend tests
+        run: npm run test:backend
+
+      - name: Test database safety guard
+        run: npm --workspace=backend run test:safety
+
+      # Includes the strict check that every interface string is translated.
+      - name: Frontend tests
+        run: npm run test:frontend
+
+      - name: Build
+        run: npm run build

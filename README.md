@@ -1,154 +1,226 @@
-# ProFarm V2: Sustainable Agricultural Knowledge Platform
+<div align="center">
 
-ProFarm V2 is a modernized, full-stack agricultural platform designed to empower farmers with accessible, reliable agricultural insights, crop management assistance, resource conservation tools, and sustainable farming practices. 
+# ProFarm
 
-Initially tailored to Indian agriculture (state/district contexts and APMC Mandis), the system architecture is built from the ground up to support international expansion and global NASA Earth observation datasets.
+**Crop and soil guidance, local weather, mandi prices and a farm diary for Indian farmers, in English, Hindi, Punjabi, Telugu and Tamil.**
 
----
+[![CI](https://github.com/JayantBansal900/ProFarm-V2/actions/workflows/ci.yml/badge.svg)](https://github.com/JayantBansal900/ProFarm-V2/actions/workflows/ci.yml)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?logo=prisma&logoColor=white)
 
-## Technology Stack
+<img src=".github/screenshots/home.webp" alt="ProFarm home page: a sunrise over paddy fields with the headline 'Better decisions for every season on your farm' and a language picker" width="100%">
 
-- **Frontend:** React 18, Vite 5, TypeScript 5, Tailwind CSS 3, React Router 6
-- **Backend:** Node.js, Express 4, TypeScript 5 (REST architecture)
-- **Database & ORM:** SQLite, Prisma ORM 5
-- **Security:** Helmet, strict CORS origin controls, Zod request validation, API rate limiting, safe error handling
-- **Testing:** Vitest, Supertest, React Testing Library, ESLint 9 (Flat Config), TypeScript strict type checking
+</div>
 
----
+## What it does
 
-## Prerequisites
+- **Knowledge:** 12 crops and 6 soil types, each with a photo, growing seasons, water and temperature needs, sowing and harvest windows, suitable soils and sustainable practices. A **Listen** button reads a page aloud using the browser's speech engine.
+- **Weather:** search any village, town or city and get current conditions, a 7-day forecast, rainfall totals and plain-language advice for field work ([Open-Meteo](https://open-meteo.com)).
+- **Mandi prices:** daily wholesale prices from AGMARKNET with state and district filters and market-by-market comparison ([data.gov.in](https://data.gov.in)).
+- **Crop advisor:** rule-based guidance for a chosen crop and soil, optionally using the local forecast.
+- **Farm planner:** farms, crop cycles (with expected harvest dates), activity history and tasks with overdue tracking, a dashboard of what needs doing next, and a monthly calendar. Archived farms are read-only.
+- **Accounts and security:** sign-up and sign-in, optional **two-step verification** with an authenticator app and backup codes.
+- **Admin panel:** admins manage accounts, but they can never see what is inside a farmer's farms.
+- **Five languages:** English, Hindi, Punjabi, Telugu and Tamil, chosen on the home page or from the header.
+- **This season:** the home page suggests the crops that can be sown in the current Indian season (Kharif, Rabi or Zaid).
 
-- **Node.js:** `>= 20.0.0` (Tested on `v24.20.0`)
-- **npm:** `>= 10.0.0` (Tested on `11.19.0`)
-- **Operating System:** Windows, macOS, or Linux
+## Screenshots
 
----
+<table>
+  <tr>
+    <td width="50%"><img src=".github/screenshots/home-hindi.webp" alt="The home page in Hindi"><br><sub><b>Hindi</b>: the whole interface switches language</sub></td>
+    <td width="50%"><img src=".github/screenshots/home-season.webp" alt="Crops that can be sown this season, with photos"><br><sub><b>Crops to sow this season</b></sub></td>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshots/crops.webp" alt="Crop library with photos, seasons and water needs"><br><sub><b>Crop library</b></sub></td>
+    <td><img src=".github/screenshots/crop-detail.webp" alt="Crop detail page for mustard with a Listen button"><br><sub><b>Crop detail</b> with read-aloud</sub></td>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshots/weather.webp" alt="Weather page showing current conditions for Ludhiana"><br><sub><b>Weather</b> (live, Open-Meteo)</sub></td>
+    <td><img src=".github/screenshots/mandi.webp" alt="Mandi prices with highest, lowest and average modal price"><br><sub><b>Mandi prices</b> (live, data.gov.in)</sub></td>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshots/advisor.webp" alt="Crop advisor result for wheat on loamy soil"><br><sub><b>Crop advisor</b></sub></td>
+    <td><img src=".github/screenshots/dashboard.webp" alt="Dashboard listing the next tasks, with overdue tasks flagged"><br><sub><b>Dashboard</b> with overdue tasks</sub></td>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshots/farm.webp" alt="A farm with its crop cycle, expected harvest date and activities"><br><sub><b>Farm</b>: crop cycles and expected harvest</sub></td>
+    <td><img src=".github/screenshots/calendar.webp" alt="Monthly farm calendar"><br><sub><b>Calendar</b></sub></td>
+  </tr>
+  <tr>
+    <td><img src=".github/screenshots/security.webp" alt="Two-step verification setup with a QR code"><br><sub><b>Two-step verification</b> setup</sub></td>
+    <td><img src=".github/screenshots/admin.webp" alt="Admin panel with account list and audit log"><br><sub><b>Admin panel</b> and audit log</sub></td>
+  </tr>
+</table>
 
-## Installation & Setup
+<p align="center">
+  <img src=".github/screenshots/mobile-home.webp" alt="Home page on a phone" width="260">
+  &nbsp;&nbsp;&nbsp;
+  <img src=".github/screenshots/mobile-dashboard.webp" alt="Dashboard on a phone" width="260">
+  <br><sub>Works on phones</sub>
+</p>
 
-### 1. Clone & Navigate to Workspace
+All screenshots use made-up farmers and farms.
+
+## Engineering highlights
+
+- **Authentication:** Argon2id password hashing, random server-side session tokens stored as SHA-256 hashes, `HttpOnly` `SameSite=Lax` cookies, Origin-based CSRF checks, strict single-origin CORS, Helmet, Zod validation of request input, and rate limits on the API and on sign-in.
+- **Two-step verification:** TOTP (RFC 6238, tested against the RFC's own vectors) with one step of clock drift allowed. Each code works only once, and sign-in challenges expire after 5 minutes and lock after 5 wrong codes. Secrets are encrypted at rest with AES-256-GCM, and the 10 backup codes are stored hashed.
+- **Access control:** every farm query is scoped to the signed-in owner. Admin routes re-read the role from the database on every request, require two-step verification, and write to an audit log. Turning an account off ends its sessions immediately, and admins cannot turn off or demote themselves.
+- **Correct dates:** "today" for due dates and overdue tasks follows the Indian calendar day (`APP_TIMEZONE`, default `Asia/Kolkata`) regardless of where the server runs.
+- **Localization:** a build-time check fails if any interface string is missing in any of the five languages.
+- **Testing:** 642 automated tests (472 backend, 170 frontend). Backend tests run against a disposable SQLite database created for each run, behind a guard that refuses to run against the development database. GitHub Actions runs typecheck, lint, tests and the build on every pull request.
+
+## Tech stack
+
+| | |
+| :--- | :--- |
+| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS 3, React Router 7, i18next |
+| **Backend** | Node.js, Express 4, TypeScript, Zod 4, Argon2 |
+| **Database** | SQLite with Prisma 5 (5 migrations) |
+| **Testing** | Vitest, Supertest, React Testing Library, ESLint |
+| **Data** | Open-Meteo (weather), data.gov.in AGMARKNET (mandi prices) |
+
+## Getting started
+
+**You need** Node.js 20.19+ (or 22.12+, or 24+) and npm.
+
 ```bash
-cd "E:\All Project\ProFarm-V2"
-```
-
-### 2. Configure Environment Files
-Copy the example environment files for both backend and frontend:
-
-**Backend:**
-```bash
-cp backend/.env.example backend/.env
-```
-Default backend port is set to `4000` (port 3001 was already occupied by an existing system service on this host).
-
-**Frontend:**
-```bash
-cp frontend/.env.example frontend/.env
-```
-Default frontend API URL is `http://localhost:4000`.
-
-### 3. Install Monorepo Dependencies
-From the repository root:
-```bash
+# 1. Install everything (this is an npm workspace: backend + frontend)
 npm install
-```
 
-### 4. Initialize Database & Run Migrations
-Generate Prisma Client and apply migrations to create the local SQLite database (`dev.db`):
-```bash
+# 2. Create the environment files
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+
+# 3. Create the local database
 cd backend
-npx prisma migrate dev --name init
+npx prisma migrate dev
 cd ..
 ```
 
----
+Run the two servers in two terminals:
 
-## Local Development Commands
+```bash
+npm run dev:backend    # API on http://localhost:4000
+npm run dev:frontend   # App on http://localhost:5173
+```
 
-Run both services concurrently or individually from the monorepo root:
+Open **http://localhost:5173** and create an account on the sign-up page.
 
-| Command | Description |
+**Mandi prices** need a free API key from [data.gov.in](https://data.gov.in). Put it in `backend/.env` as `DATA_GOV_IN_API_KEY`. Without it the rest of the app works, and the mandi endpoints answer "temporarily unavailable".
+
+### Making someone an admin
+
+Sign-up never creates an admin. After the person has signed up:
+
+```bash
+npm --workspace=backend run admin:grant  -- farmer@example.com
+npm --workspace=backend run admin:revoke -- farmer@example.com
+```
+
+They then turn on two-step verification from **Account security**, which the admin panel requires.
+
+## Deploy for free on Render
+
+The repository includes a [`render.yaml`](render.yaml) Blueprint. It creates **one free web service** that serves both the API and the built website on a single address, so sign-in cookies just work.
+
+1. Merge this branch into `main`, then sign in to [render.com](https://render.com) with GitHub.
+2. Choose **New → Blueprint**, pick this repository and apply `render.yaml`. When it asks for `DATA_GOV_IN_API_KEY`, paste your data.gov.in key (or leave it empty: the mandi page then says prices are unavailable).
+3. Wait for the first build (a few minutes), then open the `https://….onrender.com` address Render shows.
+
+If Render asks for payment details for Blueprints, create a **Web Service** by hand instead, with the same settings: runtime Node, region Singapore, the build and start commands from `render.yaml`, and the same environment variables.
+
+**What to expect on the free plan** (Render's terms change, so check the current ones):
+
+- The service **sleeps when nobody visits**. The next visit takes about a minute to wake it.
+- The **disk is wiped on every restart**, so accounts that people create on the live site disappear. ProFarm starts with `SEED_DEMO=true`, which recreates a demo farmer with sample farms: `demo.farmer@example.com` / `ProFarm-Demo-2026`.
+- `MFA_ENCRYPTION_KEY` is generated for you. Authenticator secrets live on the same wiped disk, so two-step verification can be tried there but not relied on.
+- For data that lasts, use a paid plan with a persistent disk, or a hosted database (moving to PostgreSQL needs code changes: the sign-in query and the migrations are written for SQLite).
+
+## Scripts
+
+Run from the repository root.
+
+| Command | What it does |
 | :--- | :--- |
-| `npm run dev:backend` | Start Express backend with live hot-reloading (`tsx watch`) on `http://localhost:4000` |
-| `npm run dev:frontend` | Start Vite React dev server on `http://localhost:5173` |
+| `npm run dev:backend` / `npm run dev:frontend` | Start a development server with hot reload |
+| `npm run typecheck` | TypeScript checks for backend and frontend |
+| `npm run lint` | ESLint for backend and frontend |
+| `npm test` | All tests (backend, then frontend) |
+| `npm run build` | Production builds |
+| `npm start` | Apply migrations, add demo data if `SEED_DEMO=true`, and start the server (run `npm run build` first). In production it also serves the built website |
+| `npm --workspace=frontend run check:locales` | Verify every string is translated in all five languages |
 
-### Direct Service Execution
-```bash
-# Backend only
-cd backend
-npm run dev
+## Environment variables
 
-# Frontend only
-cd frontend
-npm run dev
-```
+| Variable | Where | Purpose |
+| :--- | :--- | :--- |
+| `DATABASE_URL` | backend | SQLite file, `file:./dev.db` by default |
+| `PORT` | backend | API port, `4000` by default |
+| `FRONTEND_ORIGIN` | backend | The one origin allowed by CORS and CSRF checks. Optional on Render, where it defaults to the service address |
+| `TRUST_PROXY` | backend | Reverse-proxy hops to trust for visitor IPs. `1` in production, `0` in development |
+| `SEED_DEMO` / `DEMO_PASSWORD` | backend | Add a demo farmer on start when the database has no accounts. Off by default |
+| `DATA_GOV_IN_API_KEY` | backend | Key for mandi prices |
+| `MFA_ENCRYPTION_KEY` | backend | Encrypts authenticator secrets. **Required in production** (32+ random characters), optional in development |
+| `APP_TIMEZONE` | backend | Timezone that decides what "today" is, `Asia/Kolkata` by default |
+| `VITE_API_BASE_URL` | frontend | API address in development, `http://localhost:4000` by default. A production build uses the page's own address |
 
----
+`OPENWEATHER_API_KEY` and `NASA_POWER_BASE_URL` appear in `.env.example` as placeholders for planned work. Nothing reads them yet.
 
-## Quality Assurance & Testing
+## API overview
 
-Run all quality checks across the entire monorepo:
+All routes are under `/api`. Health, weather, mandi, advisor and the sign-up, sign-in and sign-out routes are public. Everything else needs a signed-in session.
 
-```bash
-# Run ESLint across frontend and backend
-npm run lint
+| Area | Routes |
+| :--- | :--- |
+| Health | `GET /health`, `GET /health/database` |
+| Auth | `POST /auth/register`, `/auth/login`, `/auth/login/mfa`, `/auth/logout`; `GET /auth/me` |
+| Two-step | `GET /auth/mfa`; `POST /auth/mfa/setup`, `/enable`, `/disable`, `/backup-codes` |
+| Weather | `GET /weather/locations`, `/weather/forecast` |
+| Mandi | `GET /mandi/prices`, `/mandi/filters`, `/mandi/trends` |
+| Advisor | `POST /advisor/recommendations`; `GET /advisor/crops`, `/advisor/soils` |
+| Farms | `/farms` (list, create, overview, calendar), `/farms/:id` and its `/cycles`, `/activities` and `/tasks`, plus archive and restore |
+| Admin | `GET /admin/stats`, `/admin/users`, `/admin/audit`; `PATCH /admin/users/:id/role`; `POST /admin/users/:id/deactivate`, `/reactivate`, `/reset-mfa` |
 
-# Run TypeScript strict type-checking across frontend and backend
-npm run typecheck
+## Project structure
 
-# Run automated unit and integration tests (Vitest + Supertest)
-npm run test
-
-# Compile production builds
-npm run build
-```
-
----
-
-## Project Structure
-
-```
+```text
 ProFarm-V2/
 ├── backend/
-│   ├── prisma/
-│   │   ├── migrations/            # Version-controlled database migrations
-│   │   └── schema.prisma          # Database models (User, Farm)
+│   ├── prisma/         # schema and migrations
 │   ├── src/
-│   │   ├── config/                # Zod environment validation (env.ts)
-│   │   ├── controllers/           # HTTP controllers (health.controller.ts)
-│   │   ├── lib/                   # Database client singletons (prisma.ts)
-│   │   ├── middleware/            # Security: CORS, Helmet, RateLimiter, ErrorHandler
-│   │   ├── routes/                # Express route declarations
-│   │   ├── services/              # Business logic (database.service.ts)
-│   │   ├── validators/            # Zod validation schemas
-│   │   ├── app.ts                 # Express application configuration
-│   │   └── server.ts              # HTTP server startup & graceful shutdown
-│   ├── tests/                     # Automated Vitest/Supertest test suites
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vitest.config.ts
+│   │   ├── config/     # environment validation
+│   │   ├── controllers/  routes/  services/  validators/
+│   │   ├── middleware/ # auth, admin, CSRF, CORS, rate limits, errors
+│   │   ├── lib/        # TOTP, secret encryption, timezone, cache
+│   │   ├── data/       # crop, soil and practice knowledge
+│   │   └── scripts/    # admin:grant / admin:revoke
+│   ├── tests/          # API and unit tests
+│   └── testing/        # disposable-database safety guard
 ├── frontend/
-│   ├── public/                    # Static assets & favicons
-│   ├── src/
-│   │   ├── app/                   # Root App component and React Router setup
-│   │   ├── components/            # Layout (Header, Footer) & common components
-│   │   ├── pages/                 # Minimal route pages (Home, Dashboard, Knowledge, Tools, Login, NotFound)
-│   │   ├── services/              # Centralized API client (api.ts)
-│   │   ├── styles/                # Tailwind CSS globals
-│   │   └── types/                 # TypeScript interfaces
-│   ├── tests/                     # Component & routing tests
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vite.config.ts
-├── docs/
-│   ├── architecture/              # System architecture documentation
-│   ├── migration/                 # Legacy feature mapping and migration plan
-│   └── reports/                   # Phase audit and completion reports
-├── .env.example                   # Monorepo environment variable template
-├── .gitignore                     # Git ignore rules for databases, node_modules, secrets
-└── package.json                   # Monorepo workspace configuration
+│   ├── public/images/  # crop, soil and scene photos (WebP)
+│   └── src/
+│       ├── api/  components/  context/  pages/  data/  utils/
+│       └── i18n/       # five languages and the build-time check
+├── .github/workflows/  # CI
+├── render.yaml         # free Render deployment
+└── package.json        # npm workspace root
 ```
 
----
+## Data sources and credits
+
+- Weather: [Open-Meteo](https://open-meteo.com). Mandi prices: Agmarknet via [data.gov.in](https://data.gov.in).
+- Crop, soil and landscape photos come from [Wikimedia Commons](https://commons.wikimedia.org) under Creative Commons licences. Every author and licence is listed on the in-app `/credits` page.
+
+## Known limitations
+
+- **Translations are drafts.** They have not been reviewed by native speakers, and the long crop and soil descriptions are still in English (the app shows a notice in the other languages).
+- **Mandi history is not available.** The source publishes one day at a time, so the trends endpoint says so instead of inventing data.
+- **Not built yet:** NASA POWER data, crop yield prediction, password change and reset, deleting farms or tasks (farms can be archived), reminders and notifications.
+- **Free hosting forgets.** On Render's free plan the disk is wiped on every restart (see above). SQLite suits a single server with a persistent disk; a larger deployment would move to PostgreSQL.
 
 ## License
 

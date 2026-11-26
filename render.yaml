@@ -1,0 +1,32 @@
+# Render Blueprint: one free web service that serves the API and the built frontend on a
+# single address, so sign-in cookies work with no cross-site setup.
+#
+# Free plan notes: the service goes to sleep after a while without visitors (the next visit
+# takes about a minute to wake it) and its disk is wiped on every restart. ProFarm therefore
+# starts with SEED_DEMO=true, which recreates a demo farmer and sample farms on an empty
+# database. Accounts people create on the live site do not survive a restart.
+services:
+  - type: web
+    name: profarm
+    runtime: node
+    plan: free
+    region: singapore
+    healthCheckPath: /api/health
+    autoDeploy: true
+    buildCommand: npm ci --include=dev && npx prisma generate --schema backend/prisma/schema.prisma && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: file:/tmp/profarm.db
+      - key: MFA_ENCRYPTION_KEY
+        generateValue: true
+      - key: SEED_DEMO
+        value: "true"
+      - key: APP_TIMEZONE
+        value: Asia/Kolkata
+      - key: DATA_GOV_IN_API_KEY
+        sync: false

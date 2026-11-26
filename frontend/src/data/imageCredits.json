@@ -1,0 +1,236 @@
+{
+  "crops/wheat": {
+    "title": "File:Wheat field in Phagwara Punjab India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Wheat_field_in_Phagwara_Punjab_India.jpg",
+    "author": "Sixtybolts",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 960,
+    "height": 640
+  },
+  "crops/rice": {
+    "title": "File:Paddy field in Tamil Nadu India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Paddy_field_in_Tamil_Nadu_India.jpg",
+    "author": "Jperiapandi",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 1279
+  },
+  "crops/maize": {
+    "title": "File:Maize crop in rural India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Maize_crop_in_rural_India.jpg",
+    "author": "Phil Bus",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 960,
+    "height": 640
+  },
+  "crops/pearl-millet": {
+    "title": "File:Grain millet, early grain fill, Tifton, 7-3-02.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Grain_millet,_early_grain_fill,_Tifton,_7-3-02.jpg",
+    "author": "Unknown",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "width": 960,
+    "height": 720
+  },
+  "crops/sorghum": {
+    "title": "File:Jowar field.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Jowar_field.jpg",
+    "author": "Sureshpadmanabha",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 480
+  },
+  "crops/chickpea": {
+    "title": "File:CSIRO ScienceImage 3223 Chickpeas in glasshouse.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:CSIRO_ScienceImage_3223_Chickpeas_in_glasshouse.jpg",
+    "author": "Carl Davies, CSIRO",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "width": 960,
+    "height": 1473
+  },
+  "crops/mustard": {
+    "title": "File:Mustard field near Chandigarh.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mustard_field_near_Chandigarh.jpg",
+    "author": "UnpetitproleX",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 720
+  },
+  "crops/cotton": {
+    "title": "File:Mature cotton boll in Raichur, Karnataka.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mature_cotton_boll_in_Raichur,_Karnataka.jpg",
+    "author": "Nanditha Gogate, WELL Labs",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 640
+  },
+  "crops/sugarcane": {
+    "title": "File:Sugarcane Field Srirangapatna Karnataka Jul22 R16 06192.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sugarcane_Field_Srirangapatna_Karnataka_Jul22_R16_06192.jpg",
+    "author": "This Photo was taken by Timothy A. Gonsalves. Feel free to use my photos, but please mention me as the author. I would much appreciate if you send me an email tagooty@yahoo.com or write on my talk page, for my information. Please contact me before commercial use. Please do not upload an edited image here without consulting me. I would like to make corrections only at my own source to ensure that the changes improve the image and are preserved.Otherwise you may upload an edited image with a new name. Please use one of the templates derivative or extract.",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 640
+  },
+  "crops/groundnut": {
+    "title": "File:Groundnut farming.,.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Groundnut_farming.,.jpg",
+    "author": "Nive Selvaraju",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 1284
+  },
+  "crops/soybean": {
+    "title": "File:Soyabean field.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Soyabean_field.jpg",
+    "author": "Albert Deccan",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "width": 960,
+    "height": 720
+  },
+  "crops/potato": {
+    "title": "File:Potato Field-1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Potato_Field-1.jpg",
+    "author": "Trikutdas",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 720
+  },
+  "soils/loamy-soil": {
+    "title": "File:Loam soil of Hesbaye.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Loam_soil_of_Hesbaye.jpg",
+    "author": "Peter Van den Bossche",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 960,
+    "height": 720
+  },
+  "soils/clay-soil": {
+    "title": "File:A farm waiting for rain, note black regur soil - panoramio.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:A_farm_waiting_for_rain,_note_black_regur_soil_-_panoramio.jpg",
+    "author": "Ganesh Dhamodkar",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "width": 960,
+    "height": 679
+  },
+  "soils/sandy-soil": {
+    "title": "File:Sandy soil surface.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sandy_soil_surface.jpg",
+    "author": "Yesa050907",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 960,
+    "height": 552
+  },
+  "soils/silty-soil": {
+    "title": "File:Silt farmland - geograph.org.uk - 1399123.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Silt_farmland_-_geograph.org.uk_-_1399123.jpg",
+    "author": "Jonathan Billinger",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 960,
+    "height": 720
+  },
+  "soils/sandy-loam-soil": {
+    "title": "File:Sandy loam.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Sandy_loam.JPG",
+    "author": "own work",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "width": 960,
+    "height": 720
+  },
+  "soils/clay-loam-soil": {
+    "title": "File:এঁটেল দোআঁশ মাটি (Clay Loam) - DSC00631.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:%E0%A6%8F%E0%A6%81%E0%A6%9F%E0%A7%87%E0%A6%B2_%E0%A6%A6%E0%A7%8B%E0%A6%86%E0%A6%81%E0%A6%B6_%E0%A6%AE%E0%A6%BE%E0%A6%9F%E0%A6%BF_(Clay_Loam)_-_DSC00631.jpg",
+    "author": "MS Sakib",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 960,
+    "height": 960
+  },
+  "scenes/monsoon-paddy": {
+    "title": "File:Flooded paddy field Raichur Karnataka India monsoon irrigation July 2025.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Flooded_paddy_field_Raichur_Karnataka_India_monsoon_irrigation_July_2025.jpg",
+    "author": "Vraj Acharya, WELL Labs",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1067
+  },
+  "scenes/onion-market": {
+    "title": "File:Onions on a trolley in India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Onions_on_a_trolley_in_India.jpg",
+    "author": "Ravi Dwivedi",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1200
+  },
+  "scenes/tractor-punjab": {
+    "title": "File:Agriculture in India tractor farming Punjab preparing field for a wheat crop without burning previous crop stalk.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Agriculture_in_India_tractor_farming_Punjab_preparing_field_for_a_wheat_crop_without_burning_previous_crop_stalk.jpg",
+    "author": "CIAT",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 1600,
+    "height": 1060
+  },
+  "scenes/farmer-fertilizer": {
+    "title": "File:An Indian farmer spreading fertilizer over a crop.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:An_Indian_farmer_spreading_fertilizer_over_a_crop.jpg",
+    "author": "kiran kumar from Bangalore, India",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 1600,
+    "height": 1642
+  },
+  "scenes/sprinkler-irrigation": {
+    "title": "File:NRBC distributary 10 sprinkler irrigation fields Raichur Karnataka India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:NRBC_distributary_10_sprinkler_irrigation_fields_Raichur_Karnataka_India.jpg",
+    "author": "Vraj Acharya, WELL Labs",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1067
+  },
+  "scenes/wheat-punjab": {
+    "title": "File:Wheat field in Phagwara Punjab India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Wheat_field_in_Phagwara_Punjab_India.jpg",
+    "author": "Sixtybolts",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 1600,
+    "height": 1066
+  },
+  "scenes/mustard-field": {
+    "title": "File:Mustard field near Chandigarh.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mustard_field_near_Chandigarh.jpg",
+    "author": "UnpetitproleX",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1600,
+    "height": 1200
+  },
+  "scenes/sunrise-paddy": {
+    "title": "File:Sunrise over paddy fields with palm trees in rural Telangana, India.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sunrise_over_paddy_fields_with_palm_trees_in_rural_Telangana,_India.jpg",
+    "author": "Mohammad Anees Qamar",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 1800,
+    "height": 1350
+  }
+}

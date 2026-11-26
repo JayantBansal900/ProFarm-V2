@@ -1,3 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#16a34a">
-  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <clipPath id="c"><rect width="48" height="48" rx="13"/></clipPath>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A3B3F"/>
+      <stop offset="0.5" stop-color="#1B7A74"/>
+      <stop offset="0.8" stop-color="#F2A93B"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.45" r="0.6">
+      <stop offset="0" stop-color="#FFF1B8"/>
+      <stop offset="1" stop-color="#FFB81C"/>
+    </radialGradient>
+    <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3FA05A"/>
+      <stop offset="1" stop-color="#17623A"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#c)">
+    <rect width="48" height="48" fill="url(#sky)"/>
+    <circle cx="24" cy="31" r="15" fill="#FFD66B" opacity="0.18"/>
+    <circle cx="24" cy="31" r="9.5" fill="url(#sun)"/>
+    <path d="M-2 31.5 Q24 26.5 50 31.5 V50 H-2 Z" fill="url(#field)"/>
+    <g stroke="#B6EFB8" stroke-width="1.6" stroke-linecap="round" opacity="0.75">
+      <path d="M24 30 L-4 48"/><path d="M24 30 L9 48"/><path d="M24 30 L24 48"/><path d="M24 30 L39 48"/><path d="M24 30 L52 48"/>
+    </g>
+  </g>
 </svg>

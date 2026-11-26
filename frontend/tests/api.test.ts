@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { api, ApiError } from '../src/services/api';
+import { api, ApiError } from '../src/api/api';
 
 describe('Centralized API Client', () => {
   afterEach(() => {
@@ -31,6 +31,8 @@ describe('Centralized API Client', () => {
   it('handles low-level network failure gracefully', async () => {
     vi.spyOn(global, 'fetch').mockRejectedValueOnce(new Error('Connection refused'));
 
-    await expect(api.getHealth()).rejects.toThrow(ApiError);
+    const failure = api.getHealth();
+    await expect(failure).rejects.toThrow(ApiError);
+    await expect(failure).rejects.toThrow('Unable to connect to ProFarm');
   });
 });

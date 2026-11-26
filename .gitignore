@@ -29,9 +29,14 @@ yarn-error.log*
 
 # Coverage / Testing
 coverage/
+backend/.test-databases/
 
 # OS / Editor metadata
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# Local backups and verification artifacts (not source)
+/frontend.zip
+backend/artifacts/

@@ -4,6 +4,7 @@ import { env } from '../config/env';
 
 export interface AppError extends Error {
   statusCode?: number;
+  expose?: boolean;
 }
 
 export function notFoundHandler(req: Request, res: Response): void {
@@ -23,7 +24,7 @@ export function errorHandler(
     res.status(400).json({
       status: 'error',
       message: 'Validation failed',
-      errors: err.errors.map((e) => ({
+      errors: err.issues.map((e) => ({
         field: e.path.join('.'),
         message: e.message,
       })),
@@ -41,11 +42,13 @@ export function errorHandler(
 
   const statusCode = (err as AppError).statusCode || 500;
   const isProduction = env.NODE_ENV === 'production';
+  const hideDetails = (err as AppError).expose === false;
 
   let safeMessage = err.message || 'An unexpected internal server error occurred';
   if (isProduction && statusCode === 500) {
     safeMessage = 'Internal server error';
   }
+  if (hideDetails) safeMessage = statusCode === 503 ? 'Service temporarily unavailable' : 'Internal server error';
 
   // Redact any Windows/Unix file path disclosures
   safeMessage = safeMessage.replace(/[a-zA-Z]:\\[^ \n\r\t]+/g, '[REDACTED_PATH]');
@@ -53,6 +56,6 @@ export function errorHandler(
   res.status(statusCode).json({
     status: 'error',
     message: safeMessage,
-    ...(!isProduction && err.stack ? { stack: err.stack } : {}),
+    ...(!isProduction && !hideDetails && err.stack ? { stack: err.stack } : {}),
   });
 }

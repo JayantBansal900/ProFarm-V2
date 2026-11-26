@@ -1,130 +1,196 @@
-import React, { useEffect, useState } from 'react';
-import { api } from '../services/api';
-import { ApiHealthResponse, DatabaseHealthResponse } from '../types';
-import { LoadingSpinner } from '../components/common/LoadingSpinner';
-import { ErrorMessage } from '../components/common/ErrorMessage';
+import { tr, useLocale, selectLanguage } from '../i18n';
+import { languages } from '../i18n/languages';
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { CROPS_DATA } from '../data/crops';
+import { SOILS_DATA } from '../data/soils';
+import { cropImage, soilImage, sceneImage, photoFocus } from '../data/media';
+import { sowingSeason, seasonMonths } from '../data/seasons';
+
+
+const tools = [
+  { path: '/tools/weather', icon: '🌦️', title: 'Weather', description: 'Rain, heat and wind for the next 7 days, with advice for field work.' },
+  { path: '/tools/mandi', icon: '₹', title: 'Mandi prices', description: 'Today’s prices from APMC markets near you.' },
+  { path: '/tools/advisor', icon: '🧭', title: 'Crop advisor', description: 'Find crops that suit your soil, season and water.' },
+  { path: '/my-farms', icon: '🚜', title: 'My farms', description: 'Record sowing, tasks and activities for each field.' },
+];
 
 export const HomePage: React.FC = () => {
-  const [apiHealth, setApiHealth] = useState<ApiHealthResponse | null>(null);
-  const [dbHealth, setDbHealth] = useState<DatabaseHealthResponse | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const checkConnectivity = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [apiRes, dbRes] = await Promise.all([
-        api.getHealth(),
-        api.getDatabaseHealth(),
-      ]);
-      setApiHealth(apiRes);
-      setDbHealth(dbRes);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to reach ProFarm API');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkConnectivity();
-  }, []);
+  const code = useLocale();
+  const season = sowingSeason();
+  const seasonCrops = CROPS_DATA.filter((crop) => crop.seasons.includes(season));
 
   return (
-    <div className="space-y-8">
-      <div className="border border-slate-200 bg-white rounded-lg p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-          ProFarm V2 Architecture Foundation
-        </h1>
-        <p className="mt-2 text-sm text-slate-600 leading-relaxed">
-          Welcome to the modernized ProFarm platform. ProFarm empowers farmers with accessible,
-          reliable agricultural information to improve crop productivity, conserve natural resources,
-          and adopt sustainable farming practices.
-        </p>
-      </div>
+    <div className="-mt-px">
+      {/* Hero: a real Indian field, with language choice up front */}
+      <section className="relative isolate overflow-hidden bg-profarm-deep text-white">
+        <img
+          src={sceneImage('sunrise-paddy')}
+          alt=""
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-[center_35%] saturate-[1.18] contrast-[1.04]"
+          {...{ fetchpriority: 'high' }}
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#06292C]/90 from-0% via-[#06292C]/40 via-45% to-transparent to-75%" />
 
-      <div className="border border-slate-200 bg-white rounded-lg p-6 shadow-sm">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-          <div>
-            <h2 className="text-base font-semibold text-slate-800">
-              System Connectivity & Health Status
-            </h2>
-            <p className="text-xs text-slate-500">
-              Verifying real-time communication between Frontend, Express API, and SQLite Database.
+        <div className="pf-container flex min-h-[max(84vh,680px)] flex-col justify-end pb-12 pt-28 sm:pb-16">
+          <h1 className="max-w-3xl font-display text-[clamp(2.6rem,6.4vw,5.2rem)] font-bold leading-[1.02] [text-shadow:0_2px_28px_rgba(6,41,44,0.45)]">
+            {tr('Better decisions for every season on your farm.')}
+          </h1>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/85">
+            {tr('Crop and soil guidance, local weather, mandi prices and your farm diary, in your own language.')}
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              to="/signup"
+              className="inline-flex min-h-12 items-center rounded-2xl bg-profarm-turmeric px-6 text-base font-bold text-profarm-ink shadow-lg transition hover:bg-[#F5B921]"
+            >
+              {tr('Create a free account')}
+            </Link>
+            <Link
+              to="/tools/weather"
+              className="inline-flex min-h-12 items-center rounded-2xl border-2 border-white/70 px-6 text-base font-bold text-white transition hover:bg-white/10"
+            >
+              {tr('Check weather')}
+            </Link>
+          </div>
+
+          <div className="mt-10 border-t border-white/20 pt-6">
+            <p id="hero-language-label" className="text-sm font-semibold text-white/80">
+              {tr('Choose your language')}
+            </p>
+            <div role="group" aria-labelledby="hero-language-label" className="mt-3 flex flex-wrap gap-2">
+              {languages.map((language) => (
+                <button
+                  key={language.code}
+                  type="button"
+                  lang={language.code}
+                  aria-pressed={code === language.code}
+                  onClick={() => void selectLanguage(language.code)}
+                  className={`min-h-11 rounded-full px-5 text-base font-semibold transition ${
+                    code === language.code
+                      ? 'bg-white text-profarm-deep'
+                      : 'bg-white/10 text-white ring-1 ring-white/35 hover:bg-white/20'
+                  }`}
+                >
+                  {language.nativeName}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tools */}
+      <section aria-labelledby="tools-heading" className="pf-container py-14 sm:py-20">
+        <h2 id="tools-heading" className="font-display text-3xl font-bold text-profarm-ink sm:text-4xl">
+          {tr('What do you need today?')}
+        </h2>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {tools.map((tool) => (
+            <Link
+              key={tool.path}
+              to={tool.path}
+              className="flex gap-4 rounded-3xl border border-profarm-border bg-white p-5 transition hover:border-profarm-olive focus-visible:border-profarm-olive"
+            >
+              <span aria-hidden="true" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-profarm-mist text-2xl font-bold text-profarm-forest">
+                {tool.icon}
+              </span>
+              <span>
+                <span className="block font-display text-xl font-bold text-profarm-ink">{tr(tool.title)}</span>
+                <span className="mt-1 block text-sm leading-relaxed text-profarm-muted">{tr(tool.description)}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Season guide */}
+      <section aria-labelledby="season-heading" className="bg-white py-14 sm:py-20">
+        <div className="pf-container">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <p className="inline-flex rounded-full bg-[#FDF1D2] px-3 py-1 text-sm font-bold text-profarm-soil">
+                {tr(season)} · {tr(seasonMonths[season])}
+              </p>
+              <h2 id="season-heading" className="mt-3 font-display text-3xl font-bold text-profarm-ink sm:text-4xl">
+                {tr('Crops you can sow this season')}
+              </h2>
+            </div>
+            <Link to="/knowledge/crops" className="min-h-11 rounded-2xl border border-profarm-border px-5 py-2.5 font-semibold text-profarm-forest hover:bg-profarm-mist">
+              {tr('See all crops')}
+            </Link>
+          </div>
+
+          <ul className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {seasonCrops.map((crop) => {
+              const photo = cropImage(crop.slug);
+              return (
+                <li key={crop.id}>
+                  <Link to={`/knowledge/crops/${crop.slug}`} className="group block overflow-hidden rounded-3xl bg-profarm-mist">
+                    <div className="aspect-[4/3] overflow-hidden">
+                      {photo ? (
+                        <img src={photo.src} style={{ objectPosition: photoFocus(photo.src) }} alt={tr('{{v0}} crop', { v0: tr(crop.name) })} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      ) : (
+                        <span aria-hidden="true" className="flex h-full items-center justify-center text-5xl">{crop.icon}</span>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <span className="block font-display text-lg font-bold leading-tight text-profarm-ink">{tr(crop.name)}</span>
+                      <span className="mt-1 block text-sm text-profarm-muted">
+                        {crop.temperatureRange.minC}–{crop.temperatureRange.maxC}°C · {tr('Water:')} {tr(crop.waterRequirement.level)}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      {/* Soils */}
+      <section aria-labelledby="soil-heading" className="pf-container py-14 sm:py-20">
+        <h2 id="soil-heading" className="font-display text-3xl font-bold text-profarm-ink sm:text-4xl">
+          {tr('Know your soil')}
+        </h2>
+        <p className="mt-2 max-w-xl text-profarm-muted">
+          {tr('Each soil holds water and nutrients differently. Pick yours to see which crops do well in it.')}
+        </p>
+        <ul className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3">
+          {SOILS_DATA.map((soil) => {
+            const photo = soilImage(soil.slug);
+            return (
+              <li key={soil.id}>
+                <Link to={`/knowledge/soils/${soil.slug}`} className="group relative block aspect-[3/2] overflow-hidden rounded-3xl bg-profarm-soil">
+                  {photo && (
+                    <img src={photo.src} alt={tr('{{v0}} sample', { v0: tr(soil.name) })} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  )}
+                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 pt-10 font-display text-lg font-bold text-white">
+                    {tr(soil.name)}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      {/* Closing call to action */}
+      <section className="bg-profarm-forest text-white">
+        <div className="pf-container flex flex-wrap items-center justify-between gap-6 py-12">
+          <div className="max-w-xl">
+            <h2 className="font-display text-3xl font-bold">{tr('Keep a diary for every field')}</h2>
+            <p className="mt-2 text-white/80">
+              {tr('Save sowing dates, tasks and activities. ProFarm reminds you what is due and what is overdue.')}
             </p>
           </div>
-          <button
-            onClick={checkConnectivity}
-            disabled={loading}
-            className="text-xs px-3 py-1.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium transition"
-          >
-            Refresh Diagnostics
-          </button>
+          <Link to="/signup" className="inline-flex min-h-12 items-center rounded-2xl bg-profarm-turmeric px-6 font-bold text-profarm-ink hover:bg-[#F5B921]">
+            {tr('Create a free account')}
+          </Link>
         </div>
-
-        {loading && <LoadingSpinner label="Querying backend & database health probes..." />}
-
-        {error && <ErrorMessage message={error} onRetry={checkConnectivity} />}
-
-        {!loading && !error && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-md border border-slate-200 bg-slate-50">
-              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Express Backend API
-              </div>
-              <div className="mt-2 flex items-center space-x-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-                <span className="text-sm font-medium text-slate-900">
-                  {apiHealth?.service} — {apiHealth?.status.toUpperCase()}
-                </span>
-              </div>
-              <p className="text-xs text-slate-500 mt-1">
-                Connected via safe endpoint: <code>/api/health</code>
-              </p>
-            </div>
-
-            <div className="p-4 rounded-md border border-slate-200 bg-slate-50">
-              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                SQLite / Prisma Database
-              </div>
-              <div className="mt-2 flex items-center space-x-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-                <span className="text-sm font-medium text-slate-900">
-                  Status: {dbHealth?.database.toUpperCase()}
-                </span>
-                {dbHealth?.latencyMs !== undefined && (
-                  <span className="text-xs text-slate-500">({dbHealth.latencyMs} ms)</span>
-                )}
-              </div>
-              <p className="text-xs text-slate-500 mt-1">
-                Connected via safe probe: <code>/api/health/database</code>
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="border border-slate-200 bg-white rounded-lg p-5">
-          <h3 className="font-semibold text-sm text-slate-900">Phase 2 Foundation</h3>
-          <p className="text-xs text-slate-600 mt-1">
-            Establishing monorepo, strict TypeScript, Prisma ORM, and baseline security middleware.
-          </p>
-        </div>
-        <div className="border border-slate-200 bg-white rounded-lg p-5">
-          <h3 className="font-semibold text-sm text-slate-900">Indian Agriculture Scope</h3>
-          <p className="text-xs text-slate-600 mt-1">
-            Configured for state and district agricultural contexts, expandable to global NASA data.
-          </p>
-        </div>
-        <div className="border border-slate-200 bg-white rounded-lg p-5">
-          <h3 className="font-semibold text-sm text-slate-900">Secure Architecture</h3>
-          <p className="text-xs text-slate-600 mt-1">
-            Zero plaintext credentials, strict CORS, request validation, and safe error handling.
-          </p>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };
