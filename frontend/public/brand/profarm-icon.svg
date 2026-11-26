@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512">
+  <defs>
+    <linearGradient id="pf-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E8E53"/>
+      <stop offset="1" stop-color="#0B4D2E"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#pf-bg)"/>
+  <!-- P stem -->
+  <rect x="34" y="26" width="14" height="70" rx="7" fill="#FFFFFF"/>
+  <!-- Leaf forming the bowl of the P -->
+  <path d="M48 27 C76 22 92 40 86 58 C81 72 64 74 48 68 Z" fill="#FFFFFF"/>
+  <!-- Leaf midrib -->
+  <path d="M51 64 C62 58 72 48 80 36" fill="none" stroke="#147A45" stroke-width="4" stroke-linecap="round"/>
+  <!-- Field furrows -->
+  <path d="M56 84 C68 79 80 79 92 84" fill="none" stroke="#F4B41A" stroke-width="5" stroke-linecap="round"/>
+  <path d="M60 95 C70 91 80 91 90 95" fill="none" stroke="#F4B41A" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+</svg>
