@@ -3,6 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "description": "ProFarm V2: Sustainable Agricultural Knowledge and Farm Management Platform",
+  "license": "MIT",
+  "author": "Jayant Bansal",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JayantBansal900/ProFarm-V2.git"
+  },
+  "homepage": "https://github.com/JayantBansal900/ProFarm-V2#readme",
+  "bugs": {
+    "url": "https://github.com/JayantBansal900/ProFarm-V2/issues"
+  },
+  "keywords": [
+    "agriculture",
+    "farming",
+    "india",
+    "react",
+    "express",
+    "prisma",
+    "typescript",
+    "i18n",
+    "totp"
+  ],
   "workspaces": [
     "backend",
     "frontend"
