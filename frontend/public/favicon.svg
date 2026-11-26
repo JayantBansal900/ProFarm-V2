@@ -1,27 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
   <defs>
-    <clipPath id="c"><rect width="48" height="48" rx="13"/></clipPath>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0A3B3F"/>
-      <stop offset="0.5" stop-color="#1B7A74"/>
-      <stop offset="0.8" stop-color="#F2A93B"/>
-    </linearGradient>
-    <radialGradient id="sun" cx="0.5" cy="0.45" r="0.6">
-      <stop offset="0" stop-color="#FFF1B8"/>
-      <stop offset="1" stop-color="#FFB81C"/>
-    </radialGradient>
-    <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#3FA05A"/>
-      <stop offset="1" stop-color="#17623A"/>
+    <linearGradient id="pf-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E8E53"/>
+      <stop offset="1" stop-color="#0B4D2E"/>
     </linearGradient>
   </defs>
-  <g clip-path="url(#c)">
-    <rect width="48" height="48" fill="url(#sky)"/>
-    <circle cx="24" cy="31" r="15" fill="#FFD66B" opacity="0.18"/>
-    <circle cx="24" cy="31" r="9.5" fill="url(#sun)"/>
-    <path d="M-2 31.5 Q24 26.5 50 31.5 V50 H-2 Z" fill="url(#field)"/>
-    <g stroke="#B6EFB8" stroke-width="1.6" stroke-linecap="round" opacity="0.75">
-      <path d="M24 30 L-4 48"/><path d="M24 30 L9 48"/><path d="M24 30 L24 48"/><path d="M24 30 L39 48"/><path d="M24 30 L52 48"/>
-    </g>
-  </g>
+  <rect width="120" height="120" rx="28" fill="url(#pf-bg)"/>
+  <!-- P stem -->
+  <rect x="34" y="26" width="14" height="70" rx="7" fill="#FFFFFF"/>
+  <!-- Leaf forming the bowl of the P -->
+  <path d="M48 27 C76 22 92 40 86 58 C81 72 64 74 48 68 Z" fill="#FFFFFF"/>
+  <!-- Leaf midrib -->
+  <path d="M51 64 C62 58 72 48 80 36" fill="none" stroke="#147A45" stroke-width="4" stroke-linecap="round"/>
+  <!-- Field furrows -->
+  <path d="M56 84 C68 79 80 79 92 84" fill="none" stroke="#F4B41A" stroke-width="5" stroke-linecap="round"/>
+  <path d="M60 95 C70 91 80 91 90 95" fill="none" stroke="#F4B41A" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
 </svg>

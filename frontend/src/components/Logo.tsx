@@ -1,45 +1,29 @@
 import React, { useId } from 'react';
 
 /**
- * ProFarm mark: the sun rising over crop rows that run to the horizon.
- * The sky warms from teal to amber, the field is two greens with lighter furrows.
+ * ProFarm mark: a capital P whose bowl is a leaf, above two golden field furrows.
+ * Source artwork lives in public/brand/profarm-icon.svg; keep the two in sync.
  */
 export const LogoMark: React.FC<{ size?: number; className?: string }> = ({ size = 40, className }) => {
   const id = useId().replace(/:/g, '');
   return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none" aria-hidden="true" className={className}>
+    <svg width={size} height={size} viewBox="0 0 120 120" fill="none" aria-hidden="true" className={className}>
       <defs>
-        <clipPath id={`${id}-clip`}>
-          <rect width="48" height="48" rx="13" />
-        </clipPath>
-        <linearGradient id={`${id}-sky`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#0A3B3F" />
-          <stop offset="0.5" stopColor="#1B7A74" />
-          <stop offset="0.8" stopColor="#F2A93B" />
-        </linearGradient>
-        <radialGradient id={`${id}-sun`} cx="0.5" cy="0.45" r="0.6">
-          <stop offset="0" stopColor="#FFF1B8" />
-          <stop offset="1" stopColor="#FFB81C" />
-        </radialGradient>
-        <linearGradient id={`${id}-field`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#3FA05A" />
-          <stop offset="1" stopColor="#17623A" />
+        <linearGradient id={`${id}-bg`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#1E8E53" />
+          <stop offset="1" stopColor="#0B4D2E" />
         </linearGradient>
       </defs>
 
-      <g clipPath={`url(#${id}-clip)`}>
-        <rect width="48" height="48" fill={`url(#${id}-sky)`} />
-        <circle cx="24" cy="31" r="15" fill="#FFD66B" opacity="0.18" />
-        <circle cx="24" cy="31" r="9.5" fill={`url(#${id}-sun)`} />
-        <path d="M-2 31.5 Q24 26.5 50 31.5 V50 H-2 Z" fill={`url(#${id}-field)`} />
-        <g stroke="#B6EFB8" strokeWidth="1.6" strokeLinecap="round" opacity="0.75">
-          <path d="M24 30 L-4 48" />
-          <path d="M24 30 L9 48" />
-          <path d="M24 30 L24 48" />
-          <path d="M24 30 L39 48" />
-          <path d="M24 30 L52 48" />
-        </g>
-      </g>
+      <rect width="120" height="120" rx="28" fill={`url(#${id}-bg)`} />
+      {/* Stem of the P */}
+      <rect x="34" y="26" width="14" height="70" rx="7" fill="#FFFFFF" />
+      {/* Leaf forming the bowl of the P, with its midrib */}
+      <path d="M48 27 C76 22 92 40 86 58 C81 72 64 74 48 68 Z" fill="#FFFFFF" />
+      <path d="M51 64 C62 58 72 48 80 36" stroke="#147A45" strokeWidth="4" strokeLinecap="round" />
+      {/* Field furrows */}
+      <path d="M56 84 C68 79 80 79 92 84" stroke="#F4B41A" strokeWidth="5" strokeLinecap="round" />
+      <path d="M60 95 C70 91 80 91 90 95" stroke="#F4B41A" strokeWidth="5" strokeLinecap="round" opacity="0.75" />
     </svg>
   );
 };
