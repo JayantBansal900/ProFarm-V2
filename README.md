@@ -9,8 +9,7 @@
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
 ![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?logo=prisma&logoColor=white)
-
-<img src=".github/screenshots/home.webp" alt="ProFarm home page: a sunrise over paddy fields with the headline 'Better decisions for every season on your farm' and a language picker" width="100%">
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 </div>
 
@@ -25,44 +24,6 @@
 - **Admin panel:** admins manage accounts, but they can never see what is inside a farmer's farms.
 - **Five languages:** English, Hindi, Punjabi, Telugu and Tamil, chosen on the home page or from the header.
 - **This season:** the home page suggests the crops that can be sown in the current Indian season (Kharif, Rabi or Zaid).
-
-## Screenshots
-
-<table>
-  <tr>
-    <td width="50%"><img src=".github/screenshots/home-hindi.webp" alt="The home page in Hindi"><br><sub><b>Hindi</b>: the whole interface switches language</sub></td>
-    <td width="50%"><img src=".github/screenshots/home-season.webp" alt="Crops that can be sown this season, with photos"><br><sub><b>Crops to sow this season</b></sub></td>
-  </tr>
-  <tr>
-    <td><img src=".github/screenshots/crops.webp" alt="Crop library with photos, seasons and water needs"><br><sub><b>Crop library</b></sub></td>
-    <td><img src=".github/screenshots/crop-detail.webp" alt="Crop detail page for mustard with a Listen button"><br><sub><b>Crop detail</b> with read-aloud</sub></td>
-  </tr>
-  <tr>
-    <td><img src=".github/screenshots/weather.webp" alt="Weather page showing current conditions for Ludhiana"><br><sub><b>Weather</b> (live, Open-Meteo)</sub></td>
-    <td><img src=".github/screenshots/mandi.webp" alt="Mandi prices with highest, lowest and average modal price"><br><sub><b>Mandi prices</b> (live, data.gov.in)</sub></td>
-  </tr>
-  <tr>
-    <td><img src=".github/screenshots/advisor.webp" alt="Crop advisor result for wheat on loamy soil"><br><sub><b>Crop advisor</b></sub></td>
-    <td><img src=".github/screenshots/dashboard.webp" alt="Dashboard listing the next tasks, with overdue tasks flagged"><br><sub><b>Dashboard</b> with overdue tasks</sub></td>
-  </tr>
-  <tr>
-    <td><img src=".github/screenshots/farm.webp" alt="A farm with its crop cycle, expected harvest date and activities"><br><sub><b>Farm</b>: crop cycles and expected harvest</sub></td>
-    <td><img src=".github/screenshots/calendar.webp" alt="Monthly farm calendar"><br><sub><b>Calendar</b></sub></td>
-  </tr>
-  <tr>
-    <td><img src=".github/screenshots/security.webp" alt="Two-step verification setup with a QR code"><br><sub><b>Two-step verification</b> setup</sub></td>
-    <td><img src=".github/screenshots/admin.webp" alt="Admin panel with account list and audit log"><br><sub><b>Admin panel</b> and audit log</sub></td>
-  </tr>
-</table>
-
-<p align="center">
-  <img src=".github/screenshots/mobile-home.webp" alt="Home page on a phone" width="260">
-  &nbsp;&nbsp;&nbsp;
-  <img src=".github/screenshots/mobile-dashboard.webp" alt="Dashboard on a phone" width="260">
-  <br><sub>Works on phones</sub>
-</p>
-
-All screenshots use made-up farmers and farms.
 
 ## Engineering highlights
 
@@ -127,7 +88,7 @@ They then turn on two-step verification from **Account security**, which the adm
 
 The repository includes a [`render.yaml`](render.yaml) Blueprint. It creates **one free web service** that serves both the API and the built website on a single address, so sign-in cookies just work.
 
-1. Merge this branch into `main`, then sign in to [render.com](https://render.com) with GitHub.
+1. Sign in to [render.com](https://render.com) with GitHub.
 2. Choose **New → Blueprint**, pick this repository and apply `render.yaml`. When it asks for `DATA_GOV_IN_API_KEY`, paste your data.gov.in key (or leave it empty: the mandi page then says prices are unavailable).
 3. Wait for the first build (a few minutes), then open the `https://….onrender.com` address Render shows.
 
@@ -224,4 +185,4 @@ ProFarm-V2/
 
 ## License
 
-ISC / Proprietary — ProFarm Project.
+[MIT](LICENSE) © 2026 Jayant Bansal. Photographs are credited separately (see above).
